@@ -1,0 +1,6 @@
+1. Mikrofon nimmt Töne des Nutzers ab. 
+        - Nächste Note wird erst bei richtiger eingabe gespielt.
+        - Verschidene Oktaven werden berücksichtigt
+
+2. Intervalle üben.
+3. Slider umkehren: voll aufgedreht ist schnell. leergedreht ist langsam.

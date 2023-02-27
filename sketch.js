@@ -1,25 +1,25 @@
+let cnv;
 let monoSynth;
 let notes = ['C4', 'C#4', 'D4','D#4', 'E4', 'F4','F#4', 'G4','G#4', 'A4', 'A#4', 'B4'];
 let currentNote;
 let slider;
 
 function setup() {
-  let cnv = createCanvas(700, 700);
+  cnv = createCanvas(windowWidth, windowHeight);
+
   textAlign(CENTER);
-  textSize(400);
 
   slider = createSlider(0, 200, 100 , 1);
-  slider.position(width / 2, 40);
-  slider.style('width', '200px');
 
   monoSynth = new p5.MonoSynth();
 }
 
 function draw() {
   background(220);
-  text(currentNote, width/2, height/2);
 
-  console.log(frameCount);
+  alignElements();
+  text(currentNote, width/2, height/2 + slider.position().y);
+
   if (frameCount % slider.value() == 0) {
     playSynth();
   }
@@ -39,4 +39,14 @@ function playSynth() {
 
   monoSynth.play(currentNote, velocity, time, dur);
 
+}
+
+function alignElements(){
+
+  cnv.resize(windowWidth, windowHeight);
+  textSize(width /10);
+
+  slider.style('width', '200px');
+  slider.position(width/2, 40);
+  slider.center('horizontal');
 }

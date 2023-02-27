@@ -1,5 +1,7 @@
 let cnv;
+let mic;
 let monoSynth;
+let pause = true;
 let notes = ['C4', 'C#4', 'D4','D#4', 'E4', 'F4','F#4', 'G4','G#4', 'A4', 'A#4', 'B4'];
 let intervals = ['1', 'm2','M2', 'm3', 'M3', '4', 'b5', '5', 'm6', 'M6', 'm7', 'M7'];
 let currentNote;
@@ -11,6 +13,9 @@ let textPosY;
 
 function setup() {
   cnv = createCanvas(windowWidth, windowHeight);
+
+  mic = new p5.AudioIn();
+  mic.start();
 
   textAlign(CENTER);
 
@@ -28,17 +33,27 @@ function draw() {
 
   alignElements();
 
+  micInput();
 
-  if (displayInterval)
-    text(intervals[notes.indexOf(currentNote)], textPosX, textPosY);
-  else
-    text(currentNote, textPosX, textPosY);
-  
-  if (frameCount % -slider.value() == 0) {
-    currentNote = random(notes);
-    playSynth();
-  }
+  if (pause)
+    text("Pause", textPosX, textPosY);
+  else{
+    if (displayInterval)
+      text(intervals[notes.indexOf(currentNote)], textPosX, textPosY);
+    else
+      text(currentNote, textPosX, textPosY);
+    
+    if (frameCount % -slider.value() == 0) {
+      currentNote = random(notes);
+      playSynth();
+    }
+}
 
+}
+
+function keyPressed(){
+  if(key == " ")
+    pause = !pause;
 }
 
 function playSynth() {
@@ -54,6 +69,7 @@ function playSynth() {
   monoSynth.play(currentNote, velocity, time, dur);
 
 }
+
 
 function switchToIntervalMode(){
   if (button)

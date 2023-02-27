@@ -16,7 +16,7 @@ function setup() {
 
   switchToNoteMode();
 
-  slider = createSlider(0, 200, 100 , 1);
+  slider = createSlider(-200, -50, 100 , 1);
 
   monoSynth = new p5.MonoSynth();
 
@@ -34,7 +34,7 @@ function draw() {
   else
     text(currentNote, textPosX, textPosY);
   
-  if (frameCount % slider.value() == 0) {
+  if (frameCount % -slider.value() == 0) {
     currentNote = random(notes);
     playSynth();
   }

@@ -33,7 +33,7 @@ function draw() {
 
   alignElements();
 
-  micInput();
+ // micInput();
 
   if (pause)
     text("Pause", textPosX, textPosY);

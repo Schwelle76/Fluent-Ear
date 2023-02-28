@@ -3,8 +3,9 @@ let monoSynth;
 let paused = true;
 let notes = ['C', 'C#', 'D','D#', 'E', 'F','F#', 'G','G#', 'A', 'A#', 'B'];
 let intervals = ['1', 'm2','M2', 'm3', 'M3', '4', 'b5', '5', 'm6', 'M6', 'm7', 'M7'];
+let octave = "4";
 let currentNote;
-let noiseBarrier = .01;
+let noiseBarrier = .007;
 let volumeMeterDisplayAmp = 30000;
 
 
@@ -90,7 +91,7 @@ function playSynth() {
   // note duration (in seconds)
   let dur = 1/6;
 
-  monoSynth.play(currentNote, velocity, time, dur);
+  monoSynth.play(currentNote + octave, velocity, time, dur);
 
 }
 

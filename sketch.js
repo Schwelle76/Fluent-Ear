@@ -1,9 +1,10 @@
 let cnv;
 let monoSynth;
-let pause = true;
+let paused = true;
 let notes = ['C', 'C#', 'D','D#', 'E', 'F','F#', 'G','G#', 'A', 'A#', 'B'];
 let intervals = ['1', 'm2','M2', 'm3', 'M3', '4', 'b5', '5', 'm6', 'M6', 'm7', 'M7'];
 let currentNote;
+let pauseButton;
 let modeButton;
 let startMicButton;
 let slider;
@@ -14,54 +15,56 @@ let textPosY;
 function setup() {
   cnv = createCanvas(windowWidth, windowHeight);
 
-  textAlign(CENTER);
-
-  switchToNoteMode();
-
-  slider = createSlider(-200, -50, 100 , 1);
-
   monoSynth = new p5.MonoSynth();
 
-  startMicButton = createButton("Start Microphone");
-  startMicButton.mousePressed(startPitchDetect);
+  setupElements();
   
 }
 
 function draw() {
   background(220);
-
   alignElements();
 
- // micInput();
-
-  if (pause)
+  if (paused)
     text("Pause", textPosX, textPosY);
-  else{
+  else
+  {
+    displayNote();    
+    play();
+    print(detectedNote);
+  }
+
+}
+
+function play(){
+  if (enabledPitchDetection){
+    if (detectedNote == currentNote)
+      nextNote();
+  }
+  else if (frameCount % -slider.value() == 0) {
+    nextNote();
+  }
+}
+
+function pause(){
+  paused = !paused;
+}
+
+function nextNote(){
+  currentNote = random(notes);
+  playSynth();
+}
+
+function displayNote(){
     if (displayInterval)
       text(intervals[notes.indexOf(currentNote)], textPosX, textPosY);
     else
       text(currentNote, textPosX, textPosY);
-    
-    print(detectedNote);
-
-    if (enabledPitchDetection){
-      if (detectedNote == currentNote){
-        currentNote = random(notes);
-        playSynth();
-      }
-    }
-    else if (frameCount % -slider.value() == 0) {
-      currentNote = random(notes);
-      playSynth();
-    }
-
-}
-
 }
 
 function keyPressed(){
   if(key == " ")
-    pause = !pause;
+    pause();
 }
 
 function playSynth() {
@@ -97,12 +100,27 @@ function switchToNoteMode(){
   displayInterval = false;
 }
 
+function setupElements(){
+  textAlign(CENTER);
+  slider = createSlider(-200, -50, 100 , 1);
+
+  pauseButton = createButton("Pause");
+  pauseButton.mousePressed(pause);
+
+  startMicButton = createButton("Start Microphone");
+  startMicButton.mousePressed(startPitchDetect);
+
+  switchToNoteMode();
+}
+
 function alignElements(){
 
   cnv.resize(windowWidth, windowHeight);
   textSize(width /10);
   textPosX = width / 2;
   textPosY = height /2 + slider.position().y;
+
+  pauseButton.position(width / 2 - pauseButton.width / 2, height  -50);
 
   modeButton.position(width - modeButton.width - 10, 10);
 

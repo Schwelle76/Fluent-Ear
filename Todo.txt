@@ -1,6 +1,9 @@
-1. Mikrofon nimmt Töne des Nutzers ab. 
-        - Nächste Note wird erst bei richtiger eingabe gespielt.
-        - Verschidene Oktaven werden berücksichtigt
+
+1. Verschidene Oktaven werden berücksichtigt
 https://p5js.org/examples/sound-mic-input.html
 
 2. Random Interval von Random Note üben.
+
+3. Fortfahren auf lauten sound oder knopfdruck
+
+4. Lautstärke und Noisecancelschwellenregler anzeigen.

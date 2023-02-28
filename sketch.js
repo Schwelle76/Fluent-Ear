@@ -1,11 +1,11 @@
 let cnv;
-let mic;
 let monoSynth;
 let pause = true;
-let notes = ['C4', 'C#4', 'D4','D#4', 'E4', 'F4','F#4', 'G4','G#4', 'A4', 'A#4', 'B4'];
+let notes = ['C', 'C#', 'D','D#', 'E', 'F','F#', 'G','G#', 'A', 'A#', 'B'];
 let intervals = ['1', 'm2','M2', 'm3', 'M3', '4', 'b5', '5', 'm6', 'M6', 'm7', 'M7'];
 let currentNote;
-let button;
+let modeButton;
+let startMicButton;
 let slider;
 let displayInterval = false;
 let textPosX; 
@@ -13,9 +13,6 @@ let textPosY;
 
 function setup() {
   cnv = createCanvas(windowWidth, windowHeight);
-
-  mic = new p5.AudioIn();
-  mic.start();
 
   textAlign(CENTER);
 
@@ -25,7 +22,9 @@ function setup() {
 
   monoSynth = new p5.MonoSynth();
 
-  alignElements();
+  startMicButton = createButton("Start Microphone");
+  startMicButton.mousePressed(startPitchDetect);
+  
 }
 
 function draw() {
@@ -43,10 +42,19 @@ function draw() {
     else
       text(currentNote, textPosX, textPosY);
     
-    if (frameCount % -slider.value() == 0) {
+    print(detectedNote);
+
+    if (enabledPitchDetection){
+      if (detectedNote == currentNote){
+        currentNote = random(notes);
+        playSynth();
+      }
+    }
+    else if (frameCount % -slider.value() == 0) {
       currentNote = random(notes);
       playSynth();
     }
+
 }
 
 }
@@ -72,19 +80,19 @@ function playSynth() {
 
 
 function switchToIntervalMode(){
-  if (button)
-    button.remove();
-  button = createButton("Notes");
-  button.mousePressed(switchToNoteMode);
+  if (modeButton)
+    modeButton.remove();
+  modeButton = createButton("Notes");
+  modeButton.mousePressed(switchToNoteMode);
 
   displayInterval = true;
 }
 
 function switchToNoteMode(){
-  if (button)
-    button.remove();
-  button = createButton("Intervals");
-  button.mousePressed(switchToIntervalMode);
+  if (modeButton)
+    modeButton.remove();
+  modeButton = createButton("Intervals");
+  modeButton.mousePressed(switchToIntervalMode);
 
   displayInterval = false;
 }
@@ -96,7 +104,9 @@ function alignElements(){
   textPosX = width / 2;
   textPosY = height /2 + slider.position().y;
 
-  button.position(width - button.width - 10, 10);
+  modeButton.position(width - modeButton.width - 10, 10);
+
+  startMicButton.position(width / 2 - startMicButton.width / 2, 10);
 
   slider.style('width', '200px');
   slider.position(width/2, 40);

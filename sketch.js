@@ -4,6 +4,10 @@ let paused = true;
 let notes = ['C', 'C#', 'D','D#', 'E', 'F','F#', 'G','G#', 'A', 'A#', 'B'];
 let intervals = ['1', 'm2','M2', 'm3', 'M3', '4', 'b5', '5', 'm6', 'M6', 'm7', 'M7'];
 let currentNote;
+let noiseBarrier = .01;
+let volumeMeterDisplayAmp = 30000;
+
+
 let pauseButton;
 let modeButton;
 let startMicButton;
@@ -11,6 +15,9 @@ let slider;
 let displayInterval = false;
 let textPosX; 
 let textPosY; 
+let bottomMargin = 10;
+let sideMargin = 10;
+let topMargin = 10;
 
 function setup() {
   cnv = createCanvas(windowWidth, windowHeight);
@@ -21,24 +28,30 @@ function setup() {
   
 }
 
+
 function draw() {
-  background(220);
+  background(255);
   alignElements();
 
+  displayVolumeMeterAndNoiseBarrierSlider();
+
   if (paused)
+  {
+    fill(0, 0, 0);
     text("Pause", textPosX, textPosY);
+  }
   else
   {
     displayNote();    
     play();
-    print(detectedNote);
+    console.log(detectedNote);
   }
 
 }
 
 function play(){
   if (enabledPitchDetection){
-    if (detectedNote == currentNote)
+    if (volume > noiseBarrier && detectedNote == currentNote)
       nextNote();
   }
   else if (frameCount % -slider.value() == 0) {
@@ -81,6 +94,18 @@ function playSynth() {
 
 }
 
+function displayVolumeMeterAndNoiseBarrierSlider(){
+
+  let volumeMeterWidth = 20;
+  let noiseBarrierSliderSize = 20;
+  let volumeMeterX = width - volumeMeterWidth * 1.5;
+
+
+  fill(255, 0, 0);
+  rect(volumeMeterX, height - bottomMargin, volumeMeterWidth, -volume * volumeMeterDisplayAmp);
+  fill(0);
+  circle(volumeMeterX + noiseBarrierSliderSize/2, height - bottomMargin - noiseBarrier * volumeMeterDisplayAmp, noiseBarrierSliderSize);
+}
 
 function switchToIntervalMode(){
   if (modeButton)
@@ -120,11 +145,11 @@ function alignElements(){
   textPosX = width / 2;
   textPosY = height /2 + slider.position().y;
 
-  pauseButton.position(width / 2 - pauseButton.width / 2, height  -50);
+  pauseButton.position(width / 2 - pauseButton.width / 2, height  - bottomMargin - pauseButton.height);
 
-  modeButton.position(width - modeButton.width - 10, 10);
+  modeButton.position(width - modeButton.width - sideMargin, topMargin);
 
-  startMicButton.position(width / 2 - startMicButton.width / 2, 10);
+  startMicButton.position(width / 2 - startMicButton.width / 2, topMargin);
 
   slider.style('width', '200px');
   slider.position(width/2, 40);

@@ -29,6 +29,7 @@ SOFTWARE.
 window.AudioContext = window.AudioContext || window.webkitAudioContext;
 
 var detectedNote;
+var volume;
 var enabledPitchDetection = false;
 var audioContext = null;
 var isPlaying = false;
@@ -75,6 +76,8 @@ function startPitchDetect() {
 	    analyser = audioContext.createAnalyser();
 	    analyser.fftSize = 2048;
 	    mediaStreamSource.connect( analyser );
+		
+		updateVolume();
 	    updatePitch();
     }).catch((err) => {
         // always check for errors at the end.
@@ -192,10 +195,21 @@ function updatePitch( time ) {
 	 	pitch = ac;
 	 	var note =  noteFromPitch( pitch );
 		detectedNote = noteStrings[note%12];
-		console.log(detectedNote);
 	}
 
 	if (!window.requestAnimationFrame)
 		window.requestAnimationFrame = window.webkitRequestAnimationFrame;
 	rafID = window.requestAnimationFrame( updatePitch );
+}
+
+function updateVolume(){
+	const pcmData = new Float32Array(analyser.fftSize);
+	analyser.getFloatTimeDomainData(pcmData);
+    let sumSquares = 0.0;
+    for (const amplitude of pcmData) { sumSquares += amplitude*amplitude; }
+    volume = Math.sqrt(sumSquares / pcmData.length);
+
+	if (!window.requestAnimationFrame)
+		window.requestAnimationFrame = window.webkitRequestAnimationFrame;
+	rafID = window.requestAnimationFrame( updateVolume );
 }

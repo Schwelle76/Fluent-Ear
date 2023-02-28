@@ -6,4 +6,4 @@ https://p5js.org/examples/sound-mic-input.html
 
 3. Fortfahren auf lauten sound oder knopfdruck
 
-4. Lautstärke und Noisecancelschwellenregler anzeigen.
+4. Lautstärke und Noisecancelschwellenregler vom User einstellbar machen.

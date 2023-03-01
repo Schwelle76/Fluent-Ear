@@ -6,8 +6,16 @@ let intervals = ['1', 'm2','M2', 'm3', 'M3', '4', 'b5', '5', 'm6', 'M6', 'm7', '
 let octave = "4";
 let currentNote;
 let noiseBarrier = .007;
-let volumeMeterDisplayAmp = 30000;
 
+let volumeMeterDisplayAmp = 30000;
+let volumeMeterWidth = 20;
+function volumeMeterX(){return width - volumeMeterWidth * 1.5};
+function volumeMeterY(){return height - bottomMargin};
+let noiseBarrierSliderSize = 20;
+function noiseBarrierSliderX(){return volumeMeterX() + noiseBarrierSliderSize / 2};
+function noiseBarrierSliderY(){return volumeMeterY() - noiseBarrier * volumeMeterDisplayAmp};
+function noiseBarrierMax(){return (height - noiseBarrierSliderSize) / volumeMeterDisplayAmp;}
+let dragNoiseBarrierSlider = false;
 
 let pauseButton;
 let modeButton;
@@ -45,7 +53,6 @@ function draw() {
   {
     displayNote();    
     play();
-    console.log(detectedNote);
   }
 
 }
@@ -101,15 +108,31 @@ function playSynth() {
 
 function drawVolumeMeterAndNoiseBarrierSlider(){
 
-  let volumeMeterWidth = 20;
-  let noiseBarrierSliderSize = 20;
-  let volumeMeterX = width - volumeMeterWidth * 1.5;
 
 
   fill(255, 0, 0);
-  rect(volumeMeterX, height - bottomMargin, volumeMeterWidth, -volume * volumeMeterDisplayAmp);
+  rect(volumeMeterX(), volumeMeterY(), volumeMeterWidth, -volume * volumeMeterDisplayAmp);
   fill(0);
-  circle(volumeMeterX + noiseBarrierSliderSize/2, height - bottomMargin - noiseBarrier * volumeMeterDisplayAmp, noiseBarrierSliderSize);
+  circle(noiseBarrierSliderX(), noiseBarrierSliderY(), noiseBarrierSliderSize);
+
+  if (dragNoiseBarrierSlider)
+    noiseBarrier = (volumeMeterY() - mouseY) / volumeMeterDisplayAmp;
+
+
+
+    noiseBarrier = Math.max(noiseBarrier, 0);
+    noiseBarrier = Math.min(noiseBarrier, noiseBarrierMax());
+
+}
+
+
+function mousePressed(){
+  if(dist(mouseX, mouseY,  noiseBarrierSliderX(), noiseBarrierSliderY()) < noiseBarrierSliderSize)
+    dragNoiseBarrierSlider = true;
+}
+
+function mouseReleased(){
+  dragNoiseBarrierSlider = false;
 }
 
 function switchToIntervalMode(){

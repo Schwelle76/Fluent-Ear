@@ -34,7 +34,7 @@ function draw() {
   background(255);
   alignElements();
 
-  displayVolumeMeterAndNoiseBarrierSlider();
+  drawVolumeMeterAndNoiseBarrierSlider();
 
   if (paused)
   {
@@ -51,6 +51,10 @@ function draw() {
 }
 
 function play(){
+
+  if (currentNote == null)
+    nextNote();
+
   if (enabledPitchDetection){
     if (volume > noiseBarrier && detectedNote == currentNote)
       nextNote();
@@ -95,7 +99,7 @@ function playSynth() {
 
 }
 
-function displayVolumeMeterAndNoiseBarrierSlider(){
+function drawVolumeMeterAndNoiseBarrierSlider(){
 
   let volumeMeterWidth = 20;
   let noiseBarrierSliderSize = 20;

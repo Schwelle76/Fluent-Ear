@@ -42,14 +42,15 @@ function setup() {
 
 
 function draw() {
-  background(255);
   alignElements();
+  background(0);
 
+  
   drawVolumeMeterAndNoiseBarrierSlider();
 
   if (paused)
   {
-    fill(0, 0, 0);
+    fill(255, 200);
     text("Pause", textPosX, textPosY);
   }
   else
@@ -120,9 +121,9 @@ function drawVolumeMeterAndNoiseBarrierSlider(){
 
 
 
-  fill(255, 0, 0);
+  fill(10, 180, 255, 200);
   rect(volumeMeterX(), volumeMeterY(), volumeMeterWidth, -volume * volumeMeterDisplayAmp);
-  fill(0);
+  fill(200);
   circle(noiseBarrierSliderX(), noiseBarrierSliderY(), noiseBarrierSliderSize);
 
   if (dragNoiseBarrierSlider)

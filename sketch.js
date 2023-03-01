@@ -1,5 +1,6 @@
 let cnv;
 let monoSynth;
+let synthFft;
 let paused = true;
 let notes = ['C', 'C#', 'D','D#', 'E', 'F','F#', 'G','G#', 'A', 'A#', 'B'];
 let intervals = ['1', 'm2','M2', 'm3', 'M3', '4', 'b5', '5', 'm6', 'M6', 'm7', 'M7'];
@@ -32,6 +33,8 @@ function setup() {
   cnv = createCanvas(windowWidth, windowHeight);
 
   monoSynth = new p5.MonoSynth();
+  synthFft = new p5.FFT();
+  synthFft.setInput(monoSynth);
 
   setupElements();
   
@@ -63,7 +66,7 @@ function play(){
     nextNote();
 
   if (enabledPitchDetection){
-    if (volume > noiseBarrier && detectedNote == currentNote)
+    if (volume > noiseBarrier && detectedNote == currentNote && synthVolume() == 0)
       nextNote();
   }
   else if (frameCount % -slider.value() == 0) {
@@ -104,6 +107,13 @@ function playSynth() {
 
   monoSynth.play(currentNote + octave, velocity, time, dur);
 
+}
+
+function synthVolume(){
+  let spectrum = synthFft.analyze();
+  let sumSquares = 0.0;
+  for (const amplitude of spectrum) { sumSquares += amplitude*amplitude; }
+  return Math.sqrt(sumSquares / spectrum.length);
 }
 
 function drawVolumeMeterAndNoiseBarrierSlider(){
@@ -155,7 +165,7 @@ function switchToNoteMode(){
 
 function setupElements(){
   textAlign(CENTER);
-  slider = createSlider(-200, -50, 100 , 1);
+  slider = createSlider(-200, -50, -125 , 1);
 
   pauseButton = createButton("Pause");
   pauseButton.mousePressed(pause);

@@ -18,12 +18,12 @@ function noiseBarrierSliderY(){return volumeMeterY() - noiseBarrier * volumeMete
 function noiseBarrierMax(){return (height - noiseBarrierSliderSize) / volumeMeterDisplayAmp;}
 let dragNoiseBarrierSlider = false;
 
-let pauseButtonX;
-let pauseButtonY;
-let pauseButtonWidth;
-let pauseButtonHeight;
+let micButton;
+let contextButtonX;
+let contextButtonY;
+let contextButtonWidth;
+let contextButtonHeight;
 let modeButton;
-let startMicButton;
 let displayInterval = false;
 let targetNoteX; 
 let targetNoteY; 
@@ -51,25 +51,25 @@ function draw() {
   alignElements();
   background(0);
 
-  
-  drawVolumeMeterAndNoiseBarrierSlider();
-
-  if (paused)
+  if (!enabledPitchDetection)
+    displayMicrophoneButton();
+  else if (paused)
   {
     textSize(targetNoteSize);
-    fill(255, 200);
+    fill(255, 180);
     text("Pause", targetNoteX, targetNoteY);
   }
   else
   {
     displayDetectedNote();
-    displayTargetNote();    
+    displayTargetNote();  
+    drawVolumeMeter();  
     play();
   }
 
-  //showPauseButton();
-  fill (255, 0, 0);
-  rect (width / 2, height / 2, 30);
+  drawNoiseBarrierSlider();
+  //showContextButton();
+
 
 }
 
@@ -89,11 +89,20 @@ function pause(){
   paused = !paused;
 }
 
-function showPauseButton(){
+function pressContextButton(){
+    if (!enabledPitchDetection){
+      startPitchDetect();
+      micButton.hide();
+    }
+    pause();
+}
+
+
+function showContextButton(){
       //SHOW PAUSE BUTTON
       rectMode(CENTER);
       fill(255, 0, 0);
-      rect(pauseButtonX, pauseButtonY, pauseButtonWidth, pauseButtonHeight);
+      rect(contextButtonX, contextButtonY, contextButtonWidth, contextButtonHeight);
 }
 
 function nextNote(){
@@ -104,6 +113,8 @@ function nextNote(){
 function displayTargetNote(){
 
   textSize(targetNoteSize);
+  fill(255, 230);
+
   
     if (displayInterval)
       text(intervals[notes.indexOf(currentNote)], targetNoteX, targetNoteY);
@@ -115,15 +126,21 @@ function displayTargetNote(){
 function displayDetectedNote(){
 
   textSize(detectedNoteSize);
+  fill(255, 180);
 
   if (detectedNote != "unidentified"){
     text(detectedNote, detectedNoteX, detectedNoteY);
   }
 }
 
+function displayMicrophoneButton(){
+  micButton.center();
+  micButton.size(width / 3, AUTO);
+}
+
 function keyPressed(){
   if(key == " ")
-    pause();
+    pressContextButton();
 }
 
 function playSynth() {
@@ -148,11 +165,15 @@ function synthVolume(){
   return Math.sqrt(sumSquares / spectrum.length);
 }
 
-function drawVolumeMeterAndNoiseBarrierSlider(){
+function drawVolumeMeter(){
   
   rectMode(CORNER);
   fill(10, 180, 255, 200);
   rect(volumeMeterX(), volumeMeterY(), volumeMeterWidth, -volume * volumeMeterDisplayAmp);
+}
+
+function drawNoiseBarrierSlider(){
+  
   fill(200);
   circle(noiseBarrierSliderX(), noiseBarrierSliderY(), noiseBarrierSliderSize);
 
@@ -169,9 +190,9 @@ function drawVolumeMeterAndNoiseBarrierSlider(){
 
 function mouseClicked(){
 
-  if (pauseButtonX + pauseButtonWidth / 2 > mouseX && mouseX > pauseButtonX - pauseButtonWidth / 2
-  && pauseButtonY + pauseButtonHeight / 2 > mouseY && mouseY > pauseButtonY - pauseButtonHeight / 2)
-    pause();
+  if (contextButtonX + contextButtonWidth / 2 > mouseX && mouseX > contextButtonX - contextButtonWidth / 2
+  && contextButtonY + contextButtonHeight / 2 > mouseY && mouseY > contextButtonY - contextButtonHeight / 2)
+    pressContextButton();
 }
 
 function mousePressed(){
@@ -218,8 +239,7 @@ function switchToNoteMode(){
 function setupElements(){
   textAlign(CENTER);
 
-  startMicButton = createButton("Start Microphone");
-  startMicButton.mousePressed(startPitchDetect);
+  micButton = createImg('mic-button.png');
 
   switchToNoteMode();
 }
@@ -236,13 +256,11 @@ function alignElements(){
   detectedNoteX = sideMargin + detectedNoteSize / 2;
   detectedNoteY = detectedNoteSize;
 
-  pauseButtonX = width / 2;
-  pauseButtonY = height / 2 + 50;
-  pauseButtonWidth = width -100;
-  pauseButtonHeight = height - 50;
+  contextButtonX = width / 2 - 50;
+  contextButtonY = height / 2 + 50;
+  contextButtonWidth = width;
+  contextButtonHeight = height;
 
   modeButton.position(width - modeButton.width - sideMargin, topMargin);
-
-  startMicButton.position(width / 2 - startMicButton.width / 2, topMargin);
 
 }

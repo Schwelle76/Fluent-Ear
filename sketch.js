@@ -24,7 +24,6 @@ let pauseButtonWidth;
 let pauseButtonHeight;
 let modeButton;
 let startMicButton;
-let slider;
 let displayInterval = false;
 let targetNoteX; 
 let targetNoteY; 
@@ -69,6 +68,8 @@ function draw() {
   }
 
   //showPauseButton();
+  fill (255, 0, 0);
+  rect (width / 2, height / 2, 30);
 
 }
 
@@ -81,9 +82,7 @@ function play(){
     if (volume > noiseBarrier && detectedNote == currentNote && synthVolume() == 0)
       nextNote();
   }
-  else if (frameCount % -slider.value() == 0) {
-    nextNote();
-  }
+
 }
 
 function pause(){
@@ -99,7 +98,7 @@ function showPauseButton(){
 
 function nextNote(){
   currentNote = random(notes);
-  playSynth();
+  //playSynth();
 }
 
 function displayTargetNote(){
@@ -128,6 +127,7 @@ function keyPressed(){
 }
 
 function playSynth() {
+  //NOT IN USE!!!
   userStartAudio();
 
   // note velocity (volume, from 0 to 1)
@@ -187,9 +187,10 @@ function touchStarted(){
   if(dist(touches[0].x, touches[0].y,  noiseBarrierSliderX(), noiseBarrierSliderY()) < noiseBarrierSliderSize)
     dragNoiseBarrierSlider = true;
 
-  if (pauseButtonX + pauseButtonWidth / 2 > touches[0].x && touches[0].x > pauseButtonX - pauseButtonWidth / 2
-  && pauseButtonY + pauseButtonHeight / 2 > touches[0].y && touches[0].y > pauseButtonY - pauseButtonHeight / 2)
+  /*if (pauseButtonX + pauseButtonWidth / 2 > touches[0].x && touches[0].x > pauseButtonX - pauseButtonWidth / 2
+  && pauseButtonY + pauseButtonHeight / 2 > touches[0].y && touches[0].y > pauseButtonY - pauseButtonHeight / 2){
     pause();
+  }*/
 }
 
 function touchesEnded(){
@@ -216,7 +217,6 @@ function switchToNoteMode(){
 
 function setupElements(){
   textAlign(CENTER);
-  slider = createSlider(-200, -50, -125 , 1);
 
   startMicButton = createButton("Start Microphone");
   startMicButton.mousePressed(startPitchDetect);
@@ -230,7 +230,7 @@ function alignElements(){
 
   targetNoteSize = width / 10;
   targetNoteX = width / 2;
-  targetNoteY = height /2 + slider.position().y;
+  targetNoteY = height /2;
 
   detectedNoteSize = width /20;
   detectedNoteX = sideMargin + detectedNoteSize / 2;
@@ -245,7 +245,4 @@ function alignElements(){
 
   startMicButton.position(width / 2 - startMicButton.width / 2, topMargin);
 
-  slider.style('width', '200px');
-  slider.position(width/2, 40);
-  slider.center('horizontal');
 }

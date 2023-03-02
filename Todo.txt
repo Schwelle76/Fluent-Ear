@@ -4,9 +4,6 @@ https://p5js.org/examples/sound-mic-input.html
 
 2. Random Interval von Random Note üben.
 
-4. Touch für Schwellenslider aktivieren.
-4 1/2 Pause wenn iwo hingetoucht wird (Außer auf button/Slider)
-
 5. Synth rausnehmen und Speed dings rausnehmen
     - Statt dessen auf visuelles Feedback setzen
     - Belohnungssound der zu gespielten Ton passt

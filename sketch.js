@@ -18,7 +18,7 @@ function noiseBarrierSliderY(){return volumeMeterY() - noiseBarrier * volumeMete
 function noiseBarrierMax(){return (height - noiseBarrierSliderSize) / volumeMeterDisplayAmp;}
 let dragNoiseBarrierSlider = false;
 
-let micButton;
+let micButtonSize;
 let contextButtonX;
 let contextButtonY;
 let contextButtonWidth;
@@ -38,11 +38,12 @@ let topMargin = 10;
 function setup() {
   cnv = createCanvas(windowWidth, windowHeight);
 
+  setupElements();
+
   monoSynth = new p5.MonoSynth();
   synthFft = new p5.FFT();
   synthFft.setInput(monoSynth);
 
-  setupElements();
   
 }
 
@@ -51,12 +52,15 @@ function draw() {
   alignElements();
   background(0);
 
+
+  //BUG hat was mit if else statement zu tun
   if (!enabledPitchDetection)
     displayMicrophoneButton();
-  else if (paused)
+  else
+  if (paused)
   {
     textSize(targetNoteSize);
-    fill(255, 180);
+    fill(255, 200);
     text("Pause", targetNoteX, targetNoteY);
   }
   else
@@ -68,6 +72,7 @@ function draw() {
   }
 
   drawNoiseBarrierSlider();
+
   //showContextButton();
 
 
@@ -92,7 +97,6 @@ function pause(){
 function pressContextButton(){
     if (!enabledPitchDetection){
       startPitchDetect();
-      micButton.hide();
     }
     pause();
 }
@@ -126,16 +130,21 @@ function displayTargetNote(){
 function displayDetectedNote(){
 
   textSize(detectedNoteSize);
-  fill(255, 180);
+  fill(255, 200);
+
 
   if (detectedNote != "unidentified"){
-    text(detectedNote, detectedNoteX, detectedNoteY);
+    if (displayInterval)
+      text(intervals[notes.indexOf(detectedNote)], detectedNoteX, detectedNoteY);
+    else
+      text(detectedNote, detectedNoteX, detectedNoteY);
   }
 }
 
 function displayMicrophoneButton(){
-  micButton.center();
-  micButton.size(width / 3, AUTO);
+
+  image(img, width /2 - micButtonSize /2, height / 2 - micButtonSize / 2, micButtonSize, micButtonSize);
+
 }
 
 function keyPressed(){
@@ -174,7 +183,7 @@ function drawVolumeMeter(){
 
 function drawNoiseBarrierSlider(){
   
-  fill(200);
+  fill(255, 180);
   circle(noiseBarrierSliderX(), noiseBarrierSliderY(), noiseBarrierSliderSize);
 
   if (dragNoiseBarrierSlider)
@@ -236,17 +245,30 @@ function switchToNoteMode(){
   displayInterval = false;
 }
 
+let img;
 function setupElements(){
   textAlign(CENTER);
 
-  micButton = createImg('mic-button.png');
+  //micButton = createImg('mic-button.png', "Microphone Button", "", onLoadMicButton);
 
   switchToNoteMode();
+}
+
+
+function preload() {
+  // preload() runs once
+  img = loadImage('mic-button.png');
+}
+
+function onLoadMicButton(){
+  print('Microphone Button loaded successfully');
 }
 
 function alignElements(){
 
   cnv.resize(windowWidth, windowHeight);
+
+  micButtonSize  = width / 3;
 
   targetNoteSize = width / 10;
   targetNoteX = width / 2;

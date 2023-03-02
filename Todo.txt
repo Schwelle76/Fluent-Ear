@@ -2,11 +2,15 @@
 1. Verschidene Oktaven werden berücksichtigt
 https://p5js.org/examples/sound-mic-input.html
 
+2. Intervals und Note button verschönnern
+
 2. Random Interval von Random Note üben.
 
-5. Synth rausnehmen und Speed dings rausnehmen
-    - Statt dessen auf visuelles Feedback setzen
-    - Belohnungssound der zu gespielten Ton passt
+3.  Mic button Mit Animation aufmerksamkeit verschaffen
+    -User Fehlermeldung geben wenn er sich weigert mikro anzuschalten
+
+
+5. visuelles Feedback und Belohnungssound der zu gespielten Ton passt
         - dann vielleicht auch kl. 2 und tritonus von vorrausgehendem Sound meiden.
             dann klingt alles gut.
 

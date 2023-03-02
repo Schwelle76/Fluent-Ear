@@ -79,13 +79,14 @@ function startPitchDetect() {
 		
 		updateVolume();
 	    updatePitch();
+		enabledPitchDetection = true;
+
     }).catch((err) => {
         // always check for errors at the end.
         console.error(`${err.name}: ${err.message}`);
         alert('Stream generation failed.');
     });
 
-	enabledPitchDetection = true;
 }
 
 //Denkbar dass Live Input bei neuen Devices nach startPitchDetect getoggled werden muss.

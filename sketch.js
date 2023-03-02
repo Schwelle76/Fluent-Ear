@@ -23,8 +23,12 @@ let modeButton;
 let startMicButton;
 let slider;
 let displayInterval = false;
-let textPosX; 
-let textPosY; 
+let targetNoteX; 
+let targetNoteY; 
+let targetNoteSize;
+let detectedNoteX; 
+let detectedNoteY;
+let detectedNoteSize;
 let bottomMargin = 10;
 let sideMargin = 10;
 let topMargin = 10;
@@ -50,12 +54,14 @@ function draw() {
 
   if (paused)
   {
+    textSize(targetNoteSize);
     fill(255, 200);
-    text("Pause", textPosX, textPosY);
+    text("Pause", targetNoteX, targetNoteY);
   }
   else
   {
-    displayNote();    
+    displayDetectedNote();
+    displayTargetNote();    
     play();
   }
 
@@ -84,11 +90,23 @@ function nextNote(){
   playSynth();
 }
 
-function displayNote(){
+function displayTargetNote(){
+
+  textSize(targetNoteSize);
+
     if (displayInterval)
-      text(intervals[notes.indexOf(currentNote)], textPosX, textPosY);
+      text(intervals[notes.indexOf(currentNote)], targetNoteX, targetNoteY);
     else
-      text(currentNote, textPosX, textPosY);
+      text(currentNote, targetNoteX, targetNoteY);
+}
+
+function displayDetectedNote(){
+
+  textSize(detectedNoteSize);
+
+  if (detectedNote != "unidentified"){
+    text(detectedNote, detectedNoteX, detectedNoteY);
+  }
 }
 
 function keyPressed(){
@@ -119,8 +137,6 @@ function synthVolume(){
 
 function drawVolumeMeterAndNoiseBarrierSlider(){
 
-
-
   fill(10, 180, 255, 200);
   rect(volumeMeterX(), volumeMeterY(), volumeMeterWidth, -volume * volumeMeterDisplayAmp);
   fill(200);
@@ -131,8 +147,6 @@ function drawVolumeMeterAndNoiseBarrierSlider(){
       noiseBarrier = (volumeMeterY() - touches[0].y) / volumeMeterDisplayAmp;
     else
       noiseBarrier = (volumeMeterY() - mouseY) / volumeMeterDisplayAmp;
-
-
 
     noiseBarrier = Math.max(noiseBarrier, 0);
     noiseBarrier = Math.min(noiseBarrier, noiseBarrierMax());
@@ -191,9 +205,14 @@ function setupElements(){
 function alignElements(){
 
   cnv.resize(windowWidth, windowHeight);
-  textSize(width /10);
-  textPosX = width / 2;
-  textPosY = height /2 + slider.position().y;
+
+  targetNoteSize = width / 10;
+  targetNoteX = width / 2;
+  targetNoteY = height /2 + slider.position().y;
+
+  detectedNoteSize = width /20;
+  detectedNoteX = sideMargin + detectedNoteSize / 2;
+  detectedNoteY = detectedNoteSize;
 
   pauseButton.position(width / 2 - pauseButton.width / 2, height  - bottomMargin - pauseButton.height);
 

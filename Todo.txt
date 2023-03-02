@@ -4,6 +4,19 @@ https://p5js.org/examples/sound-mic-input.html
 
 2. Random Interval von Random Note üben.
 
-3. Fortfahren auf lauten sound oder knopfdruck
+4. Touch für Schwellenslider aktivieren.
+4 1/2 Pause wenn iwo hingetoucht wird (Außer auf button/Slider)
 
-4. Lautstärke und Noisecancelschwellenregler vom User einstellbar machen.
+5. Synth rausnehmen und Speed dings rausnehmen
+    - Statt dessen auf visuelles Feedback setzen
+    - Belohnungssound der zu gespielten Ton passt
+        - dann vielleicht auch kl. 2 und tritonus von vorrausgehendem Sound meiden.
+            dann klingt alles gut.
+
+6. erkannte Note anzeigen (Könnte in sehr Transparent über der Ziel Note stehen
+so dass sie bei richtiger Antwort komplett überlappen und volle sättigung zeigen)
+    - wenn das irritierend ist kann sie vielleicht einfach in kleine ungesättigt in ieine
+        ecke oder unter Ziel Note
+
+
+10. Gamifizieren

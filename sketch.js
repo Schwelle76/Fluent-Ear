@@ -127,7 +127,10 @@ function drawVolumeMeterAndNoiseBarrierSlider(){
   circle(noiseBarrierSliderX(), noiseBarrierSliderY(), noiseBarrierSliderSize);
 
   if (dragNoiseBarrierSlider)
-    noiseBarrier = (volumeMeterY() - mouseY) / volumeMeterDisplayAmp;
+    if (touches.length > 0)
+      noiseBarrier = (volumeMeterY() - touches[0].y) / volumeMeterDisplayAmp;
+    else
+      noiseBarrier = (volumeMeterY() - mouseY) / volumeMeterDisplayAmp;
 
 
 
@@ -136,13 +139,21 @@ function drawVolumeMeterAndNoiseBarrierSlider(){
 
 }
 
-
 function mousePressed(){
   if(dist(mouseX, mouseY,  noiseBarrierSliderX(), noiseBarrierSliderY()) < noiseBarrierSliderSize)
     dragNoiseBarrierSlider = true;
 }
 
 function mouseReleased(){
+  dragNoiseBarrierSlider = false;
+}
+
+function touchStarted(){
+  if(dist(touches[0].x, touches[0].y,  noiseBarrierSliderX(), noiseBarrierSliderY()) < noiseBarrierSliderSize)
+    dragNoiseBarrierSlider = true;
+}
+
+function touchesEnded(){
   dragNoiseBarrierSlider = false;
 }
 

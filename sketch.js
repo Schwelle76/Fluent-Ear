@@ -18,7 +18,10 @@ function noiseBarrierSliderY(){return volumeMeterY() - noiseBarrier * volumeMete
 function noiseBarrierMax(){return (height - noiseBarrierSliderSize) / volumeMeterDisplayAmp;}
 let dragNoiseBarrierSlider = false;
 
-let pauseButton;
+let pauseButtonX;
+let pauseButtonY;
+let pauseButtonWidth;
+let pauseButtonHeight;
 let modeButton;
 let startMicButton;
 let slider;
@@ -65,6 +68,8 @@ function draw() {
     play();
   }
 
+  //showPauseButton();
+
 }
 
 function play(){
@@ -85,6 +90,13 @@ function pause(){
   paused = !paused;
 }
 
+function showPauseButton(){
+      //SHOW PAUSE BUTTON
+      rectMode(CENTER);
+      fill(255, 0, 0);
+      rect(pauseButtonX, pauseButtonY, pauseButtonWidth, pauseButtonHeight);
+}
+
 function nextNote(){
   currentNote = random(notes);
   playSynth();
@@ -93,11 +105,12 @@ function nextNote(){
 function displayTargetNote(){
 
   textSize(targetNoteSize);
-
+  
     if (displayInterval)
       text(intervals[notes.indexOf(currentNote)], targetNoteX, targetNoteY);
     else
       text(currentNote, targetNoteX, targetNoteY);
+
 }
 
 function displayDetectedNote(){
@@ -136,7 +149,8 @@ function synthVolume(){
 }
 
 function drawVolumeMeterAndNoiseBarrierSlider(){
-
+  
+  rectMode(CORNER);
   fill(10, 180, 255, 200);
   rect(volumeMeterX(), volumeMeterY(), volumeMeterWidth, -volume * volumeMeterDisplayAmp);
   fill(200);
@@ -153,6 +167,13 @@ function drawVolumeMeterAndNoiseBarrierSlider(){
 
 }
 
+function mouseClicked(){
+
+  if (pauseButtonX + pauseButtonWidth / 2 > mouseX && mouseX > pauseButtonX - pauseButtonWidth / 2
+  && pauseButtonY + pauseButtonHeight / 2 > mouseY && mouseY > pauseButtonY - pauseButtonHeight / 2)
+    pause();
+}
+
 function mousePressed(){
   if(dist(mouseX, mouseY,  noiseBarrierSliderX(), noiseBarrierSliderY()) < noiseBarrierSliderSize)
     dragNoiseBarrierSlider = true;
@@ -165,6 +186,10 @@ function mouseReleased(){
 function touchStarted(){
   if(dist(touches[0].x, touches[0].y,  noiseBarrierSliderX(), noiseBarrierSliderY()) < noiseBarrierSliderSize)
     dragNoiseBarrierSlider = true;
+
+  if (pauseButtonX + pauseButtonWidth / 2 > touches[0].x && touches[0].x > pauseButtonX - pauseButtonWidth / 2
+  && pauseButtonY + pauseButtonHeight / 2 > touches[0].y && touches[0].y > pauseButtonY - pauseButtonHeight / 2)
+    pause();
 }
 
 function touchesEnded(){
@@ -193,9 +218,6 @@ function setupElements(){
   textAlign(CENTER);
   slider = createSlider(-200, -50, -125 , 1);
 
-  pauseButton = createButton("Pause");
-  pauseButton.mousePressed(pause);
-
   startMicButton = createButton("Start Microphone");
   startMicButton.mousePressed(startPitchDetect);
 
@@ -214,7 +236,10 @@ function alignElements(){
   detectedNoteX = sideMargin + detectedNoteSize / 2;
   detectedNoteY = detectedNoteSize;
 
-  pauseButton.position(width / 2 - pauseButton.width / 2, height  - bottomMargin - pauseButton.height);
+  pauseButtonX = width / 2;
+  pauseButtonY = height / 2 + 50;
+  pauseButtonWidth = width -100;
+  pauseButtonHeight = height - 50;
 
   modeButton.position(width - modeButton.width - sideMargin, topMargin);
 

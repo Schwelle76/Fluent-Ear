@@ -1,3 +1,9 @@
+HIGH PRIORITY
+1. Reward through sound and visual effect (maybe particle effect)
+2. Make interval and note button prettier
+3. beautify Slider
+4. Make User Pick Root of interval mode (At least display current Root)
+
 
 1. Verschidene Oktaven werden berücksichtigt
 https://p5js.org/examples/sound-mic-input.html

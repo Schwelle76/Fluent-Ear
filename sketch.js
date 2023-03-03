@@ -17,8 +17,8 @@ function noiseBarrierSliderX(){return volumeMeterX()};
 function noiseBarrierSliderY(){return volumeMeterY() - noiseBarrier * volumeMeterDisplayAmp};
 function noiseBarrierMax(){return (height - noiseBarrierSliderSize) / volumeMeterDisplayAmp;}
 let dragNoiseBarrierSlider = false;
+let noiseBarrierSlider;
 
-let slider;
 let micButton;
 let micButtonSize;
 let contextButtonX;
@@ -187,7 +187,7 @@ function drawNoiseBarrierSlider(){
   
   fill(255, 180);
 
-  image(slider, noiseBarrierSliderX(), noiseBarrierSliderY(), noiseBarrierSliderSize, noiseBarrierSliderSize);
+  image(noiseBarrierSlider, noiseBarrierSliderX(), noiseBarrierSliderY(), noiseBarrierSliderSize, noiseBarrierSliderSize);
 
 
   if (dragNoiseBarrierSlider)
@@ -199,6 +199,9 @@ function drawNoiseBarrierSlider(){
     noiseBarrier = Math.max(noiseBarrier, 0);
     noiseBarrier = Math.min(noiseBarrier, noiseBarrierMax());
 
+
+    
+
 }
 
 function mouseClicked(){
@@ -209,7 +212,8 @@ function mouseClicked(){
 }
 
 function mousePressed(){
-  if(dist(mouseX, mouseY,  noiseBarrierSliderX(), noiseBarrierSliderY()) < noiseBarrierSliderSize)
+  //if(dist(mouseX, mouseY,  noiseBarrierSliderX(), noiseBarrierSliderY()) < noiseBarrierSliderSize)
+  if (noiseBarrierSliderX() < mouseX) //&& mouseX < noiseBarrierSliderX() + noiseBarrierSliderSize)
     dragNoiseBarrierSlider = true;
 }
 
@@ -259,7 +263,7 @@ function setupElements(){
 function preload() {
   // preload() runs once
   micButton = loadImage('mic-button.png');
-  slider = loadImage('slider.png');
+  noiseBarrierSlider = loadImage('slider.png');
 }
 
 function alignElements(){

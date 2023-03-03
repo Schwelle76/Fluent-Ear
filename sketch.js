@@ -8,7 +8,7 @@ let octave = "4";
 let currentNote;
 let noiseBarrier = .007;
 
-let volumeMeterDisplayAmp = 30000;
+let volumeMeterDisplayAmp = 2000;
 let volumeMeterWidth = 20;
 function volumeMeterX(){return width - volumeMeterWidth * 1.5};
 function volumeMeterY(){return height - bottomMargin};

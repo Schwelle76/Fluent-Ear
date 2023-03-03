@@ -13,11 +13,13 @@ let volumeMeterWidth = 20;
 function volumeMeterX(){return width - volumeMeterWidth * 1.5};
 function volumeMeterY(){return height - bottomMargin};
 let noiseBarrierSliderSize = 20;
-function noiseBarrierSliderX(){return volumeMeterX() + noiseBarrierSliderSize / 2};
+function noiseBarrierSliderX(){return volumeMeterX()};
 function noiseBarrierSliderY(){return volumeMeterY() - noiseBarrier * volumeMeterDisplayAmp};
 function noiseBarrierMax(){return (height - noiseBarrierSliderSize) / volumeMeterDisplayAmp;}
 let dragNoiseBarrierSlider = false;
 
+let slider;
+let micButton;
 let micButtonSize;
 let contextButtonX;
 let contextButtonY;
@@ -143,7 +145,7 @@ function displayDetectedNote(){
 
 function displayMicrophoneButton(){
 
-  image(img, width /2 - micButtonSize /2, height / 2 - micButtonSize / 2, micButtonSize, micButtonSize);
+  image(micButton, width /2 - micButtonSize /2, height / 2 - micButtonSize / 2, micButtonSize, micButtonSize);
 
 }
 
@@ -184,7 +186,9 @@ function drawVolumeMeter(){
 function drawNoiseBarrierSlider(){
   
   fill(255, 180);
-  circle(noiseBarrierSliderX(), noiseBarrierSliderY(), noiseBarrierSliderSize);
+
+  image(slider, noiseBarrierSliderX(), noiseBarrierSliderY(), noiseBarrierSliderSize, noiseBarrierSliderSize);
+
 
   if (dragNoiseBarrierSlider)
     if (touches.length > 0)
@@ -245,11 +249,8 @@ function switchToNoteMode(){
   displayInterval = false;
 }
 
-let img;
 function setupElements(){
   textAlign(CENTER);
-
-  //micButton = createImg('mic-button.png', "Microphone Button", "", onLoadMicButton);
 
   switchToNoteMode();
 }
@@ -257,11 +258,8 @@ function setupElements(){
 
 function preload() {
   // preload() runs once
-  img = loadImage('mic-button.png');
-}
-
-function onLoadMicButton(){
-  print('Microphone Button loaded successfully');
+  micButton = loadImage('mic-button.png');
+  slider = loadImage('slider.png');
 }
 
 function alignElements(){

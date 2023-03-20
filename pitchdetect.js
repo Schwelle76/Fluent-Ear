@@ -48,7 +48,9 @@ var detectorElem,
 
 window.onload = function() {
 	audioContext = new AudioContext();
-	MAX_SIZE = Math.max(4,Math.floor(audioContext.sampleRate/5000));	// corresponds to a 5kHz signal	
+	MAX_SIZE = Math.max(4,Math.floor(audioContext.sampleRate/5000));	
+
+	startPitchDetect();
 }
 
 function startPitchDetect() {	
@@ -201,6 +203,11 @@ function updatePitch( time ) {
 	if (!window.requestAnimationFrame)
 		window.requestAnimationFrame = window.webkitRequestAnimationFrame;
 	rafID = window.requestAnimationFrame( updatePitch );
+
+	
+	const htmlDetectedNoteElement = document.getElementById("detectedNote");
+	htmlDetectedNoteElement.textContent = detectedNote;// corresponds to a 5kHz signal	
+
 }
 
 function updateVolume(){
@@ -213,4 +220,7 @@ function updateVolume(){
 	if (!window.requestAnimationFrame)
 		window.requestAnimationFrame = window.webkitRequestAnimationFrame;
 	rafID = window.requestAnimationFrame( updateVolume );
+
+	const htmlVolumeElement = document.getElementById("volume");
+	htmlVolumeElement.textContent = volume;// corresponds to a 5kHz signal
 }

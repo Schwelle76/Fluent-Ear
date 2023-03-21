@@ -223,4 +223,8 @@ function updateVolume(){
 
 	const htmlVolumeElement = document.getElementById("volume");
 	htmlVolumeElement.textContent = volume;// corresponds to a 5kHz signal
+
+	const htmlVolumeMeter = document.getElementById('volumeMeter');
+	htmlVolumeMeter.setAttribute('value', volume);
+
 }

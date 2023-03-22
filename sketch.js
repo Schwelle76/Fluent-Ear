@@ -82,11 +82,11 @@ function draw() {
 
 function play(){
 
-  if (currentNote == null)
+  if (currentTargetNote == null)
     nextNote();
 
   if (enabledPitchDetection){
-    if (volume > noiseBarrier && detectedNote == currentNote && synthVolume() == 0)
+    if (volume > noiseBarrier && previousAssumedNote == currentTargetNote && synthVolume() == 0)
       nextNote();
   }
 
@@ -112,7 +112,7 @@ function showContextButton(){
 }
 
 function nextNote(){
-  currentNote = random(notes);
+  currentTargetNote = random(notes);
   //playSynth();
 }
 
@@ -123,9 +123,9 @@ function displayTargetNote(){
 
   
     if (displayInterval)
-      text(intervals[notes.indexOf(currentNote)], targetNoteX, targetNoteY);
+      text(intervals[notes.indexOf(currentTargetNote)], targetNoteX, targetNoteY);
     else
-      text(currentNote, targetNoteX, targetNoteY);
+      text(currentTargetNote, targetNoteX, targetNoteY);
 
 }
 
@@ -135,11 +135,11 @@ function displayDetectedNote(){
   fill(255, 200);
 
 
-  if (detectedNote != "unidentified"){
+  if (previousAssumedNote != "unidentified"){
     if (displayInterval)
-      text(intervals[notes.indexOf(detectedNote)], detectedNoteX, detectedNoteY);
+      text(intervals[notes.indexOf(previousAssumedNote)], detectedNoteX, detectedNoteY);
     else
-      text(detectedNote, detectedNoteX, detectedNoteY);
+      text(previousAssumedNote, detectedNoteX, detectedNoteY);
   }
 }
 
@@ -165,7 +165,7 @@ function playSynth() {
   // note duration (in seconds)
   let dur = 1/6;
 
-  monoSynth.play(currentNote + octave, velocity, time, dur);
+  monoSynth.play(currentTargetNote + octave, velocity, time, dur);
 
 }
 

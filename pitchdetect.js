@@ -29,6 +29,10 @@ SOFTWARE.
 window.AudioContext = window.AudioContext || window.webkitAudioContext;
 
 var detectedNote;
+var timeTillDetection = 40;
+var currentAssumedNote;
+var previousAssumedNote;
+var timeOfFirstAssumption;
 var volume;
 var enabledPitchDetection = false;
 var audioContext = null;
@@ -79,7 +83,7 @@ function startPitchDetect() {
 	    analyser.fftSize = 2048;
 	    mediaStreamSource.connect( analyser );
 		
-		updateVolume();
+		//updateVolume();
 	    updatePitch();
 		enabledPitchDetection = true;
 
@@ -193,12 +197,25 @@ function updatePitch( time ) {
 	// TODO: Paint confidence meter on canvasElem here.
 
  	if (ac == -1) {
- 		detectedNote = "unidentified"
+ 		currentAssumedNote = null;
  	} else {
 	 	pitch = ac;
 	 	var note =  noteFromPitch( pitch );
-		detectedNote = noteStrings[note%12];
+		currentAssumedNote = noteStrings[note%12];
 	}
+
+
+	detectedNote = null
+
+	if (previousAssumedNote == currentAssumedNote){ 
+		if (time - timeOfFirstAssumption > timeTillDetection)
+			detectedNote = currentAssumedNote;
+	} else {
+		previousAssumedNote = currentAssumedNote;
+		timeOfFirstAssumption = time;
+	}
+
+
 
 	if (!window.requestAnimationFrame)
 		window.requestAnimationFrame = window.webkitRequestAnimationFrame;
@@ -206,10 +223,11 @@ function updatePitch( time ) {
 
 	
 	const htmlDetectedNoteElement = document.getElementById("detectedNote");
-	htmlDetectedNoteElement.textContent = detectedNote;// corresponds to a 5kHz signal	
+	htmlDetectedNoteElement.textContent = detectedNote;	
 
 }
 
+//Not in use
 function updateVolume(){
 	const pcmData = new Float32Array(analyser.fftSize);
 	analyser.getFloatTimeDomainData(pcmData);

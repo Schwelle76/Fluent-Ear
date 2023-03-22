@@ -1,24 +1,11 @@
-@font-face {
-  font-family: sequel sans bold;
-  src: url('./fonts/Sequel-Sans-Medium-Disp.otf') format('opentype'),
-       url('./fonts/Sequel-Sans-Medium-Disp.ttf') format('truetype'),
-       url('./fonts/sequel-sans-medium-disp-webfont.woff') format('woff');
-  font-weight:normal;
-}
-
-@font-face {
-  font-family: sequel sans light;
-  src: url('./fonts/Sequel-Sans-Light-Disp.otf') format("opentype"),
-       url('./fonts/Sequel-Sans-Light-Disp.ttf') format('truetype'),
-       url('./fonts/sequel-sans-light-disp-webfont.woff') format('woff');
-  font-weight:normal;
-}
-
 html, body {
   background-color: black;
   margin: 0;
   padding: 0;
   overflow: hidden;
+
+  display:flex;
+  justify-content:space-between;
 }
 
 span{
@@ -33,6 +20,7 @@ canvas {
 .noteDisplay{
   width: 100vh;
 }
+
 
 #targetNote{
   left: 0;

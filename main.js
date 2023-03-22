@@ -1,6 +1,6 @@
 let notes = ['C', 'C#', 'D','D#', 'E', 'F','F#', 'G','G#', 'A', 'A#', 'B'];
 let intervals = ['1', 'm2','M2', 'm3', 'M3', '4', 'b5', '5', 'm6', 'M6', 'm7', 'M7'];
-let currentNote;
+let currentTargetNote;
 let displayInterval = false;
 
 setInterval("play()", 10);
@@ -8,9 +8,9 @@ setInterval("play()", 10);
 
 function play(){
 
-    console.log(currentNote);
+    console.log(currentTargetNote);
 
-    if (currentNote == null)
+    if (currentTargetNote == null)
       nextNote();
 
   /*
@@ -19,15 +19,15 @@ function play(){
         nextNote();
     }
     */
-    if (detectedNote == currentNote)
+    if (detectedNote == currentTargetNote)
         nextNote();
     
 	const htmlDetectedNoteElement = document.getElementById("targetNote");
 
     if (displayInterval)
-    htmlDetectedNoteElement.textContent = intervals[notes.indexOf(currentNote)];
+    htmlDetectedNoteElement.textContent = intervals[notes.indexOf(currentTargetNote)];
   else
-    htmlDetectedNoteElement.textContent = currentNote;
+    htmlDetectedNoteElement.textContent = currentTargetNote;
 
 
 
@@ -35,5 +35,5 @@ function play(){
 }
 
 function nextNote(){
-    currentNote = notes[Math.floor(Math.random()*notes.length)];;
+    currentTargetNote = notes[Math.floor(Math.random()*notes.length)];;
 }

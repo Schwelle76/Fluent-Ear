@@ -1,26 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="">
 
-    <title>Neck Check</title>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="">
 
-    <link rel="stylesheet" type="text/css" href="style.css">
+  <title>Neck Check</title>
 
-    <script src="libraries/p5.min.js"></script>
-    <script src="libraries/p5.sound.min.js"></script>
-    <script src = "pitchdetect.js"></script>
-    <script src = "main.js"></script>
-  </head>
+  <link rel="stylesheet" type="text/css" href="style.css">
 
-  <body>
+  <script src="libraries/p5.min.js"></script>
+  <script src="libraries/p5.sound.min.js"></script>
+  <script src="pitchdetect.js"></script>
+  <script src="main.js"></script>
+</head>
+
+<body>
+  <div id="upperSection">
     <div class="noteDisplay">
-      <span id = "detectedNote">dfasd</span>
+      <span id="detectedNote">dfasd</span>
     </div>
     <div class="noteDisplay">
-      <span id = "targetNote">dfasd</span>
+      <span id="targetNote">dfasd</span>
     </div>
-  </body>
+  </div>
+  <div class="buttonMatrix">
+    <div class = "buttonRow">
+    <button type="button" class="matrixButton">1</button>
+    <button type="button" class="matrixButton">m2</button>
+    <button type="button" class="matrixButton">M2</button>
+    <button type="button" class="matrixButton">m3</button>
+  </div>
+  <div class = "buttonRow">
+    <button type="button" class="matrixButton">M3</button>
+    <button type="button" class="matrixButton">4</button>
+    <button type="button" class="matrixButton">b5</button>
+    <button type="button" class="matrixButton">5</button>
+  </div>
+  <div class = "buttonRow">
+    <button type="button" class="matrixButton">m6</button>
+    <button type="button" class="matrixButton">M6</button>
+    <button type="button" class="matrixButton">m7</button>
+    <button type="button" class="matrixButton">M7</button>
+  </div>
+  </div>
+
+  <div class="buttonMatrix">
+  <div class = "buttonRow">
+    <button type="button" class="matrixButton">C</button>
+    <button type="button" class="matrixButton">C#</button>
+    <button type="button" class="matrixButton">D</button>
+    <button type="button" class="matrixButton">D#</button>
+  </div>
+  <div class = "buttonRow">
+    <button type="button" class="matrixButton">E</button>
+    <button type="button" class="matrixButton">F</button>
+    <button type="button" class="matrixButton">F#</button>
+    <button type="button" class="matrixButton">G</button>
+  </div>
+  <div class = "buttonRow">
+    <button type="button" class="matrixButton">G#</button>
+    <button type="button" class="matrixButton">A</button>
+    <button type="button" class="matrixButton">A#</button>
+    <button type="button" class="matrixButton">B</button>
+  </div>
+
+  </div>
+</div>
+</body>
+
 </html>

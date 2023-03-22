@@ -2,10 +2,7 @@ html, body {
   background-color: black;
   margin: 0;
   padding: 0;
-  overflow: hidden;
-
-  display:flex;
-  justify-content:space-between;
+  overflow-x: hidden;
 }
 
 span{
@@ -15,6 +12,11 @@ span{
 
 canvas {
   display: block;
+}
+
+#upperSection{
+  height: 100vh;
+  width: 100%;
 }
 
 .noteDisplay{
@@ -32,3 +34,29 @@ canvas {
   width: 100%;
   font-size: 400px;
 }
+
+.buttonMatrix{
+  width: 100%;
+  height: 50vh;
+  display:flex;
+  flex-direction: column;
+}
+
+
+.buttonRow {
+  display:flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.buttonRow button {
+  background-color: rgb(48, 126, 200);
+  color: white;
+  font-family: "Arial", "Helvetica";
+  font-size: 25px;
+  width: 20vh;
+  height: 10vh;
+  border-radius: 12px;
+  flex-grow: 1;
+}
+

@@ -5,7 +5,7 @@ html, body {
   overflow-x: hidden;
 }
 
-span{
+h1, span{
   font-family: "Arial", "Helvetica";
   color: white;
 }
@@ -14,9 +14,40 @@ canvas {
   display: block;
 }
 
+button{
+  background-color: rgb(48, 126, 200);
+  color: white;
+  font-family: "Arial", "Helvetica";
+  font-size: 25px;
+  width: 20vh;
+  height: 10vh;
+  border-radius: 12px;
+}
+
 #upperSection{
   height: 100vh;
   width: 100%;
+}
+
+#upperSection button{
+  height: 8vh;
+  width: 15vh;
+
+}
+
+#upperBar{
+  display: flex;
+  justify-content: space-between;
+  margin-left: 5px;
+  margin-right: 15px;
+  margin-top: 10px;
+}
+
+#detectedNote{
+  display: block;
+  text-align: right;
+  font-size: 50px;
+  opacity: .8;
 }
 
 .noteDisplay{
@@ -35,11 +66,27 @@ canvas {
   font-size: 400px;
 }
 
-.buttonMatrix{
+#lowerSection{
+  height: 100vh;
   width: 100%;
-  height: 50vh;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+#lowerSection h1{
+  margin-top: 5vh;
+}
+
+#lowerSection span{
+  font-size: 20px
+}
+
+.buttonMatrix{
   display:flex;
   flex-direction: column;
+  margin: 5vh;
+
 }
 
 
@@ -47,16 +94,12 @@ canvas {
   display:flex;
   flex-direction: row;
   justify-content: space-evenly;
+  margin-left: 10vh;
+  margin-right: 10vh;
 }
 
 .buttonRow button {
-  background-color: rgb(48, 126, 200);
-  color: white;
-  font-family: "Arial", "Helvetica";
-  font-size: 25px;
-  width: 20vh;
-  height: 10vh;
-  border-radius: 12px;
+
   flex-grow: 1;
 }
 

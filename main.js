@@ -28,9 +28,6 @@ function play(){
     htmlDetectedNoteElement.textContent = intervals[notes.indexOf(currentTargetNote)];
   else
     htmlDetectedNoteElement.textContent = currentTargetNote;
-
-
-
   
 }
 
@@ -64,4 +61,12 @@ function enableOrDisableNote(interval){
   if (!allowedNotes.includes(currentTargetNote))
     nextNote();
 }
+
+function scrollDown() {
+  window.scrollBy(0, 99999999);  
+};
+
+function scrollUp() {
+  window.scrollBy(0, -99999999);  
+};
 

@@ -94,12 +94,11 @@ button{
   display:flex;
   flex-direction: row;
   justify-content: space-evenly;
-  margin-left: 10vh;
-  margin-right: 10vh;
 }
 
-.buttonRow button {
 
+.buttonRow button {
+  width: 20px;
   flex-grow: 1;
 }
 

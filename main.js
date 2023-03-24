@@ -3,6 +3,7 @@ let intervals = ['1', 'm2','M2', 'm3', 'M3', '4', 'b5', '5', 'm6', 'M6', 'm7', '
 let allowedNotes = ['C', 'C#', 'D','D#', 'E', 'F','F#', 'G','G#', 'A', 'A#', 'B'];
 let allowedIntervals = ['1'];
 let currentTargetNote;
+let currentTargetInterval;
 let displayInterval = false;
 
 setInterval("play()", 10);
@@ -19,20 +20,27 @@ function play(){
         nextNote();
     }
     */
-    if (detectedNote == currentTargetNote)
+    if (detectedNote == currentTargetNotePlusInterval())
         nextNote();
     
-	const htmlDetectedNoteElement = document.getElementById("targetNote");
+	const htmlTargetNoteElement = document.getElementById("targetNote");
+  const htmlTargetIntervalElement = document.getElementById("targetInterval");
 
-    if (displayInterval)
-    htmlDetectedNoteElement.textContent = intervals[notes.indexOf(currentTargetNote)];
-  else
-    htmlDetectedNoteElement.textContent = currentTargetNote;
+
+
+    htmlTargetIntervalElement.textContent = currentTargetInterval;
+    htmlTargetNoteElement.textContent = currentTargetNote;
   
 }
 
+function currentTargetNotePlusInterval(){
+  return notes[(notes.indexOf(currentTargetNote) + intervals.indexOf(currentTargetInterval)) % 12];
+}
+
 function nextNote(){
-    currentTargetNote = allowedNotes[Math.floor(Math.random()*allowedNotes.length)];;
+    currentTargetNote = allowedNotes[Math.floor(Math.random()*allowedNotes.length)];
+    currentTargetInterval = allowedIntervals[Math.floor(Math.random()*allowedIntervals.length)];    
+    
 }
 
 function enableOrDisableInterval(interval){
@@ -43,10 +51,16 @@ function enableOrDisableInterval(interval){
   }
   else allowedIntervals.push(interval);
 
-  /*
-  if (!allowedIntervals.includes(currentTargetNote))
+  
+  if (!allowedIntervals.includes(currentTargetInterval))
     nextNote();
-*/
+
+
+  if(allowedIntervals.length == 1 && allowedIntervals[0] == "1")
+    document.getElementById("targetInterval").style.display = 'none';
+  else document.getElementById("targetInterval").style.display = 'inline';
+
+
 }
 
 
@@ -63,7 +77,7 @@ function enableOrDisableNote(interval){
 }
 
 function scrollDown() {
-  window.scrollBy(0, 99999999);  
+  window.scrollBy(0, 99999999); 
 };
 
 function scrollUp() {

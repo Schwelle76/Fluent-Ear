@@ -27,6 +27,7 @@
     </div>
     <div class="noteDisplay">
       <span id="targetNote"></span>
+      <span id="targetInterval">m3</span>
     </div>
 
 
@@ -53,7 +54,7 @@
 
 
         <div class="checkButton">
-          <input type="checkbox" class="matrixButton" id="m2" onchange="enableOrDisableInterval('m2')" hidden>
+          <input type="checkbox" class="matrixButton" id="m2" onchange="enableOrDisableInterval('m2')" hidden checked>
           <div class="buttonShape">
             <label for="m2">
               <span class="buttonText">m2</span>
@@ -63,7 +64,7 @@
 
 
         <div class="checkButton">
-          <input type="checkbox" class="matrixButton" id="M2" onchange="enableOrDisableInterval('M2')" hidden>
+          <input type="checkbox" class="matrixButton" id="M2" onchange="enableOrDisableInterval('M2')" hidden checked>
           <div class="buttonShape">
             <label for="M2">
               <span class="buttonText">M2</span>
@@ -72,7 +73,7 @@
         </div>
 
         <div class="checkButton">
-          <input type="checkbox" class="matrixButton" id="m3" onchange="enableOrDisableInterval('m3')" hidden>
+          <input type="checkbox" class="matrixButton" id="m3" onchange="enableOrDisableInterval('m3')" hidden checked>
           <div class="buttonShape">
             <label for="m3">
               <span class="buttonText">m3</span>
@@ -84,7 +85,7 @@
       <div class="buttonRow">
 
         <div class="checkButton">
-          <input type="checkbox" class="matrixButton" id="M3" onchange="enableOrDisableInterval('m2')" hidden>
+          <input type="checkbox" class="matrixButton" id="M3" onchange="enableOrDisableInterval('M3')" hidden checked>
           <div class="buttonShape">
             <label for="M3">
               <span class="buttonText">M3</span>
@@ -93,7 +94,7 @@
         </div>
 
         <div class="checkButton">
-          <input type="checkbox" class="matrixButton" id="4" onchange="enableOrDisableInterval('4')" hidden>
+          <input type="checkbox" class="matrixButton" id="4" onchange="enableOrDisableInterval('4')" hidden checked>
           <div class="buttonShape">
             <label for="4">
               <span class="buttonText">4</span>
@@ -102,7 +103,7 @@
         </div>
 
         <div class="checkButton">
-          <input type="checkbox" class="matrixButton" id="b5" onchange="enableOrDisableInterval('b5')" hidden>
+          <input type="checkbox" class="matrixButton" id="b5" onchange="enableOrDisableInterval('b5')" hidden checked>
           <div class="buttonShape">
             <label for="b5">
               <span class="buttonText">b5</span>
@@ -111,7 +112,7 @@
         </div>
 
         <div class="checkButton">
-          <input type="checkbox" class="matrixButton" id="5" onchange="enableOrDisableInterval('5')" hidden>
+          <input type="checkbox" class="matrixButton" id="5" onchange="enableOrDisableInterval('5')" hidden checked>
           <div class="buttonShape">
             <label for="5">
               <span class="buttonText">5</span>
@@ -124,7 +125,7 @@
 
 
         <div class="checkButton">
-          <input type="checkbox" class="matrixButton" id="m6" onchange="enableOrDisableInterval('m6')" hidden>
+          <input type="checkbox" class="matrixButton" id="m6" onchange="enableOrDisableInterval('m6')" hidden checked>
           <div class="buttonShape">
             <label for="m6">
               <span class="buttonText">m6</span>
@@ -134,7 +135,7 @@
 
 
         <div class="checkButton">
-          <input type="checkbox" class="matrixButton" id="M6" onchange="enableOrDisableInterval('M6')" hidden>
+          <input type="checkbox" class="matrixButton" id="M6" onchange="enableOrDisableInterval('M6')" hidden checked>
           <div class="buttonShape">
             <label for="M6">
               <span class="buttonText">M6</span>
@@ -143,7 +144,7 @@
         </div>
 
         <div class="checkButton">
-          <input type="checkbox" class="matrixButton" id="m7" onchange="enableOrDisableInterval('m7')" hidden>
+          <input type="checkbox" class="matrixButton" id="m7" onchange="enableOrDisableInterval('m7')" hidden checked>
           <div class="buttonShape">
             <label for="m7">
               <span class="buttonText">m7</span>
@@ -152,7 +153,7 @@
         </div>
 
         <div class="checkButton">
-          <input type="checkbox" class="matrixButton" id="M7" onchange="enableOrDisableInterval('M7')" hidden>
+          <input type="checkbox" class="matrixButton" id="M7" onchange="enableOrDisableInterval('M7')" hidden checked >
           <div class="buttonShape">
             <label for="M7">
               <span class="buttonText">M7</span>
@@ -165,6 +166,17 @@
     <span>of</span>
     <div class="buttonMatrix">
       <div class="buttonRow">
+
+
+        
+        <div class="checkButton">
+          <input type="checkbox" class="matrixButton" id="C" onchange="enableOrDisableNote('C')" hidden>
+          <div class="buttonShape">
+            <label for="C">
+              <span class="buttonText">C</span>
+            </label>
+          </div>
+        </div>
 
         <div class="checkButton">
           <input type="checkbox" class="matrixButton" id="C#" onchange="enableOrDisableNote('C#')" hidden>
@@ -189,15 +201,6 @@
           <div class="buttonShape">
             <label for="D#">
               <span class="buttonText">D#</span>
-            </label>
-          </div>
-        </div>
-
-        <div class="checkButton">
-          <input type="checkbox" class="matrixButton" id="C" onchange="enableOrDisableNote('C')" hidden>
-          <div class="buttonShape">
-            <label for="C">
-              <span class="buttonText">C</span>
             </label>
           </div>
         </div>

@@ -29,7 +29,7 @@ SOFTWARE.
 window.AudioContext = window.AudioContext || window.webkitAudioContext;
 
 var detectedNote;
-var timeTillDetection = 40;
+var timeTillDetection = 20;
 var currentAssumedNote;
 var previousAssumedNote;
 var timeOfFirstAssumption;

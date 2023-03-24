@@ -56,7 +56,6 @@ button{
 }
 
 
-
 #upperBar{
   display: flex;
   justify-content: space-between;
@@ -73,19 +72,29 @@ button{
 }
 
 .noteDisplay{
-  width: 100vh;
-}
-
-
-#targetNote{
+  width: 100%;
+  height: 50vh;
   left: 0;
   line-height: 200px;
   margin-top: -100px;
   position: absolute;
   text-align: center;
-  top: 50%;
-  width: 100%;
-  font-size: 400px;
+  top: 50vh;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+
+#targetNote{
+  font-size: 300px;
+}
+
+#targetInterval{
+  font-size: 100px;
+  opacity: .75;
+  display: none;
 }
 
 #lowerSection{

@@ -6,8 +6,10 @@ let currentTargetNote;
 let currentTargetInterval;
 let displayInterval = false;
 
-setInterval("play()", 10);
 
+function startGame(){
+  setInterval("play()", 10);
+}
 
 function play(){
 

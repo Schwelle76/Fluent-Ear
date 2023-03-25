@@ -10,8 +10,6 @@
 
   <link rel="stylesheet" type="text/css" href="style.css">
 
-  <script src="libraries/p5.min.js"></script>
-  <script src="libraries/p5.sound.min.js"></script>
   <script src="pitchdetect.js"></script>
   <script src="main.js"></script>
 </head>
@@ -23,13 +21,20 @@
         Settings
       </button>
       <span id="detectedNote"></span>
-
     </div>
-    <div class="noteDisplay">
+
+    <div class="noteDisplay"> 
+      
+      <div class="micButton">
+        <label>
+          <input type="checkbox" id = "micCheckbox" onclick="startPitchDetect()" hidden>
+          <img src="mic-button.png">
+        </label>
+      </div>
+      
       <span id="targetNote"></span>
       <span id="targetInterval">m3</span>
     </div>
-
 
   </div>
 

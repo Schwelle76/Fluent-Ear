@@ -50,14 +50,19 @@ var detectorElem,
 	detuneElem,
 	detuneAmount;
 
+	/*
 window.onload = function() {
 	audioContext = new AudioContext();
 	MAX_SIZE = Math.max(4,Math.floor(audioContext.sampleRate/5000));	
 
 	startPitchDetect();
-}
+}*/
 
 function startPitchDetect() {	
+
+
+	audioContext = new AudioContext();
+	MAX_SIZE = Math.max(4,Math.floor(audioContext.sampleRate/5000));
 
     // grab an audio context
     audioContext = new AudioContext();

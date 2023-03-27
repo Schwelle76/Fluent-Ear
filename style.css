@@ -72,7 +72,7 @@ button{
   opacity: .8;
 }
 
-.noteDisplay{
+#noteDisplay{
   width: 100%;
   height: 200px;
   left: 0;
@@ -102,6 +102,7 @@ button{
 
 #targetNote{
   font-size: 300px;
+
 }
 
 #targetInterval{
@@ -111,13 +112,28 @@ button{
 }
 
 .rewardingTarget{
-  animation-name: turnGreen;
-  animation-duration: .3s;
+  animation-name: rewardAnimation;
+  animation-duration: .35s;
   animation-delay: 0
 
 }
 
-@keyframes turnGreen { 100% { color: green; } }
+@keyframes rewardAnimation {   
+  from{text-shadow: none;}
+  10%{  text-shadow: 0 0 10px #fff, 0 0 20px #fff;
+  }
+  100% {
+  text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 50px #fff;
+}
+}
+
+particle {
+  border-radius: 50%;
+  left: 0;
+  pointer-events: none;
+  position: fixed;
+  top: 0;
+}
 
 #lowerSection{
   height: 100vh;

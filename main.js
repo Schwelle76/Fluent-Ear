@@ -7,12 +7,14 @@ let currentTargetInterval;
 let displayInterval = false;
 let htmlTargetNoteElement;
 let htmlTargetIntervalElement;
+let htmlNoteDisplayElement;
 
 
 function startGame(){
   setInterval("play()", 10);
   htmlTargetNoteElement = document.getElementById("targetNote");
   htmlTargetIntervalElement = document.getElementById("targetInterval");
+  htmlNoteDisplayElement = document.getElementById("noteDisplay");
 }
 
 function play(){
@@ -45,6 +47,7 @@ function playRewardAndTriggerNextNote(){
   
   htmlTargetNoteElement.classList.add("rewardingTarget");
   htmlTargetIntervalElement.classList.add("rewardingTarget");
+  pop(htmlNoteDisplayElement);
   htmlTargetNoteElement.addEventListener("animationend", nextNote, false);
 
   //let animationDuration = getAnimationDuration(htmlTargetNoteElement);
@@ -97,6 +100,7 @@ function enableOrDisableNote(interval){
 
 function scrollDown() {
   window.scrollBy(0, 99999999);
+
 };
 
 function scrollUp() {

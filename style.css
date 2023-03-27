@@ -110,6 +110,15 @@ button{
   display: none;
 }
 
+.rewardingTarget{
+  animation-name: turnGreen;
+  animation-duration: .3s;
+  animation-delay: 0
+
+}
+
+@keyframes turnGreen { 100% { color: green; } }
+
 #lowerSection{
   height: 100vh;
   width: 100%;

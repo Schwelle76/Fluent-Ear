@@ -5,10 +5,14 @@ let allowedIntervals = ['1'];
 let currentTargetNote;
 let currentTargetInterval;
 let displayInterval = false;
+let htmlTargetNoteElement;
+let htmlTargetIntervalElement;
 
 
 function startGame(){
   setInterval("play()", 10);
+  htmlTargetNoteElement = document.getElementById("targetNote");
+  htmlTargetIntervalElement = document.getElementById("targetInterval");
 }
 
 function play(){
@@ -22,11 +26,9 @@ function play(){
         nextNote();
     }
     */
-    if (detectedNote == currentTargetNotePlusInterval())
-        nextNote();
-    
-	const htmlTargetNoteElement = document.getElementById("targetNote");
-  const htmlTargetIntervalElement = document.getElementById("targetInterval");
+    if (detectedNote == currentTargetNotePlusInterval()){
+      playRewardAndTriggerNextNote();
+    }
 
 
 
@@ -39,11 +41,26 @@ function currentTargetNotePlusInterval(){
   return notes[(notes.indexOf(currentTargetNote) + intervals.indexOf(currentTargetInterval)) % 12];
 }
 
+function playRewardAndTriggerNextNote(){
+  
+  htmlTargetNoteElement.classList.add("rewardingTarget");
+  htmlTargetIntervalElement.classList.add("rewardingTarget");
+  htmlTargetNoteElement.addEventListener("animationend", nextNote, false);
+
+  //let animationDuration = getAnimationDuration(htmlTargetNoteElement);
+  //setTimeout("nextNote()", animationDuration * 1000);
+
+}
+
 function nextNote(){
     currentTargetNote = allowedNotes[Math.floor(Math.random()*allowedNotes.length)];
-    currentTargetInterval = allowedIntervals[Math.floor(Math.random()*allowedIntervals.length)];    
+    currentTargetInterval = allowedIntervals[Math.floor(Math.random()*allowedIntervals.length)]; 
+    htmlTargetNoteElement.classList.remove("rewardingTarget");   
+    htmlTargetIntervalElement.classList.remove("rewardingTarget");   
+
     
 }
+
 
 function enableOrDisableInterval(interval){
 
@@ -79,10 +96,20 @@ function enableOrDisableNote(interval){
 }
 
 function scrollDown() {
-  window.scrollBy(0, 99999999); 
+  window.scrollBy(0, 99999999);
 };
 
 function scrollUp() {
   window.scrollBy(0, -99999999);  
+
 };
 
+function getStyleProp(elem, prop){
+    if(window.getComputedStyle)
+        return window.getComputedStyle(elem, null).getPropertyValue(prop);
+    else if(elem.currentStyle) return elem.currentStyle[prop]; //IE
+}
+
+function getAnimationDuration(elem){
+  return parseFloat(getStyleProp(elem, "animation-duration").replace('s', ''));
+}

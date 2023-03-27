@@ -133,6 +133,7 @@ particle {
   pointer-events: none;
   position: fixed;
   top: 0;
+  opacity: 0;
 }
 
 #lowerSection{

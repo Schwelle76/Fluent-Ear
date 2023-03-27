@@ -56,10 +56,20 @@ function playRewardAndTriggerNextNote(){
 }
 
 function nextNote(){
-    currentTargetNote = allowedNotes[Math.floor(Math.random()*allowedNotes.length)];
-    currentTargetInterval = allowedIntervals[Math.floor(Math.random()*allowedIntervals.length)]; 
+    let lastTargetNote = currentTargetNote;
+    let lastTargetInterval = currentTargetInterval;
+    
+    if (allowedNotes.length > 1 || allowedIntervals.length > 1)
+      while(lastTargetNote == currentTargetNote
+        && lastTargetInterval == currentTargetInterval){
+          currentTargetNote = allowedNotes[Math.floor(Math.random()*allowedNotes.length)];
+          currentTargetInterval = allowedIntervals[Math.floor(Math.random()*allowedIntervals.length)]; 
+        }
+
+
     htmlTargetNoteElement.classList.remove("rewardingTarget");   
     htmlTargetIntervalElement.classList.remove("rewardingTarget");   
+    console.log(currentTargetNote);
 
     
 }

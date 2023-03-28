@@ -50,16 +50,22 @@ var detectorElem,
 	detuneElem,
 	detuneAmount;
 
-	/*
+	
 window.onload = function() {
-	audioContext = new AudioContext();
+	/*audioContext = new AudioContext();
 	MAX_SIZE = Math.max(4,Math.floor(audioContext.sampleRate/5000));	
 
 	startPitchDetect();
-}*/
+	*/
+
+	if (usedBrowser() == 'chrome') {
+		timeTillDetection = 7;
+	}else if (usedBrowser() == 'firefox') {
+		timeTillDetection = 20;
+	}
+}
 
 function startPitchDetect() {	
-
 
 	audioContext = new AudioContext();
 	MAX_SIZE = Math.max(4,Math.floor(audioContext.sampleRate/5000));
@@ -213,11 +219,11 @@ function updatePitch( time ) {
 	detectedNote = null
 
 	if (previousAssumedNote == currentAssumedNote){ 
-		if (time - timeOfFirstAssumption > timeTillDetection)
+		if (Date.now() - timeOfFirstAssumption > timeTillDetection)
 			detectedNote = currentAssumedNote;
 	} else {
 		previousAssumedNote = currentAssumedNote;
-		timeOfFirstAssumption = time;
+		timeOfFirstAssumption = Date.now();
 	}
 
 
@@ -256,3 +262,25 @@ function updateVolume(){
 	htmlVolumeMeter.setAttribute('value', volume);
 
 }
+
+function usedBrowser(){
+                 
+	let userAgent = navigator.userAgent;
+	let browserName;
+	
+	if(userAgent.match(/chrome|chromium|crios/i)){
+		browserName = "chrome";
+	  }else if(userAgent.match(/firefox|fxios/i)){
+		browserName = "firefox";
+	  }  else if(userAgent.match(/safari/i)){
+		browserName = "safari";
+	  }else if(userAgent.match(/opr\//i)){
+		browserName = "opera";
+	  } else if(userAgent.match(/edg/i)){
+		browserName = "edge";
+	  }else{
+		browserName="No browser detection";
+	  }
+
+	  return browserName;
+	}

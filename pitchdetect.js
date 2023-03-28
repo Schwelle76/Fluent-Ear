@@ -225,11 +225,16 @@ function updatePitch( time ) {
 	if (!window.requestAnimationFrame)
 		window.requestAnimationFrame = window.webkitRequestAnimationFrame;
 	rafID = window.requestAnimationFrame( updatePitch );
-
 	
 	const htmlDetectedNoteElement = document.getElementById("detectedNote");
 	htmlDetectedNoteElement.textContent = detectedNote;	
 
+}
+
+function stopUpdatePitch(){
+	if (!window.cancelAnimationFrame)
+	window.cancelAnimationFrame = window.webkitCancelAnimationFrame;
+	window.cancelAnimationFrame( rafID );
 }
 
 //Not in use
@@ -242,7 +247,7 @@ function updateVolume(){
 
 	if (!window.requestAnimationFrame)
 		window.requestAnimationFrame = window.webkitRequestAnimationFrame;
-	rafID = window.requestAnimationFrame( updateVolume );
+	window.requestAnimationFrame( updateVolume );
 
 	const htmlVolumeElement = document.getElementById("volume");
 	htmlVolumeElement.textContent = volume;// corresponds to a 5kHz signal

@@ -45,6 +45,7 @@ function currentTargetNotePlusInterval(){
 
 function playRewardAndTriggerNextNote(){
   
+  stopUpdatePitch();
   htmlTargetNoteElement.classList.add("rewardingTarget");
   htmlTargetIntervalElement.classList.add("rewardingTarget");
   pop(htmlNoteDisplayElement);
@@ -69,8 +70,7 @@ function nextNote(){
 
     htmlTargetNoteElement.classList.remove("rewardingTarget");   
     htmlTargetIntervalElement.classList.remove("rewardingTarget");   
-    console.log(currentTargetNote);
-
+    updatePitch();
     
 }
 

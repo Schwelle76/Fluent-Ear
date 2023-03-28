@@ -45,11 +45,15 @@ function currentTargetNotePlusInterval(){
 
 function playRewardAndTriggerNextNote(){
   
+  /*
   stopUpdatePitch();
   htmlTargetNoteElement.classList.add("rewardingTarget");
   htmlTargetIntervalElement.classList.add("rewardingTarget");
-  pop(htmlNoteDisplayElement);
   htmlTargetNoteElement.addEventListener("animationend", nextNote, false);
+*/
+
+  pop(htmlNoteDisplayElement);
+  nextNote();
 
   //let animationDuration = getAnimationDuration(htmlTargetNoteElement);
   //setTimeout("nextNote()", animationDuration * 1000);
@@ -70,7 +74,7 @@ function nextNote(){
 
     htmlTargetNoteElement.classList.remove("rewardingTarget");   
     htmlTargetIntervalElement.classList.remove("rewardingTarget");   
-    updatePitch();
+    //updatePitch();
     
 }
 

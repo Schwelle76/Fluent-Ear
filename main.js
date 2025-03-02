@@ -16,6 +16,8 @@ function startGame(){
   htmlTargetIntervalElement = document.getElementById("targetInterval");
   htmlNoteDisplayElement = document.getElementById("noteDisplay");
   htmlDetectedNoteElement = document.getElementById("detectedNote");
+  currentTargetNote = allowedNotes[Math.floor(Math.random() * allowedNotes.length)] + '4'; // Start in octave 4
+  nextNote();
 }
 
 function play(){
@@ -24,7 +26,7 @@ function play(){
 
     if (!synthIsPlaying){
       htmlDetectedNoteElement.textContent = detectedNote;  
-      if(detectedNote == currentTargetNotePlusInterval()){
+      if(detectedNote == getNoteWithoutOctave(currentTargetNotePlusInterval())){
         playRewardAndTriggerNextNote();
       }
     } else htmlDetectedNoteElement.textContent = "";
@@ -45,8 +47,21 @@ function play(){
     htmlTargetNoteElement.textContent = currentTargetNote;
 }
 
+function getNoteWithoutOctave(note) {
+    return note.slice(0, -1);
+}
+
 function currentTargetNotePlusInterval(){
-  return notes[(notes.indexOf(currentTargetNote) + intervals.indexOf(currentTargetInterval)) % 12];
+  const noteIndex = notes.indexOf(currentTargetNote.slice(0, -1));
+  const octave = parseInt(currentTargetNote.slice(-1), 10);
+  const intervalIndex = intervals.indexOf(currentTargetInterval);
+  const randomDirection = Math.random() < 0.5 ? -1 : 1; // Randomly choose -1 (down) or 1 (up)
+  let newIndex = (noteIndex + randomDirection * intervalIndex + notes.length) % notes.length;
+  let newOctave = octave;
+  if (newIndex < noteIndex) {
+    newOctave += randomDirection;
+  }
+  return notes[newIndex] + newOctave;
 }
 
 function playRewardAndTriggerNextNote(){
@@ -61,8 +76,17 @@ function nextNote(){
     if (allowedNotes.length > 1 || allowedIntervals.length > 1)
       while(lastTargetNote == currentTargetNote
         && lastTargetInterval == currentTargetInterval){
-          currentTargetNote = allowedNotes[Math.floor(Math.random()*allowedNotes.length)];
-          currentTargetInterval = allowedIntervals[Math.floor(Math.random()*allowedIntervals.length)]; 
+          let newNote = allowedNotes[Math.floor(Math.random() * allowedNotes.length)];
+          let newOctave;
+          if (lastTargetNote) {
+            let lastOctave = parseInt(lastTargetNote.slice(-1), 10);
+            newOctave = lastOctave + Math.floor(Math.random() * 3) - 1; // Random octave within +/- 1 octave
+            newOctave = Math.max(1, Math.min(newOctave, 7)); // Ensure octave is within 1 to 7
+          } else {
+            newOctave = 4; // Start in octave 4 if no lastTargetNote
+          }
+          currentTargetNote = newNote + newOctave;
+          currentTargetInterval = allowedIntervals[Math.floor(Math.random() * allowedIntervals.length)]; 
         }
 
     playIntervalDelay = 0;

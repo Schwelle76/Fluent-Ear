@@ -1,22 +1,30 @@
-const noteFrequencies = {
-    'C': 261.63,
-    'C#': 277.18,
-    'D': 293.66,
-    'D#': 311.13,
-    'E': 329.63,
-    'F': 349.23,
-    'F#': 369.99,
-    'G': 392.00,
-    'G#': 415.30,
-    'A': 440.00,
-    'A#': 466.16,
-    'B': 493.88
+const baseFrequencies = {
+    'C': 16.35,
+    'C#': 17.32,
+    'D': 18.35,
+    'D#': 19.45,
+    'E': 20.60,
+    'F': 21.83,
+    'F#': 23.12,
+    'G': 24.50,
+    'G#': 25.96,
+    'A': 27.50,
+    'A#': 29.14,
+    'B': 30.87
 };
 
 let synthIsPlaying = false;
 
 function noteToFrequency(note) {
-    return noteFrequencies[note];
+    const noteName = note.slice(0, -1);
+    const octave = parseInt(note.slice(-1), 10);
+    const baseFrequency = baseFrequencies[noteName];
+    if (baseFrequency) {
+        return baseFrequency * Math.pow(2, octave);
+    } else {
+        console.error('Invalid note:', note);
+        return null;
+    }
 }
 
 function playNote(note) {

@@ -14,6 +14,8 @@
   <script src="pitchdetect.js"></script>
   <script src="particle.js"></script>
   <script src="main.js"></script>
+  <script src="synth.js"></script>
+
 </head>
 
 <body>
@@ -29,7 +31,7 @@
       
       <div class="micButton">
         <label>
-          <input type="checkbox" id = "micCheckbox" onclick="startPitchDetect(); startGame()" hidden>
+          <input type="checkbox" id="micCheckbox" onclick="startPitchDetect(); startGame()" hidden>
           <img src="mic-button.png">
         </label>
       </div>
@@ -296,8 +298,51 @@
 
       </div>
     </div>
+    <span>Settings</span>
+    <div class="buttonMatrix settingsSection">
+      <div class="buttonRow">
+
+        <div class="checkButton">
+          <input type="checkbox" class="matrixButton" id="playRoot" hidden>
+          <div class="buttonShape">
+            <label for="playRoot">
+              <span class="buttonText">Play Root</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="checkButton">
+          <input type="checkbox" class="matrixButton" id="playInterval" hidden>
+          <div class="buttonShape">
+            <label for="playInterval">
+              <span class="buttonText">Play Interval</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="checkButton">
+          <input type="checkbox" class="matrixButton" id="showRoot" hidden>
+          <div class="buttonShape">
+            <label for="showRoot">
+              <span class="buttonText">Show Root</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="checkButton">
+          <input type="checkbox" class="matrixButton" id="showInterval" hidden>
+          <div class="buttonShape">
+            <label for="showInterval">
+              <span class="buttonText">Show Interval</span>
+            </label>
+          </div>
+        </div>
+
+      </div>
+    </div>
   </div>
-  </div>
+  <footer>
+  </footer>
 </body>
 
 </html>

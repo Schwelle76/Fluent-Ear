@@ -111,12 +111,12 @@ function startPitchDetect() {
 //Denkbar dass Live Input bei neuen Devices nach startPitchDetect getoggled werden muss.
 //Sonst kanns weg
 function toggleLiveInput() {
-    if (isPlaying) {
+    if (synthIsPlaying) {
         //stop playing and return
         sourceNode.stop( 0 );
         sourceNode = null;
         analyser = null;
-        isPlaying = false;
+        synthIsPlaying = false;
 		if (!window.cancelAnimationFrame)
 			window.cancelAnimationFrame = window.webkitCancelAnimationFrame;
         window.cancelAnimationFrame( rafID );
@@ -234,8 +234,7 @@ function updatePitch( time ) {
 		window.requestAnimationFrame = window.webkitRequestAnimationFrame;
 	rafID = window.requestAnimationFrame( updatePitch );
 	
-	const htmlDetectedNoteElement = document.getElementById("detectedNote");
-	htmlDetectedNoteElement.textContent = detectedNote;	
+
 
 }
 

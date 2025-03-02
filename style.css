@@ -142,6 +142,7 @@ particle {
   display: flex;
   flex-direction: column;
   text-align: center;
+  padding-bottom: 20px; /* Add padding to the bottom of the lower section */
 }
 
 #lowerSectionHeader{
@@ -225,6 +226,14 @@ label{
 .buttonText{
   display: block;
   align-self: center;
+}
+
+.settingsSection {
+  margin-top: 20px; /* Add margin to the top of the settings section */
+}
+
+footer {
+  height: 100px; /* Add height to the footer to create space */
 }
 
 

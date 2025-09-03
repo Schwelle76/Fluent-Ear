@@ -17,6 +17,7 @@ function startGame(){
   htmlNoteDisplayElement = document.getElementById("noteDisplay");
   htmlDetectedNoteElement = document.getElementById("detectedNote");
   nextNote(); // Initialize the first target note
+  
 }
 
 function play(){

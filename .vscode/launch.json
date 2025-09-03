@@ -1,0 +1,22 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "firefox",
+            "request": "launch",
+            "name": "Launch Firefox against localhost",
+            "url": "http://localhost:5173/",
+            "webRoot": "${workspaceFolder}",
+            "firefoxExecutable": "C:\\Program Files\\WindowsApps\\Mozilla.Firefox_142.0.0.0_x64__n80bbvh6b1yt2\\VFS\\ProgramFiles\\Firefox Package Root\\firefox.exe",
+            "pathMappings": [
+                {
+                    "url": "http://localhost:5173/src",
+                    "path": "${workspaceFolder}/client/src"
+                }
+            ]
+        }
+    ]
+}

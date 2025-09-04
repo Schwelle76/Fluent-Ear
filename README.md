@@ -9,8 +9,8 @@ Instead of clicking UI buttons, you play the requested note or interval on your 
 
 ## Features
 - 🎯 **Ear training** – learn to detect musical intervals
-- 🎤 **Microphone input** – Learn to play what you hear directly on your real instrument using your microphone
-- ⚙️ **Customizable training** – choose your own intervals and scales
+- 🎤 **Microphone input** – play what you hear directly on your real instrument using your microphone
+- ⚙️ **Customizable training** – choose your own intervals, scales, and root notes as well as the direction of the intervals
 - ⚡ **Responsive & lightweight** – runs directly in your browser, no installation needed  
 ---
 

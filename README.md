@@ -1,17 +1,19 @@
 # 🎶 Fluent Ear  
 *Play what you hear. Play what you imagine.*  
 
+
 **Fluent Ear** is an ear training web app for musicians that takes input directly from your instrument through the microphone.  
 Instead of clicking UI buttons, you play the requested note or interval on your instrument — training your ability to play what you hear and thus play what you imagine just like speaking a language fluently.
 
 ---
 
 ## Features
-- 🎯 **Ear training exercises** – practice scales, intervals, and patterns  
-- 🎤 **Microphone input** – Learn to play what you hear directly on your real instrument using your microphone.
+- 🎯 **Ear training** – learn to detect musical intervals
+- 🎤 **Microphone input** – Learn to play what you hear directly on your real instrument using your microphone
 - ⚙️ **Customizable training** – choose your own intervals and scales
 - ⚡ **Responsive & lightweight** – runs directly in your browser, no installation needed  
 ---
+
 
 ## Getting Started
 Prototype currently available at:

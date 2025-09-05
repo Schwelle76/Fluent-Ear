@@ -1,8 +1,8 @@
-import { PitchClass, PITCH_CLASSES } from "../models/Note";
+import { PitchClass, PITCH_CLASSES, isPitchClass } from "../models/Note";
 
 export default class NoteFromKeyboardDetector {
 
-  currentKey: PitchClass | undefined;
+  currentKey: string | undefined;
   onNote: (note: PitchClass | undefined) => void;
 
   constructor(onNote: (note: PitchClass | undefined) => void) {
@@ -25,7 +25,7 @@ export default class NoteFromKeyboardDetector {
         currentString += '#';
       }
 
-      if (currentString != undefined && PITCH_CLASSES.includes(currentString)) {
+      if (currentString != undefined && isPitchClass(currentString)) {
         this.onNote(currentString);
       }
     }
@@ -34,7 +34,7 @@ export default class NoteFromKeyboardDetector {
   private handleKeyUp = (keyboardEvent: KeyboardEvent) => {
     if (this.currentKey === keyboardEvent.key) {
       this.currentKey = undefined;
-      this.onNote(this.currentKey);
+      this.onNote(undefined);
     }
   }
 

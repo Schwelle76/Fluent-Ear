@@ -5,9 +5,10 @@ import EarTrainingSettings from '../models/EarTrainingSettings';
 import { SCALES } from '../constants/SCALES';
 import { Scale } from '../models/Scale';
 import SoundfontService from '../services/SoundFontService';
-import { Note, PITCH_CLASSES, PitchClass } from '../models/Note';
+import { getInterval, getPitchClass, Note, parsePitchClass, PITCH_CLASSES, PitchClass } from '../models/Note';
+import { Direction } from '../models/Direction';
 
-export default function useEarTrainingGame(detectedNote: PitchClass | undefined, scale: Scale, rootPitch: string, direction: string) {
+export default function useEarTrainingGame(detectedNote: PitchClass | undefined, scale: Scale, rootPitchSetting: string , direction: Direction) {
 
 
     const [targetNote, setTargetNote] = useState<Note | undefined>(undefined);
@@ -16,6 +17,7 @@ export default function useEarTrainingGame(detectedNote: PitchClass | undefined,
     const [active, setActive] = useState(false);
     const rootOctave = 4;
     const [output, setOutput] = useState<string | undefined>(undefined);
+    const [root, setRoot] = useState<PitchClass>(parsePitchClass(rootPitchSetting) ?? PITCH_CLASSES[Math.floor(Math.random() * PITCH_CLASSES.length)]);
 
     const start = () => {
         setActive(true);
@@ -38,22 +40,26 @@ export default function useEarTrainingGame(detectedNote: PitchClass | undefined,
         if (detectedNote === undefined || output !== undefined) return;
         else if (targetNote?.pitchClass === detectedNote) {
             setScore(score + 1);
-            selectNewTargetNote();
             console.log("score: ", score);
+            playReward().then(() => {
+                selectNewTargetNote();
+            });
         }
 
     }, [detectedNote]);
 
     useEffect(() => {
+        setRoot(parsePitchClass(rootPitchSetting) ?? PITCH_CLASSES[Math.floor(Math.random() * PITCH_CLASSES.length)]);
+
         if (active === true)
             selectNewTargetNote();
 
-    }, [rootPitch, scale, direction])
+    }, [rootPitchSetting, scale, direction])
 
 
     function selectNewTargetNote() {
 
-        const absoluteScale = scale.getPitchClasses(rootPitch);
+        const absoluteScale = scale.getPitchClasses(rootPitchSetting);
         let nextPitchClass = absoluteScale[0];
         let octave = 4;
 
@@ -63,7 +69,7 @@ export default function useEarTrainingGame(detectedNote: PitchClass | undefined,
         }
 
         // Calculate octave based on direction and note positions
-        const rootPitchIndex = PITCH_CLASSES.indexOf(rootPitch);
+        const rootPitchIndex = PITCH_CLASSES.indexOf(root);
         const notePitchIndex = PITCH_CLASSES.indexOf(nextPitchClass);
 
         if (rootPitchIndex !== -1 && notePitchIndex !== -1) {
@@ -93,11 +99,34 @@ export default function useEarTrainingGame(detectedNote: PitchClass | undefined,
     }
 
     const playNotes = (nextNote: Note) => {
-        setOutput(rootPitch);
-        audioPlayerRef.current?.play(rootPitch + rootOctave).then(() => {
+        setOutput(rootPitchSetting);
+        audioPlayerRef.current?.play(rootPitchSetting + rootOctave).then(() => {
             setOutput("?");
             audioPlayerRef.current?.play(nextNote.toString()).then(() => setOutput(undefined));
         });
+    }
+
+    const playReward = async () => {
+
+        console.log("play reward");
+
+        return new Promise((resolve) => {
+            if (targetNote) {
+                setOutput(targetNote.pitchClass)
+
+                const rewardNotes: string[] = [];
+                const fifthInterval = getPitchClass(targetNote.pitchClass, "5");
+
+                rewardNotes.push(targetNote.pitchClass + 3);
+                if (fifthInterval)
+                    rewardNotes.push(fifthInterval + 5);
+
+                audioPlayerRef.current?.play(rewardNotes, .65, .5).then(() => {
+                    setOutput(undefined);
+                    resolve(true)
+                });
+            } else resolve(false);
+        })
     }
 
     return {
@@ -106,7 +135,8 @@ export default function useEarTrainingGame(detectedNote: PitchClass | undefined,
         replayNotes,
         start,
         active,
-        output
+        output,
+        root
     }
 
 

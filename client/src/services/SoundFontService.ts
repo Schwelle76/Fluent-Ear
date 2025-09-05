@@ -14,14 +14,17 @@ export default class SoundfontService {
     return this.player != null;
   }
 
-  async play(note: string) {
+  async play(notes: string | string[], duration: number = 0.5, release: number = 0.1) {
     await this.resumeIfNeeded();
+    
     if (!this.player) return;
 
-    const duration = .5;
-    const release = 0;
+    if (typeof notes === "string")
+      notes = [notes];
 
-    this.player.play(note, 0, { duration, release });
+    for(const note of notes) {
+      this.player.play(note, 0, { duration, release });
+    }
 
     return new Promise((resolve) => {
       setTimeout(() => {

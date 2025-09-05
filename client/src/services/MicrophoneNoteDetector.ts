@@ -13,8 +13,8 @@ export default class MicrophoneNoteDetector {
     audioContext: AudioContext | undefined;
     analyser: AnalyserNode | undefined;
     animationFrame: number | undefined;
-    currentAssumedNote: string | undefined;
-    previousAssumedNote: string | undefined;
+    currentAssumedNote: PitchClass | undefined;
+    previousAssumedNote: PitchClass | undefined;
     timeOfFirstAssumption: number = 0;
 
     constructor(onNote: (note: PitchClass | undefined) => void) {
@@ -90,7 +90,7 @@ export default class MicrophoneNoteDetector {
 
         const timeTillDetection = this.MAX_SENSITIVITY - this.sensitivity + this.MIN_SENSITIVITY;
 
-        let note = "";
+        let note = undefined;
         if (pitch > 0) {
             const detected = this.noteFromPitch(pitch);
             this.currentAssumedNote = detected;

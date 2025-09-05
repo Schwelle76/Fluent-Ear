@@ -7,7 +7,7 @@ import useEarTrainingGame from './hooks/useEarTrainingGame'
 import { useEarTrainingSettingsContext } from './contexts/EarTrainingSettingsContext'
 import useNoteInput from './hooks/useNoteInput'
 import { useGlobalPointer } from './hooks/useGlobalPointer'
-import { getInterval, PITCH_CLASSES } from './models/Note'
+import { getInterval, isPitchClass, PITCH_CLASSES } from './models/Note'
 
 function App() {
 
@@ -30,10 +30,10 @@ function App() {
 
   let displayInterval : string | undefined
   if(earTrainingGame.output){
-    if(PITCH_CLASSES.includes(earTrainingGame.output))
-        displayInterval = getInterval(earTrainingGame.output, earTrainingSettings.root);
+    if(isPitchClass(earTrainingGame.output))
+        displayInterval = getInterval(earTrainingGame.output, earTrainingGame.root);
   else displayInterval = earTrainingGame.output;
-} else displayInterval = noteInput.note ? getInterval(noteInput.note, earTrainingSettings.root) : undefined;
+} else displayInterval = noteInput.note ? getInterval(noteInput.note, earTrainingGame.root) : undefined;
 
 
 

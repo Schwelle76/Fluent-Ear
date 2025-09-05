@@ -1,16 +1,35 @@
-export const PITCH_CLASSES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'] as string[];
+export const PITCH_CLASSES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'] as const;
 export type PitchClass = typeof PITCH_CLASSES[number];
 
-export const INTERVALS = ['1', 'm2', 'M2', 'm3', 'M3', '4', 'b5', '5', 'm6', 'M6', 'm7', 'M7'];
+export function isPitchClass(str: string): str is PitchClass {
+  return (PITCH_CLASSES as readonly string[]).includes(str);
+}
+
+export function parsePitchClass(str: string): PitchClass | undefined {
+  if(isPitchClass(str)) return str;
+  else return undefined;
+}
+
+export const INTERVALS = ['1', 'm2', 'M2', 'm3', 'M3', '4', 'b5', '5', 'm6', 'M6', 'm7', 'M7'] as const;
+export type Intervals = typeof INTERVALS[number];
 
 export function getInterval(note: PitchClass, tonic: PitchClass) {
   const noteIndex = PITCH_CLASSES.indexOf(note);
   const tonicIndex = PITCH_CLASSES.indexOf(tonic);
-  if (noteIndex === -1 || tonicIndex === -1) return undefined;
 
   const semitoneDistance = (noteIndex - tonicIndex + 12) % 12;
   return INTERVALS[semitoneDistance];
 }
+
+export function getPitchClass(tonic: PitchClass, interval: Intervals){
+  const tonicIndex = PITCH_CLASSES.indexOf(tonic);
+  const semitoneDistance = INTERVALS.indexOf(interval);
+
+  const targetNoteIndex = (tonicIndex + semitoneDistance) % 12;
+
+  return PITCH_CLASSES[targetNoteIndex];
+}
+
 
 export class Note {
 

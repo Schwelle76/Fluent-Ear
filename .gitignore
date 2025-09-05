@@ -1,9 +1,16 @@
+# Client-specific ignores
+*.lcov
+*.local
+.env
+.env.*.local
+.env.local
+build/
+coverage/
+dist/
+dist-ssr/
+node_modules/
+pnpm-lock.yaml
+yarn.lock
+
+# Root-specific ignores
 .vscode/
-.idea/
-.DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
-Thumbs.db

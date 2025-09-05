@@ -5,7 +5,7 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   base: '/Fluent-Ear/',    
   build: {
-    outDir: '../docs',
+    outDir: 'docs',
     emptyOutDir: true,
   },
   plugins: [react()],

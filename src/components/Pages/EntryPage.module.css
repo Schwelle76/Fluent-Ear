@@ -1,0 +1,72 @@
+.entry-page {
+box-sizing: border-box;
+  width: 100vw;
+  height: 100vh;
+}
+
+
+
+.title-text-container {
+  position: absolute;
+  width: 100%;
+  top:  max(3%, calc(20.5% - 10vw)); 
+}
+
+.input-options-container-flexbox-container {
+
+  position: absolute;
+  bottom: max(calc(40% - 30vw), 20px);
+  width: 100%;
+  
+}
+
+.input-options-container-flexbox-container p{
+  box-sizing: border-box;
+  width: 100%;
+  text-align: center;
+  font-size: 1.5rem;
+  margin: 0;
+  padding: 0.5rem;
+}
+
+
+.input-options-container-flexbox {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: min(11%, 2rem);
+  margin-left: 11%;
+  margin-right: 11%;
+
+}
+
+.input-option-container{
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  text-align: center;
+  height: auto;
+  overflow: visible;
+}
+
+.input-option-container p{
+  font-size: 1.1rem;
+  line-height: 1em;
+  margin: 0 0 0 0;
+  padding: 0;
+  height: auto;
+  width: auto;
+}
+
+.input-option {
+  display: flex;
+  box-sizing: border-box;
+  justify-content: center;
+  align-items: center;
+  min-width: 100px;
+  max-width: 200px;
+  max-height: 120px;
+  height: 150px;
+}

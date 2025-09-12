@@ -9,4 +9,9 @@ export default defineConfig({
     emptyOutDir: true,
   },
   plugins: [react()],
+    css: {
+    modules: {
+      localsConvention: 'camelCase' 
+    }
+  }
 })

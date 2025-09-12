@@ -2,10 +2,11 @@ import { useState, useEffect, useRef } from 'react';
 import NoteFromKeyboardDetector from '../services/NoteFromKeyboardDetector';
 import { PitchClass } from '../models/Note';
 import MicrophoneNoteDetector from '../services/MicrophoneNoteDetector';
+import { InputDevice } from '../models/InputDevice';
 
 export default function useNoteInput() {
 
-    const [inputDevice, setInputDevice] = useState<'keyboard' | 'microphone'>('microphone');
+    const [inputDevice, setInputDevice] = useState<InputDevice | undefined>(undefined);
 
     const microphoneNoteDetector = useRef<MicrophoneNoteDetector | undefined>(undefined);
     const noteFromKeyboardDetector = useRef<NoteFromKeyboardDetector | undefined>(undefined);
@@ -24,14 +25,15 @@ export default function useNoteInput() {
 
         if (inputDevice === "keyboard") {
             noteFromKeyboardDetector.current = new NoteFromKeyboardDetector(setNote);
-            setReady(true);
         }
+
+        initialize();
 
         return () => {
             microphoneNoteDetector.current?.destroy();
             noteFromKeyboardDetector.current?.destroy();
         }
-    }, []);
+    }, [inputDevice]);
 
 
     useEffect(() => {
@@ -39,13 +41,12 @@ export default function useNoteInput() {
     }, [sensitivity]);
 
 
-
     const initialize = async () => {
 
         if (inputDevice === "microphone") {
             let success = await microphoneNoteDetector.current?.initAudio();
             setReady(success ?? false);
-        }
+        } else if (inputDevice === "keyboard") setReady(true);
     }
 
     return {
@@ -56,6 +57,7 @@ export default function useNoteInput() {
         MIN_SENSITIVITY: microphoneNoteDetector.current?.MIN_SENSITIVITY ?? 1,
         ready,
         initialize,
-        inputDevice
+        inputDevice,
+        setInputDevice
     };
 }

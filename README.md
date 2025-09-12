@@ -1,4 +1,4 @@
-# 🎶 Fluent Ear  
+# Fluent Ear  
 *Play what you hear. Play what you imagine.*  
 
 
@@ -8,10 +8,10 @@ Instead of clicking UI buttons, you play the requested note or interval on your 
 ---
 
 ## Features
-- 🎯 **Ear training** – learn to detect musical intervals
-- 🎤 **Microphone input** – play what you hear directly on your real instrument using your microphone
-- ⚙️ **Customizable training** – choose your own intervals, scales, and root notes as well as the direction of the intervals
-- ⚡ **Responsive & lightweight** – runs directly in your browser, no installation needed  
+- **Ear training** – learn to detect musical intervals and play them right away
+- **Microphone input** – practice on your instrument using the microphone of your device
+- **Customizable training** – choose your own intervals, scales, and root notes as well as the direction of the intervals
+- **Responsive & lightweight** – runs directly in your browser, no installation needed  
 ---
 
 

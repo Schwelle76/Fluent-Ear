@@ -7,6 +7,7 @@ import { useGlobalPointer } from '../../hooks/useGlobalPointer';
 import { getInterval, isPitchClass } from '../../models/Note';
 import useNoteInput from '../../hooks/useNoteInput';
 import useEarTrainingGame from '../../hooks/useEarTrainingGame';
+import NoteInputButtonGrid from '../NoteInputButtonGrid';
 
 
 interface EarTrainingPageProps {
@@ -19,7 +20,7 @@ const EarTrainingPage: React.FC<EarTrainingPageProps> = ({ noteInput, earTrainin
     const [isSidebarOpen, setIsSidebarOpen] = useState(false)
 
     useGlobalPointer((ev) => {
-        if (earTrainingGame.active && !isSidebarOpen)
+        if (earTrainingGame.active && !earTrainingGame.output && !isSidebarOpen)
             earTrainingGame.replayNotes();
     });
 
@@ -53,21 +54,32 @@ const EarTrainingPage: React.FC<EarTrainingPageProps> = ({ noteInput, earTrainin
                 </button>
             )}
 
-            {noteInput.inputDevice && !noteInput.ready &&
-                <h1 className={styles.importantInfo}>Allow microphone access to detect your intrument!</h1>
-            }
+            <div className={styles.centerElement}>
 
-            {earTrainingGame.active && noteInput.ready && <NoteDisplay
-                currentNote={displayPitch}
-                currentInterval={displayInterval}
-            />}
+                {noteInput.inputDevice && !noteInput.ready &&
+                    <h1>Allow microphone access to detect your intrument!</h1>
+                }
 
-            {noteInput.ready && noteInput.inputDevice === 'microphone' && <SensitivitySlider
-                value={noteInput.sensitivity}
-                min={noteInput.MIN_SENSITIVITY}
-                max={noteInput.MAX_SENSITIVITY}
-                onChange={(e) => noteInput.setSensitivity(parseInt(e.target.value))}
-            />}
+                {earTrainingGame.active && noteInput.ready &&
+                    <NoteDisplay
+                        currentNote={displayPitch}
+                        currentInterval={displayInterval}
+                    />}
+            </div>
+
+
+            <div className={styles.bottom}>
+
+                {noteInput.ready && noteInput.inputDevice === 'microphone' && <SensitivitySlider
+                    value={noteInput.sensitivity}
+                    min={noteInput.MIN_SENSITIVITY}
+                    max={noteInput.MAX_SENSITIVITY}
+                    onChange={(e) => noteInput.setSensitivity(parseInt(e.target.value))}
+                />}
+
+                {noteInput.ready && noteInput.inputDevice === 'ui' && <NoteInputButtonGrid noteInput={noteInput} earTrainingGame={earTrainingGame} />}
+            
+            </div>
 
 
             <Sidebar

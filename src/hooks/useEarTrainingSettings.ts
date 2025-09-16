@@ -2,6 +2,7 @@ import { useRef, useEffect, useState } from 'react';
 import { SCALES } from '../constants/SCALES';
 import { Scale } from '../models/Scale';
 import { Direction } from '../models/Direction';
+import { Interval } from '../models/Note';
 
 export default function useEarTrainingSettings() {
   const [root, setRoot] = useState('C');
@@ -25,7 +26,7 @@ export default function useEarTrainingSettings() {
 
   }, [scalePreset]);
 
-  const toggleInterval = (interval: string) => {
+  const toggleInterval = (interval: Interval) => {
 
 
     if (scale.getIntervals().includes(interval)) {

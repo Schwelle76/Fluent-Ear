@@ -34,7 +34,7 @@ const EntryPage: React.FC<EntryPageProps> = ({ noteInput}) => {
                 imageSrc="./src/assets/touch-press-click.svg"
                 label="Touch"
                 onClick={() => {
-                  setInputDevice("keyboard");
+                  setInputDevice("ui");
                 }}
               />
             </div>

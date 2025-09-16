@@ -11,7 +11,7 @@ export function parsePitchClass(str: string): PitchClass | undefined {
 }
 
 export const INTERVALS = ['1', 'm2', 'M2', 'm3', 'M3', '4', 'b5', '5', 'm6', 'M6', 'm7', 'M7'] as const;
-export type Intervals = typeof INTERVALS[number];
+export type Interval = typeof INTERVALS[number];
 
 export function getInterval(note: PitchClass, tonic: PitchClass) {
   const noteIndex = PITCH_CLASSES.indexOf(note);
@@ -21,7 +21,7 @@ export function getInterval(note: PitchClass, tonic: PitchClass) {
   return INTERVALS[semitoneDistance];
 }
 
-export function getPitchClass(tonic: PitchClass, interval: Intervals){
+export function getPitchClass(tonic: PitchClass, interval: Interval){
   const tonicIndex = PITCH_CLASSES.indexOf(tonic);
   const semitoneDistance = INTERVALS.indexOf(interval);
 

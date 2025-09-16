@@ -25,10 +25,22 @@
 }
 
 
-.important-info{
+.center-element{
   position: absolute;
   text-align: center;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+.bottom{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  text-align: center;
+  align-items: end;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
 }

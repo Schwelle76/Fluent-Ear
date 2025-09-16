@@ -1,11 +1,13 @@
 .sensitivity-slider-container {
+  padding: 0;
+  margin: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 1rem;
 }
 
 .sensitivity-slider {
+
   width: 80%;
   height: 0.5rem;
   -webkit-appearance: none;
@@ -32,6 +34,8 @@
 }
 
 .sensitivity-label {
+  margin: 0;
+  padding: 0;
   margin-top: 0.5rem;
   color: white;
   font-size: 0.9rem;

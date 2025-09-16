@@ -1,0 +1,23 @@
+.note-input-button-grid {
+    display: flex;
+    flex-direction: row;
+    flex-wrap:wrap;
+    justify-content: center;
+    width: min(600px, 90%);
+    gap: 6px;
+
+}
+
+.note-input-button {
+    width: 5rem;
+    height: 2.5rem;
+    text-align: center;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+}
+
+.note-input-button.inactive {
+    opacity: 0;
+    pointer-events: none;
+    
+}

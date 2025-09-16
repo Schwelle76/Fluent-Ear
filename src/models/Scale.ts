@@ -1,19 +1,20 @@
-import { PITCH_CLASSES, INTERVALS } from "./Note";
+import { PITCH_CLASSES, INTERVALS, Interval } from "./Note";
 
 export class Scale {
 
   name: string;
-  intervals: string[];
+  intervals: Interval[];
   halftoneSteps: number[];
 
   constructor(name: string, steps: number[]);
   constructor(name: string, intervals: string[]);
+  constructor(name: string, intervals: Interval[]);
 
-  constructor(name: string, input: string[] | number[]) {
+  constructor(name: string, input: string[] | number[] | Interval[]) {
     this.name = name;
 
     if (typeof input[0] === 'string') {
-      this.intervals = input as string[];
+      this.intervals = input as Interval[];
       this.halftoneSteps = input.map(interval => {
         const step = INTERVALS.findIndex(i => i === interval);
         if (step === -1) {

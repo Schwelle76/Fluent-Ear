@@ -1,15 +1,13 @@
 .entry-page {
-box-sizing: border-box;
+  box-sizing: border-box;
   width: 100vw;
   height: 100vh;
 }
 
-
-
 .title-text-container {
   position: absolute;
   width: 100%;
-  top:  max(3%, calc(20.5% - 10vw)); 
+  top: max(3%, calc(20.5% - 10vw));
 }
 
 .input-options-container-flexbox-container {
@@ -17,10 +15,10 @@ box-sizing: border-box;
   position: absolute;
   bottom: max(calc(40% - 30vw), 20px);
   width: 100%;
-  
+
 }
 
-.input-options-container-flexbox-container p{
+.input-options-container-flexbox-container p {
   box-sizing: border-box;
   width: 100%;
   text-align: center;
@@ -41,7 +39,7 @@ box-sizing: border-box;
 
 }
 
-.input-option-container{
+.input-option-container {
   display: flex;
   flex-direction: column;
   justify-content: start;
@@ -51,7 +49,7 @@ box-sizing: border-box;
   overflow: visible;
 }
 
-.input-option-container p{
+.input-option-container p {
   font-size: 1.1rem;
   line-height: 1em;
   margin: 0 0 0 0;
@@ -69,4 +67,21 @@ box-sizing: border-box;
   max-width: 200px;
   max-height: 120px;
   height: 150px;
+}
+
+
+.about-page {
+  width: 66vw;
+  margin: auto;
+  text-align: left;
+}
+
+.footer {
+  height: 20px;
+}
+
+@media screen and (max-width: 1000px) {
+  .about-page {
+    width: 90vw;
+  }
 }

@@ -6,7 +6,7 @@ const TitleText: React.FC = () => {
     return (
         <div className={styles.titleTextContainer}>
             <h1>Fluent Ear</h1>
-            <p>Play what you <span className={styles.highlight}>Imagine</span></p>
+            <p>Play what you <span className={styles.highlight}>imagine</span></p>
         </div>
     );
 };

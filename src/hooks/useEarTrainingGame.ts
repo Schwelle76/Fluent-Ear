@@ -8,7 +8,7 @@ import SoundfontService from '../services/SoundFontService';
 import { getInterval, getPitchClass, Note, parsePitchClass, PITCH_CLASSES, PitchClass } from '../models/Note';
 import { Direction } from '../models/Direction';
 
-export default function useEarTrainingGame(detectedNote: PitchClass | undefined, scale: Scale, rootPitchSetting: string , direction: Direction) {
+export default function useEarTrainingGame(detectedNote: PitchClass | undefined, scale: Scale, rootPitchSetting: string, direction: Direction) {
 
 
     const [targetNote, setTargetNote] = useState<Note | undefined>(undefined);

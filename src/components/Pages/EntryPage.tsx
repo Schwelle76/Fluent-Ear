@@ -1,68 +1,51 @@
 import React from 'react';
 import styles from './EntryPage.module.css';
-import useNoteInput from '../../hooks/useNoteInput';
-import useEarTrainingGame from '../../hooks/useEarTrainingGame';
-import InputOption from '../../components/InputOption';
+import { useNavigate } from 'react-router';
 import TitleText from '../TitleText';
-import { InputDevice } from '../../models/InputDevice';
 
-interface EntryPageProps {
-  noteInput: ReturnType<typeof useNoteInput>;
-}
 
-const EntryPage: React.FC<EntryPageProps> = ({ noteInput }) => {
+const EntryPage: React.FC = () => {
 
-  function setInputDevice(InputDevice: InputDevice) {
-    noteInput.setInputDevice(InputDevice);
-  }
+  const navigate = useNavigate();
+
+  const scrollToSection = (sectionId: string) => {
+
+    navigate(`/#${sectionId}`);
+    // 1. Element direkt über seine ID im DOM finden
+    const targetSection = document.getElementById(sectionId);
+
+    // 2. Prüfen, ob das Element existiert (wichtig!)
+    if (targetSection) {
+      targetSection.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
+  };
 
   return (
 
     <div>
       <section className={styles.entryPage}>
 
-        {!noteInput.inputDevice && <div className={styles.titleTextContainer}>
+        <div className={styles.titleTextContainer}>
           <TitleText />
-        </div>}
+        </div>
 
 
-        {!noteInput.inputDevice && <div className={styles.inputOptionsContainerFlexboxContainer}>
-          <p>Select your Input</p>
-          <div className={styles.inputOptionsContainerFlexbox}>
-            <div className={styles.inputOptionContainer}>
-              <div className={styles.inputOption}>
-                <InputOption
-                  imageSrc="./src/assets/touch-press-click.svg"
-                  label="Touch"
-                  onClick={() => {
-                    setInputDevice("ui");
-                  }}
-                />
-              </div>
-              <p>Touch</p>
-            </div>
-            <div className={styles.inputOptionContainer}>
-              <div className={styles.inputOption}>
-                <InputOption
-                  imageSrc="./src/assets/piano.svg"
-                  label="Your instrument"
-                  onClick={() => {
-                    setInputDevice("microphone");
-                  }}
-                />
-              </div>
-              <p>Your instrument</p>
-            </div>
-          </div>
-        </div>}
+        <div className={styles.navigationButtonContainer}>
+          <button className={`${styles.navigationButton} ${styles.startButton}`} onClick={() => navigate('/training')}>Start</button>
+          <button className={`${styles.navigationButton} ${styles.aboutButton}`} onClick={() => scrollToSection('about')}>About</button>
+        </div>
+
       </section>
-      <section className={styles.aboutPage}>
+      <section id="about" className={styles.aboutPage}>
         <h1>About</h1>
 
         <p>
           <strong>Fluent Ear</strong> is an ear training web app for musicians that takes input directly from your instrument through the microphone.
           Instead of clicking UI buttons, you play the requested note or interval on your instrument — training your ability to play what you hear and thus play what you imagine just like speaking a language fluently.
-
+          <br /><br />
           For those who don't have their instrument on hand, UI buttons are still available, making it possible to practice in the train or in the waiting room.
         </p>
 
@@ -102,7 +85,7 @@ const EntryPage: React.FC<EntryPageProps> = ({ noteInput }) => {
 
       <section className={styles.footer}></section>
 
-      
+
 
     </div>
   );

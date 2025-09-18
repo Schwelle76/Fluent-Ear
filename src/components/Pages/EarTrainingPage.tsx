@@ -8,14 +8,17 @@ import { getInterval, isPitchClass } from '../../models/Note';
 import useNoteInput from '../../hooks/useNoteInput';
 import useEarTrainingGame from '../../hooks/useEarTrainingGame';
 import NoteInputButtonGrid from '../NoteInputButtonGrid';
+import InputSelection from '../InputSelection';
+import { useEarTrainingSettingsContext } from '../../contexts/EarTrainingSettingsContext';
 
 
-interface EarTrainingPageProps {
-    noteInput: ReturnType<typeof useNoteInput>;
-    earTrainingGame: ReturnType<typeof useEarTrainingGame>;
-}
 
-const EarTrainingPage: React.FC<EarTrainingPageProps> = ({ noteInput, earTrainingGame }) => {
+const EarTrainingPage: React.FC = () => {
+
+    const earTrainingSettings = useEarTrainingSettingsContext()
+    const noteInput = useNoteInput()
+    const earTrainingGame = useEarTrainingGame(noteInput.note, earTrainingSettings.scale, earTrainingSettings.root, earTrainingSettings.direction)
+
 
     const [isSidebarOpen, setIsSidebarOpen] = useState(false)
 
@@ -56,11 +59,15 @@ const EarTrainingPage: React.FC<EarTrainingPageProps> = ({ noteInput, earTrainin
 
             <div className={styles.centerElement}>
 
+                {!noteInput.inputDevice &&
+                    <InputSelection noteInput={noteInput} />
+                }
+
                 {noteInput.inputDevice && !noteInput.ready &&
                     <h1>Allow microphone access to detect your intrument!</h1>
                 }
 
-                {earTrainingGame.active && noteInput.ready &&
+                {noteInput.inputDevice && earTrainingGame.active && noteInput.ready &&
                     <NoteDisplay
                         currentNote={displayPitch}
                         currentInterval={displayInterval}
@@ -78,7 +85,7 @@ const EarTrainingPage: React.FC<EarTrainingPageProps> = ({ noteInput, earTrainin
                 />}
 
                 {noteInput.ready && noteInput.inputDevice === 'ui' && <NoteInputButtonGrid noteInput={noteInput} earTrainingGame={earTrainingGame} />}
-            
+
             </div>
 
 

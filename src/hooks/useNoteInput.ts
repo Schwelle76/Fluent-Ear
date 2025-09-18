@@ -18,6 +18,8 @@ export default function useNoteInput() {
 
 
     useEffect(() => {
+    
+        if(inputDevice === undefined) return;
 
         if (inputDevice === "microphone") {
             microphoneNoteDetector.current = new MicrophoneNoteDetector(setNote);
@@ -62,7 +64,6 @@ export default function useNoteInput() {
         MAX_SENSITIVITY: microphoneNoteDetector.current?.MAX_SENSITIVITY ?? 100,
         MIN_SENSITIVITY: microphoneNoteDetector.current?.MIN_SENSITIVITY ?? 1,
         ready,
-        initialize,
         inputDevice,
         setInputDevice,
         setUiInput

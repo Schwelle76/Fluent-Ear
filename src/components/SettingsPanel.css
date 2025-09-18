@@ -48,7 +48,7 @@ overflow: scroll;
 }
 
 .interval-button.active {
-  background-color: #00a8ff;
+  background-color: var(--color-accent);
 }
 
 .interval-button:hover {

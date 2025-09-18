@@ -38,6 +38,7 @@ const NoteInputButtonGrid: React.FC<NoteInputButtonGridProps> = ({ noteInput, ea
         <div className={styles.noteInputButtonGrid}>
             {intervals.map(interval => (
                 <button
+                    key = {interval}
                     className={`${styles['note-input-button']} ${clickedButtons.has(interval) || earTrainingGame.output ? styles.inactive : ''}`}
                     onClick={() => handleButtonClick(interval)}
                 >

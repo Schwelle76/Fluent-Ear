@@ -8,7 +8,7 @@ export default class MicrophoneNoteDetector {
     detectedNote: PitchClass | undefined;
     audioReady: boolean = false;
     MIN_SENSITIVITY = 1;
-    MAX_SENSITIVITY = 100;
+    MAX_SENSITIVITY = 200;
 
     audioContext: AudioContext | undefined;
     analyser: AnalyserNode | undefined;

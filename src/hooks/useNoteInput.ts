@@ -17,6 +17,7 @@ export default function useNoteInput() {
     const [sensitivity, setSensitivity] = useState(0);
 
 
+
     useEffect(() => {
     
         if(inputDevice === undefined) return;
@@ -44,8 +45,19 @@ export default function useNoteInput() {
     }, [sensitivity]);
 
     useEffect(() => {
+
+        let timer : number | undefined;
+
         if (inputDevice === 'ui') {
             setNote(uiInput);
+
+            timer = setTimeout(() => {
+                    setNote(undefined)
+            }, 500);
+        }
+
+        return() => {
+            if(timer) clearTimeout(timer);
         }
     }, [uiInput]);
 

@@ -33,7 +33,6 @@ const EarTrainingPage: React.FC = () => {
     }, [noteInput.ready])
 
 
-    console.log(noteInput.note?.toString())
 
     let displayPitch: string | undefined
     if (noteInput.ready)

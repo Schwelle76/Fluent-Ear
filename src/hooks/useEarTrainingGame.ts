@@ -15,23 +15,24 @@ export default function useEarTrainingGame(detectedNote: PitchClass | undefined,
     const [score, setScore] = useState(0);
     const audioPlayerRef = useRef<SoundfontService | null>(null);
     const [active, setActive] = useState(false);
+    const [ready, setReady] = useState(false);
     const rootOctave = 4;
     const [output, setOutput] = useState<string | undefined>(undefined);
     const [root, setRoot] = useState<PitchClass>(parsePitchClass(rootPitchSetting) ?? PITCH_CLASSES[Math.floor(Math.random() * PITCH_CLASSES.length)]);
 
     const start = () => {
         setActive(true);
-        selectNewTargetNote();
     }
 
     useEffect(() => {
         audioPlayerRef.current = new SoundfontService();
-        audioPlayerRef.current.load();
+        audioPlayerRef.current.load().then(()=>{setReady(true);});
 
         return () => {
             audioPlayerRef.current?.destroy();
             audioPlayerRef.current = null;
             setActive(false);
+            setReady(false);
         };
     }, []);
 
@@ -51,10 +52,10 @@ export default function useEarTrainingGame(detectedNote: PitchClass | undefined,
     useEffect(() => {
         setRoot(parsePitchClass(rootPitchSetting) ?? PITCH_CLASSES[Math.floor(Math.random() * PITCH_CLASSES.length)]);
 
-        if (active === true)
+        if (active === true && ready === true)
             selectNewTargetNote();
 
-    }, [rootPitchSetting, scale, direction])
+    }, [rootPitchSetting, scale, direction, active, ready])
 
 
     function selectNewTargetNote() {
@@ -98,7 +99,9 @@ export default function useEarTrainingGame(detectedNote: PitchClass | undefined,
         playNotes(targetNote);
     }
 
-    const playNotes = (nextNote: Note) => {
+    const playNotes = async (nextNote: Note) => {
+
+        console.log("play notes: ", nextNote, "rootPitchSetting: ", rootPitchSetting, "rootOctave: ", rootOctave, audioPlayerRef.current);
         setOutput(rootPitchSetting);
         audioPlayerRef.current?.play(rootPitchSetting + rootOctave).then(() => {
             setOutput("?");

@@ -6,8 +6,8 @@ const TitleText: React.FC = () => {
 
     const [currentCatchWordIndex, setCurrentCatchWordIndex] = useState(0);
     const catchWord = ['hear', 'like', 'imagine'];
-    const animationDuration = 3000;
-
+    const animationDuration = 4000;
+ 
     useEffect(() => {
         const timerId = setTimeout(() => {
             if(currentCatchWordIndex < catchWord.length -1)
@@ -17,7 +17,6 @@ const TitleText: React.FC = () => {
         return () => clearTimeout(timerId);
     }, [currentCatchWordIndex]);
 
-    console.log(catchWord[currentCatchWordIndex]);
 
     return (
         <div className={styles.titleTextContainer}>

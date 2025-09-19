@@ -84,12 +84,12 @@
 
 .about-page {
   width: 66vw;
+  min-height: 100vh;
+  box-sizing: border-box;
+  padding-top: 1em;
+  padding-bottom: 3em ;
   margin: auto;
   text-align: left;
-}
-
-.footer {
-  height: 20px;
 }
 
 @media screen and (max-width: 1000px) {

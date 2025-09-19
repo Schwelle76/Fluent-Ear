@@ -83,9 +83,6 @@ const EntryPage: React.FC = () => {
         </ul>
       </section>
 
-      <section className={styles.footer}></section>
-
-
 
     </div>
   );

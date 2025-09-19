@@ -50,6 +50,7 @@ export default function useEarTrainingGame(detectedNote: PitchClass | undefined,
 
     useEffect(() => {
         setRoot(parsePitchClass(rootPitchSetting) ?? PITCH_CLASSES[Math.floor(Math.random() * PITCH_CLASSES.length)]);
+        setScore(0);
 
         if (active === true && ready === true)
             selectNewTargetNote();

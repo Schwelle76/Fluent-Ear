@@ -57,8 +57,8 @@ const EarTrainingPage: React.FC = () => {
                         ☰
                     </button>
                 )}
-                {earTrainingGame.active &&
-                    <span className={styles.score}>{earTrainingGame.score > 0 ? earTrainingGame.score : ""}</span>}
+
+                <span className={styles.score}>{earTrainingGame.score > 0 ? earTrainingGame.score : ""}</span>
 
             </div>
 

@@ -20,18 +20,19 @@ const InputSelection: React.FC<InputSelectionProps> = ({ noteInput }) => {
     return (
 
         <div>
-            <p className={styles.selectInputPrompt}>Select your Input</p>
+            <p className={styles.selectInputPrompt}>Select your input device</p>
             <div className={styles.inputOptionsContainerFlexbox}>
                 <div className={styles.inputOptionContainer}>
                     <button className={styles.inputOption} onClick={() => {
                         setInputDevice("ui");
                     }}>
                         {usesMouse ?
-                         <img src={"./src/assets/mouse-pointer-click.svg"} alt={"Mouse"} className={styles.inputOptionImage} />
-                        : <img src={"./src/assets/touch-press-click.svg"} alt={"Touch"} className={styles.inputOptionImage} />
+                            <img src={"./src/assets/mouse-pointer-click.svg"} alt={"Mouse"} className={styles.inputOptionImage} />
+                            : <img src={"./src/assets/touch-press-click.svg"} alt={"Touch"} className={styles.inputOptionImage} />
                         }
                     </button>
-                    <p>Touch</p>
+                    {usesMouse ?
+                        <p>Mouse</p>: <p>Touch</p>}
                 </div>
                 <div className={styles.inputOptionContainer}>
                     <button className={styles.inputOption} onClick={() => {

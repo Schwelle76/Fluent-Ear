@@ -10,6 +10,7 @@ import useEarTrainingGame from '../../hooks/useEarTrainingGame';
 import NoteInputButtonGrid from '../NoteInputButtonGrid';
 import InputSelection from '../InputSelection';
 import { useEarTrainingSettingsContext } from '../../contexts/EarTrainingSettingsContext';
+import ImageCycle from '../ImageCycle';
 
 
 
@@ -50,11 +51,18 @@ const EarTrainingPage: React.FC = () => {
 
         <div className={styles.appContainer}>
 
-            {!isSidebarOpen && (
-                <button className={styles.sidebarToggle} onClick={() => setIsSidebarOpen(true)}>
-                    ☰
-                </button>
-            )}
+            <div className={styles.topBar}>
+                {!isSidebarOpen && (
+                    <button className={styles.sidebarToggle} onClick={() => setIsSidebarOpen(true)}>
+                        ☰
+                    </button>
+                )}
+                {earTrainingGame.active &&
+                    <span className={styles.score}>{earTrainingGame.score > 0 ? earTrainingGame.score : ""}</span>}
+
+            </div>
+
+
 
             <div className={styles.centerElement}>
 
@@ -87,6 +95,10 @@ const EarTrainingPage: React.FC = () => {
 
             </div>
 
+
+            <div className={styles.bottomBar}>
+                <img className={`${styles.soundIcon} ${earTrainingGame.output ? styles.show : styles.hide}`} src={"./src/assets/volume-mid.svg"} alt={"Turn on volume"} />
+            </div>
 
             <Sidebar
                 isOpen={isSidebarOpen}

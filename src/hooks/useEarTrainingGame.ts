@@ -41,7 +41,6 @@ export default function useEarTrainingGame(detectedNote: PitchClass | undefined,
         if (detectedNote === undefined || output !== undefined) return;
         else if (targetNote?.pitchClass === detectedNote) {
             setScore(score + 1);
-            console.log("score: ", score);
             playReward().then(() => {
                 selectNewTargetNote();
             });
@@ -101,7 +100,6 @@ export default function useEarTrainingGame(detectedNote: PitchClass | undefined,
 
     const playNotes = async (nextNote: Note) => {
 
-        console.log("play notes: ", nextNote, "rootPitchSetting: ", rootPitchSetting, "rootOctave: ", rootOctave, audioPlayerRef.current);
         setOutput(rootPitchSetting);
         audioPlayerRef.current?.play(rootPitchSetting + rootOctave).then(() => {
             setOutput("?");
@@ -111,7 +109,6 @@ export default function useEarTrainingGame(detectedNote: PitchClass | undefined,
 
     const playReward = async () => {
 
-        console.log("play reward");
 
         return new Promise((resolve) => {
             if (targetNote) {

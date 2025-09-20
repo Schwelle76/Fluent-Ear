@@ -3,7 +3,7 @@ import styles from './InputSelection.module.css';
 import InputOption from './InputOption';
 import useNoteInput from '../hooks/useNoteInput';
 import { InputDevice } from '../models/InputDevice';
-import ImageCycler from './ImageCycle';
+import ImageCycle from './ImageCycle';
 interface InputSelectionProps {
     noteInput: ReturnType<typeof useNoteInput>;
 }
@@ -38,7 +38,7 @@ const InputSelection: React.FC<InputSelectionProps> = ({ noteInput }) => {
                     <button className={styles.inputOption} onClick={() => {
                         setInputDevice("microphone");
                     }}>
-                        <ImageCycler imageSrcs={["./src/assets/guitar.svg", "./src/assets/piano.svg", "./src/assets/saxophone.svg"]} alt={"Your instrument"} fadeDuration={1000} displayDuration={2500} />
+                        <ImageCycle imageSrcs={["./src/assets/guitar.svg", "./src/assets/piano.svg", "./src/assets/saxophone.svg"]} alt={"Your instrument"} fadeDuration={1000} displayDuration={2500} />
                     </button>
                     <p>Your instrument</p>
                 </div>

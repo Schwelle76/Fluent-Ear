@@ -4,6 +4,13 @@ import InputOption from './InputOption';
 import useNoteInput from '../hooks/useNoteInput';
 import { InputDevice } from '../models/InputDevice';
 import ImageCycle from './ImageCycle';
+import mouseIcon from '../assets/mouse-pointer-click.svg';
+import touchIcon from '../assets/touch-press-click.svg';
+import guitarIcon from '../assets/guitar.svg';
+import pianoIcon from '../assets/piano.svg';
+import saxophoneIcon from '../assets/saxophone.svg';
+
+
 interface InputSelectionProps {
     noteInput: ReturnType<typeof useNoteInput>;
 }
@@ -27,8 +34,8 @@ const InputSelection: React.FC<InputSelectionProps> = ({ noteInput }) => {
                         setInputDevice("ui");
                     }}>
                         {usesMouse ?
-                            <img src={"./src/assets/mouse-pointer-click.svg"} alt={"Mouse"} className={styles.inputOptionImage} />
-                            : <img src={"./src/assets/touch-press-click.svg"} alt={"Touch"} className={styles.inputOptionImage} />
+                            <img src={mouseIcon} alt={"Mouse"} className={styles.inputOptionImage} />
+                            : <img src={touchIcon} alt={"Touch"} className={styles.inputOptionImage} />
                         }
                     </button>
                     {usesMouse ?
@@ -38,7 +45,7 @@ const InputSelection: React.FC<InputSelectionProps> = ({ noteInput }) => {
                     <button className={styles.inputOption} onClick={() => {
                         setInputDevice("microphone");
                     }}>
-                        <ImageCycle imageSrcs={["./src/assets/guitar.svg", "./src/assets/piano.svg", "./src/assets/saxophone.svg"]} alt={"Your instrument"} fadeDuration={1000} displayDuration={2500} />
+                        <ImageCycle imageSrcs={[guitarIcon, pianoIcon, saxophoneIcon]} alt={"Your instrument"} fadeDuration={1000} displayDuration={2500} />
                     </button>
                     <p>Your instrument</p>
                 </div>

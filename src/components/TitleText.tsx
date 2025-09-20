@@ -7,9 +7,9 @@ import { SequenceStep } from '../hooks/useSequence';
 const TitleText: React.FC = () => {
 
     const sequenceList = [
-        { duration: 500, element: 'enter-transition' },
-        { duration: 3500, element: 'enter-transition' },
-        { duration: 500, element: 'exit-transition' },
+        { duration: 300, element: 'enter-transition' },
+        { duration: 3000, element: 'enter-transition' },
+        { duration: 300, element: 'exit-transition' },
         { duration: 200, element: 'return-transition' },
 
     ];

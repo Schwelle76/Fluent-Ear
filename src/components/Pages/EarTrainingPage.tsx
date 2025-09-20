@@ -10,6 +10,7 @@ import useEarTrainingGame from '../../hooks/useEarTrainingGame';
 import NoteInputButtonGrid from '../NoteInputButtonGrid';
 import InputSelection from '../InputSelection';
 import { useEarTrainingSettingsContext } from '../../contexts/EarTrainingSettingsContext';
+import volumeIcon from '../../assets/volume-mid.svg';
 import ImageCycle from '../ImageCycle';
 
 
@@ -97,7 +98,7 @@ const EarTrainingPage: React.FC = () => {
 
 
             <div className={styles.bottomBar}>
-                <img className={`${styles.soundIcon} ${earTrainingGame.output ? styles.show : styles.hide}`} src={"./src/assets/volume-mid.svg"} alt={"Turn on volume"} />
+                <img className={`${styles.soundIcon} ${earTrainingGame.output ? styles.show : styles.hide}`} src={volumeIcon} alt={"Turn on volume"} />
             </div>
 
             <Sidebar

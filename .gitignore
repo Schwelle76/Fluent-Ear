@@ -11,6 +11,7 @@ dist-ssr/
 node_modules/
 pnpm-lock.yaml
 yarn.lock
+.htaccess
 
 # Root-specific ignores
 .vscode/

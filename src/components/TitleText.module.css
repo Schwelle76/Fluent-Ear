@@ -15,9 +15,30 @@
     line-height: 1.1;
 }
 
-.titleTextContainer p {
+.subtitleContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: .2em;
+    width: fit-content;
+    height: 100%;
     font-size: clamp(1rem, 7.5vw, 2.6rem);
+    margin: auto;
+    margin-top: -.025em;
+    transition: all .2s ease-in-out;
 
+}
+
+.subtitle {
+    transition: all .2s ease-in-out;
+
+}
+
+.titleTextContainer p {
+
+
+    font-size: clamp(1rem, 7.5vw, 2.6rem);
 
     margin-top: 0rem;
 
@@ -27,8 +48,37 @@
 .highlight {
     display: inline-block;
     text-align: start;
-    min-width: 3.6em;
+    color: var(--color-accent);
+    /*     min-width: 3.6em;
+ */
     animation-timing-function: ease-in-out;
+    animation-fill-mode: both;
+    animation-iteration-count: 1;
+}
+
+.return-transition {
+    opacity: 0;
+    transform: translateY(50px);
+}
+.exit-transition {
+    opacity: 0;
+    transform: translateY(-50px);
+}
+.enter-transition {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.enter {
+
+    animation-name: enter-animation;
+    animation-fill-mode: both;
+    animation-iteration-count: 1;
+}
+
+
+.exit {
+    animation-name: exit-animation;
     animation-fill-mode: both;
     animation-iteration-count: 1;
 }
@@ -46,6 +96,36 @@
 
 }
 
+@keyframes enter-animation {
+
+    0%,10% 
+     {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+
+    90%,
+    100% {
+        transform: translateY(0px);
+        opacity: 1;
+    }
+}
+
+@keyframes exit-animation {
+
+    0%,
+    10% {
+        transform: translateY(0px);
+        opacity: 1;
+    }
+
+    90%,
+    100% {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+}
+
 
 @keyframes highlight-animation-0 {
 
@@ -58,7 +138,8 @@
 
     }
 
-    95%, 100% {
+    95%,
+    100% {
         transform: translateY(-50px);
         opacity: 0;
     }
@@ -66,8 +147,9 @@
 
 @keyframes highlight-animation-1 {
 
- 
-    0%, 5%{
+
+    0%,
+    5% {
         transform: translateY(50px);
         opacity: 0;
     }
@@ -80,7 +162,8 @@
 
     }
 
-    95%, 100% {
+    95%,
+    100% {
         transform: translateY(-50px);
         opacity: 0;
     }
@@ -89,7 +172,8 @@
 
 @keyframes highlight-animation-2 {
 
-    0%, 5%{
+    0%,
+    5% {
         transform: translateY(50px);
         opacity: 0;
     }

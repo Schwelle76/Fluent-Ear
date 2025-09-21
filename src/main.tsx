@@ -18,10 +18,12 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: <EntryPage/>,
+    errorElement: <EntryPage/>,
   },
   {
     path:'/training',
     element: <EarTrainingPage/>,
+    errorElement: <EarTrainingPage/>,
   }
 ])
 

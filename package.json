@@ -3,9 +3,10 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "homepage": "https://www.fluent-ear.com",
   "scripts": {
     "dev": "vite --host 0.0.0.0",
-    "build": "vite build",
+    "build": "vite build && echo www.fluent-ear.com > docs/CNAME",
     "lint": "eslint .",
     "preview": "vite preview"
   },

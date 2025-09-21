@@ -3,16 +3,17 @@
 <head>
   <meta charset="utf-8">
   <title>Redirecting...</title>
-  
-  <script>
-    const segment = window.location.pathname;
 
-    const redirectPath = '/index.html' + segment;
+  <script>
+    
+    const segment = window.location.pathname;
+ 
+    const redirectPath = '/index.html?path=' + segment;
 
     window.location.replace(redirectPath);
   </script>
 </head>
 <body>
-  <p>If you are not redirected automatically, follow this <a href="/">link</a>.</p>
+  <p>Redirecting...</p>
 </body>
 </html>

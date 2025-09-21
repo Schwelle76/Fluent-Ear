@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './EntryPage.module.css';
-import { useNavigate } from 'react-router';
+import { ScrollRestoration, useNavigate } from 'react-router';
 import TitleText from '../TitleText';
 
 
@@ -25,7 +25,8 @@ const EntryPage: React.FC = () => {
 
   return (
 
-    <div className = {styles.entryPage}>
+    <div className={styles.entryPage}>
+
       <section className={styles.navigationSection}>
 
         <div className={styles.titleTextContainer}>
@@ -42,7 +43,7 @@ const EntryPage: React.FC = () => {
       <section id="about" className={styles.aboutSection}>
         <h1>About</h1>
 
-        <p> You imagine beautiful melodies but struggle to find those notes on your instrument? Do you rely on endless trial and error just to play what you want? Then Fluent Ear is the app for you! 
+        <p> You imagine beautiful melodies but struggle to find those notes on your instrument? Do you rely on endless trial and error just to play what you want? Then Fluent Ear is the app for you!
           <br /><br />
           <strong>Fluent Ear</strong> is an ear training web app that takes input directly from your instrument through the microphone.
           Instead of clicking UI buttons, you play the requested note or interval on your instrument — training your ability to play what you hear and thus play what you imagine just like speaking a language fluently.

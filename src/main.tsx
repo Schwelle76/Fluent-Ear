@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import { EarTrainingSettingsContext } from './contexts/EarTrainingSettingsContext'
 import useEarTrainingSettings from './hooks/useEarTrainingSettings'
-import { createBrowserRouter, RouterProvider } from 'react-router'
+import { createHashRouter, createBrowserRouter, RouterProvider, ScrollRestoration } from 'react-router'
 import EntryPage from './components/Pages/EntryPage'
 import EarTrainingPage from './components/Pages/EarTrainingPage'
 
@@ -14,16 +14,14 @@ createRoot(document.getElementById('root')!).render(
 )
 
 
-const router = createBrowserRouter([
+const router = createHashRouter([
   {
     path: '/',
-    element: <EntryPage/>,
-    errorElement: <EntryPage/>,
+    element: <EntryPage />
   },
   {
-    path:'/training',
-    element: <EarTrainingPage/>,
-    errorElement: <EarTrainingPage/>,
+    path: '/training',
+    element: <EarTrainingPage />
   }
 ])
 

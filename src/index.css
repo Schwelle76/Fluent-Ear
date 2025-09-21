@@ -7,7 +7,7 @@
   font-size: 17px;
 
 
-  color-scheme: light dark;
+  color-scheme: dark;
   color: rgba(255, 255, 255, 0.87);
   background-color: #242424;
   --color-accent: #00a8ff;
@@ -18,7 +18,12 @@
   -moz-osx-font-smoothing: grayscale;
 
   overflow-x: hidden;
+  overflow-y: hidden;
   box-sizing: border-box;
+}
+
+button{
+  color: inherit;
 }
 
 a {
@@ -65,17 +70,4 @@ button:hover {
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
 }

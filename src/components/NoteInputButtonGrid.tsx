@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useEarTrainingSettingsContext } from '../contexts/EarTrainingSettingsContext';
 import { Scale } from '../models/Scale';
-import { getPitchClass, Interval, PitchClass } from '../models/Note';
+import { getPitchClass, Interval, INTERVALS, PitchClass } from '../models/Note';
 import useEarTrainingGame from '../hooks/useEarTrainingGame';
 import useNoteInput from '../hooks/useNoteInput';
 import styles from './NoteInputButtonGrid.module.css';
@@ -20,8 +20,9 @@ const NoteInputButtonGrid: React.FC<NoteInputButtonGridProps> = ({ root, noteInp
 
     const [clickedButtons, setClickedButtons] = useState<Set<string>>(new Set());
     const settings = useEarTrainingSettingsContext();
-    const intervals = settings.scale.getIntervals();
-
+    const intervals = [...settings.scale.getIntervals()].sort(
+        (a, b) => INTERVALS.indexOf(a) - INTERVALS.indexOf(b)
+    );
 
     useEffect(() => {
         setClickedButtons(new Set());

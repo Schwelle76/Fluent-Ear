@@ -4,7 +4,7 @@ import Sidebar from '../Sidebar';
 import SensitivitySlider from '../SensitivitySlider';
 import NoteDisplay from '../NoteDisplay';
 import { useGlobalPointer } from '../../hooks/useGlobalPointer';
-import { getInterval, isPitchClass } from '../../models/Note';
+import { getInterval, isPitchClass, Note } from '../../models/Note';
 import useNoteInput from '../../hooks/useNoteInput';
 import useEarTrainingGame from '../../hooks/useEarTrainingGame';
 import NoteInputButtonGrid from '../NoteInputButtonGrid';
@@ -45,7 +45,7 @@ const EarTrainingPage: React.FC = () => {
             styledTargetNoteMessages = [
                 ...styledTargetNoteMessages.slice(0, firstQuestionIndex),
                 {
-                    message: noteInput.note,
+                    message: noteInput.note instanceof Note ? noteInput.note.pitchClass : noteInput.note,
                     style: ''
                 },
                 ...styledTargetNoteMessages.slice(firstQuestionIndex + 1)
@@ -53,12 +53,6 @@ const EarTrainingPage: React.FC = () => {
         }
     }
 
-    let displayInterval: string | undefined
-    if (earTrainingGame.output) {
-        if (isPitchClass(earTrainingGame.output))
-            displayInterval = getInterval(earTrainingGame.output, earTrainingGame.root);
-        else displayInterval = earTrainingGame.output;
-    } else displayInterval = noteInput.note ? getInterval(noteInput.note, earTrainingGame.root) : undefined;
 
     return (
 
@@ -92,7 +86,7 @@ const EarTrainingPage: React.FC = () => {
                 {noteInput.inputDevice && earTrainingGame.active && noteInput.ready &&
                     <NoteDisplay
                         notes={[earTrainingGame.rootChannelOutput, ...styledTargetNoteMessages]}
-                        root={earTrainingGame.root}
+                        root={earTrainingGame.root.pitchClass}
                     />}
             </div>
 
@@ -107,7 +101,7 @@ const EarTrainingPage: React.FC = () => {
                 />}
 
 
-                {noteInput.ready && noteInput.inputDevice === 'ui' && !earTrainingGame.isTalking && <NoteInputButtonGrid resetTrigger={earTrainingGame.score} noteInput={noteInput} root={earTrainingGame.root} />}
+                {noteInput.ready && noteInput.inputDevice === 'ui' && !earTrainingGame.isTalking && <NoteInputButtonGrid resetTrigger={earTrainingGame.score} noteInput={noteInput} root={earTrainingGame.root.pitchClass} />}
 
             </div>
 

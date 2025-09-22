@@ -1,12 +1,14 @@
 export const PITCH_CLASSES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'] as const;
 export type PitchClass = typeof PITCH_CLASSES[number];
 
-export function isPitchClass(str: string): str is PitchClass {
-  return (PITCH_CLASSES as readonly string[]).includes(str);
+export function isPitchClass(item: any): item is PitchClass {
+
+  if (typeof item !== 'string') return false;
+  return (PITCH_CLASSES as readonly string[]).includes(item);
 }
 
 export function parsePitchClass(str: string): PitchClass | undefined {
-  if(isPitchClass(str)) return str;
+  if (isPitchClass(str)) return str;
   else return undefined;
 }
 
@@ -21,7 +23,7 @@ export function getInterval(note: PitchClass, tonic: PitchClass) {
   return INTERVALS[semitoneDistance];
 }
 
-export function getPitchClass(tonic: PitchClass, interval: Interval){
+export function getPitchClass(tonic: PitchClass, interval: Interval) {
   const tonicIndex = PITCH_CLASSES.indexOf(tonic);
   const semitoneDistance = INTERVALS.indexOf(interval);
 
@@ -36,17 +38,22 @@ export class Note {
   pitchClass: PitchClass;
   octave: number;
 
-  constructor(pitchClass: PitchClass, octave: number = 4) { 
+  constructor(pitchClass: PitchClass, octave: number = 4) {
     this.pitchClass = pitchClass;
     this.octave = octave;
   }
 
-  public toString(){
+  public toString() {
     return this.pitchClass + this.octave;
+  }
+
+  public equals(other: Note): boolean {
+    return this.pitchClass === other.pitchClass &&
+      this.octave === other.octave;
   }
 
   public getInterval(tonic: Note) {
     return getInterval(this.pitchClass, tonic.pitchClass);
   }
-  
+
 }

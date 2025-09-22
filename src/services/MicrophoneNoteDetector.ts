@@ -1,9 +1,9 @@
-import { PitchClass, PITCH_CLASSES } from '../models/Note';
+import { PitchClass, PITCH_CLASSES, Note } from '../models/Note';
 
 export default class MicrophoneNoteDetector {
 
 
-    onNote: (note: PitchClass) => void;
+    onNote: (note: Note | undefined) => void;
     sensitivity: number;
     detectedNote: PitchClass | undefined;
     audioReady: boolean = false;
@@ -13,11 +13,11 @@ export default class MicrophoneNoteDetector {
     audioContext: AudioContext | undefined;
     analyser: AnalyserNode | undefined;
     animationFrame: number | undefined;
-    currentAssumedNote: PitchClass | undefined;
-    previousAssumedNote: PitchClass | undefined;
+    currentAssumedNote: Note | undefined;
+    previousAssumedNote: Note | undefined;
     timeOfFirstAssumption: number = 0;
 
-    constructor(onNote: (note: PitchClass) => void) {
+    constructor(onNote: (note: Note | undefined) => void) {
         this.onNote = onNote;
         this.sensitivity = this.computeDefaultSensitivity();
         // kein bind nötig mehr
@@ -96,7 +96,7 @@ export default class MicrophoneNoteDetector {
             this.currentAssumedNote = detected;
 
 
-            if (this.previousAssumedNote === this.currentAssumedNote) {
+            if (this.previousAssumedNote?.equals(this.currentAssumedNote)) {
                 if (Date.now() - this.timeOfFirstAssumption > timeTillDetection) {
                     note = this.currentAssumedNote;
                 }
@@ -106,7 +106,7 @@ export default class MicrophoneNoteDetector {
             }
         }
 
-        if(note)
+        
         this.onNote(note);
 
 
@@ -161,7 +161,7 @@ export default class MicrophoneNoteDetector {
     private noteFromPitch = (frequency: number) => {
         var noteNum = 12 * (Math.log(frequency / 440) / Math.log(2));
         let noteIndex = Math.round(noteNum) + 69;
-        return PITCH_CLASSES[noteIndex % 12];
+        return new Note(PITCH_CLASSES[noteIndex % 12], Math.floor(noteIndex / 12) - 1);
     };
 
     private computeDefaultSensitivity() {

@@ -1,6 +1,6 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, use } from 'react';
 import NoteFromKeyboardDetector from '../services/NoteFromKeyboardDetector';
-import { PitchClass } from '../models/Note';
+import { Note, PitchClass } from '../models/Note';
 import MicrophoneNoteDetector from '../services/MicrophoneNoteDetector';
 import { InputDevice } from '../models/InputDevice';
 
@@ -12,11 +12,15 @@ export default function useNoteInput() {
     const noteFromKeyboardDetector = useRef<NoteFromKeyboardDetector | undefined>(undefined);
     const [uiInput, setUiInput] = useState<PitchClass | undefined>(undefined);
 
-    const [note, setNote] = useState<PitchClass | undefined>(undefined);
+    const [note, setNote] = useState<PitchClass | Note | undefined>(undefined);
     const [ready, setReady] = useState(false);
     const [sensitivity, setSensitivity] = useState(0);
 
 
+
+    useEffect(() => {
+        console.log("Note:", note);
+    }, [note]);
 
     useEffect(() => {
     

@@ -1,3 +1,12 @@
+.input-selection-master-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+
 .select-input-prompt {
   box-sizing: border-box;
   width: 100%;

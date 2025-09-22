@@ -1,18 +1,40 @@
 import React from 'react';
-import './NoteDisplay.css';
+import style from './NoteDisplay.module.css';
+import { StyledMessage } from '../models/StyledMessage';
+import { getInterval, isPitchClass, PitchClass } from '../models/Note';
 
 interface NoteDisplayProps {
-  currentNote: string | undefined;
-  currentInterval: string | undefined;
+  notes: StyledMessage[];
+  root: PitchClass;
 }
 
-
-const NoteDisplay:React.FC<NoteDisplayProps> = ({ currentNote, currentInterval }) => {
+const NoteDisplay: React.FC<NoteDisplayProps> = ({ notes, root}) => {
   return (
-      <div className="note-display">
-        <h1 className="current-note">{currentNote}</h1>
-        {currentInterval && <p className="current-interval">{currentInterval}</p>}
-      </div>
+    <div className={style.noteDisplayContainer}>
+      
+      {notes.map((note, index) => {
+        
+        const message = note.message;
+        let content: string;
+
+        if (isPitchClass(message)) {
+          content = getInterval(message, root); 
+        } else {
+          content = message;
+        }
+
+        return (
+          <div key={index} className={`${style.noteDisplay} ${style[note.style]}`}>
+            <div className={style.currentNote}>
+              <span>{note.message}</span>
+            </div>
+            <div className={style.currentInterval}>
+              <span>{content}</span>
+            </div>
+          </div>
+        );
+      })}
+    </div>
   );
 };
 

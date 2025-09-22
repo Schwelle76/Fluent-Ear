@@ -26,7 +26,7 @@ const InputSelection: React.FC<InputSelectionProps> = ({ noteInput }) => {
 
     return (
 
-        <div>
+        <div className={styles.inputSelectionMasterContainer}>
             <p className={styles.selectInputPrompt}>Select your input device</p>
             <div className={styles.inputOptionsContainerFlexbox}>
                 <div className={styles.inputOptionContainer}>

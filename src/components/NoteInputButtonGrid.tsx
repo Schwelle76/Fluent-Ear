@@ -1,20 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { useEarTrainingSettingsContext } from '../contexts/EarTrainingSettingsContext';
 import { Scale } from '../models/Scale';
-import { getPitchClass, Interval } from '../models/Note';
+import { getPitchClass, Interval, PitchClass } from '../models/Note';
 import useEarTrainingGame from '../hooks/useEarTrainingGame';
 import useNoteInput from '../hooks/useNoteInput';
 import styles from './NoteInputButtonGrid.module.css';
 
 interface NoteInputButtonGridProps {
+
+    root: PitchClass;
     noteInput: ReturnType<typeof useNoteInput>;
-    earTrainingGame: ReturnType<typeof useEarTrainingGame>;
+    resetTrigger: any;
 
 }
 
 
 
-const NoteInputButtonGrid: React.FC<NoteInputButtonGridProps> = ({ noteInput, earTrainingGame }) => {
+const NoteInputButtonGrid: React.FC<NoteInputButtonGridProps> = ({ root, noteInput, resetTrigger }) => {   
 
     const [clickedButtons, setClickedButtons] = useState<Set<string>>(new Set());
     const settings = useEarTrainingSettingsContext();
@@ -23,11 +25,11 @@ const NoteInputButtonGrid: React.FC<NoteInputButtonGridProps> = ({ noteInput, ea
 
     useEffect(() => {
         setClickedButtons(new Set());
-    }, [earTrainingGame.score, settings]);
+    }, [resetTrigger, settings]);
 
     const handleButtonClick = (interval: Interval) => {
         setClickedButtons(prev => new Set(prev).add(interval));
-        noteInput.setUiInput(getPitchClass(earTrainingGame.root, interval));
+        noteInput.setUiInput(getPitchClass(root, interval));
     };
 
 
@@ -39,7 +41,7 @@ const NoteInputButtonGrid: React.FC<NoteInputButtonGridProps> = ({ noteInput, ea
             {intervals.map(interval => (
                 <button
                     key = {interval}
-                    className={`${styles['note-input-button']} ${clickedButtons.has(interval) || earTrainingGame.output ? styles.inactive : ''}`}
+                    className={`${styles['note-input-button']} ${clickedButtons.has(interval) /* || earTrainingGame.output */ ? styles.inactive : ''}`}
                     onClick={() => handleButtonClick(interval)}
                 >
                     {interval}

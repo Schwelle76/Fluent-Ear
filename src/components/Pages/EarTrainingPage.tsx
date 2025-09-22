@@ -25,7 +25,7 @@ const EarTrainingPage: React.FC = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false)
 
     useGlobalPointer((ev) => {
-        if (earTrainingGame.active && !earTrainingGame.output && !isSidebarOpen)
+        if (earTrainingGame.active && !earTrainingGame.isTalking && !isSidebarOpen)
             earTrainingGame.replayNotes();
     });
 
@@ -36,10 +36,22 @@ const EarTrainingPage: React.FC = () => {
 
 
 
-    let displayPitch: string | undefined
-    if (noteInput.ready)
-        displayPitch = earTrainingGame.output ? earTrainingGame.output : noteInput.note?.toString();
-    else displayPitch = "Allow microphone access to detect your intrument!";
+    let styledTargetNoteMessages = earTrainingGame.targetNotesChannelOutput;
+
+    if (noteInput.ready && !earTrainingGame.isTalking) {
+        const firstQuestionIndex = styledTargetNoteMessages.findIndex(note => note.message === '?');
+
+        if (firstQuestionIndex !== -1 && noteInput.note) {
+            styledTargetNoteMessages = [
+                ...styledTargetNoteMessages.slice(0, firstQuestionIndex),
+                {
+                    message: noteInput.note,
+                    style: ''
+                },
+                ...styledTargetNoteMessages.slice(firstQuestionIndex + 1)
+            ];
+        }
+    }
 
     let displayInterval: string | undefined
     if (earTrainingGame.output) {
@@ -72,13 +84,15 @@ const EarTrainingPage: React.FC = () => {
                 }
 
                 {noteInput.inputDevice && !noteInput.ready &&
-                    <h1>Allow microphone access to detect your intrument!</h1>
+                    <div className={styles.centerElement}>
+                        <h1>Allow microphone access to detect your intrument!</h1>
+                    </div>
                 }
 
                 {noteInput.inputDevice && earTrainingGame.active && noteInput.ready &&
                     <NoteDisplay
-                        currentNote={displayPitch}
-                        currentInterval={displayInterval}
+                        notes={[earTrainingGame.rootChannelOutput, ...styledTargetNoteMessages]}
+                        root={earTrainingGame.root}
                     />}
             </div>
 
@@ -92,13 +106,14 @@ const EarTrainingPage: React.FC = () => {
                     onChange={(e) => noteInput.setSensitivity(parseInt(e.target.value))}
                 />}
 
-                {noteInput.ready && noteInput.inputDevice === 'ui' && <NoteInputButtonGrid noteInput={noteInput} earTrainingGame={earTrainingGame} />}
+
+                {noteInput.ready && noteInput.inputDevice === 'ui' && !earTrainingGame.isTalking && <NoteInputButtonGrid resetTrigger={earTrainingGame.score} noteInput={noteInput} root={earTrainingGame.root} />}
 
             </div>
 
 
             <div className={styles.bottomBar}>
-                <img className={`${styles.soundIcon} ${earTrainingGame.output ? styles.show : styles.hide}`} src={volumeIcon} alt={"Turn on volume"} />
+                <img className={`${styles.soundIcon} ${earTrainingGame.isTalking ? styles.show : styles.hide}`} src={volumeIcon} alt={"Turn on volume"} />
             </div>
 
             <Sidebar

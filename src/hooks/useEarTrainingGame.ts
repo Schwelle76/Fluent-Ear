@@ -7,6 +7,7 @@ import { Scale } from '../models/Scale';
 import SoundfontService from '../services/SoundFontService';
 import { getInterval, getPitchClass, Note, parsePitchClass, PITCH_CLASSES, PitchClass } from '../models/Note';
 import { Direction } from '../models/Direction';
+import { StyledMessage } from '../models/StyledMessage';
 
 export default function useEarTrainingGame(detectedNote: PitchClass | undefined, scale: Scale, rootPitchSetting: string, direction: Direction) {
 
@@ -18,7 +19,12 @@ export default function useEarTrainingGame(detectedNote: PitchClass | undefined,
     const [ready, setReady] = useState(false);
     const rootOctave = 4;
     const [output, setOutput] = useState<string | undefined>(undefined);
+
+    const [messageChannels, setMessageChannels] = useState<string[]>([]);
+    const [rootChannelOutput, setRootChannel] = useState<StyledMessage>({message: '', style: ''});
+    const [targetNotesChannelOutput, setTargetNotesChannels] = useState<StyledMessage[]>([{message: '', style: ''}]);
     const [root, setRoot] = useState<PitchClass>(parsePitchClass(rootPitchSetting) ?? PITCH_CLASSES[Math.floor(Math.random() * PITCH_CLASSES.length)]);
+    const [isTalking, setIsTalking] = useState(false);
 
     const start = () => {
         setActive(true);
@@ -26,7 +32,7 @@ export default function useEarTrainingGame(detectedNote: PitchClass | undefined,
 
     useEffect(() => {
         audioPlayerRef.current = new SoundfontService();
-        audioPlayerRef.current.load().then(()=>{setReady(true);});
+        audioPlayerRef.current.load().then(() => { setReady(true); });
 
         return () => {
             audioPlayerRef.current?.destroy();
@@ -69,7 +75,6 @@ export default function useEarTrainingGame(detectedNote: PitchClass | undefined,
             nextPitchClass = availablePitchClasses[Math.floor(Math.random() * (availablePitchClasses.length))];
         }
 
-        // Calculate octave based on direction and note positions
         const rootPitchIndex = PITCH_CLASSES.indexOf(root);
         const notePitchIndex = PITCH_CLASSES.indexOf(nextPitchClass);
 
@@ -79,7 +84,6 @@ export default function useEarTrainingGame(detectedNote: PitchClass | undefined,
             } else if (direction === 'descending') {
                 octave = notePitchIndex < rootPitchIndex ? 4 : 3;
             } else {
-                // Randomly choose between ascending and descending rules
                 const useAscending = Math.random() > 0.5;
                 octave = useAscending
                     ? (notePitchIndex > rootPitchIndex ? 4 : 5)
@@ -100,11 +104,21 @@ export default function useEarTrainingGame(detectedNote: PitchClass | undefined,
     }
 
     const playNotes = async (nextNote: Note) => {
-
+        setRootChannel({ message: root, style: "pulse" });
+        setIsTalking(true);
         setOutput(rootPitchSetting);
         audioPlayerRef.current?.play(rootPitchSetting + rootOctave).then(() => {
+
+            setRootChannel({ message: root, style: '' });
+            setTargetNotesChannels([{ message: "?", style: "pulse" }]);
             setOutput("?");
-            audioPlayerRef.current?.play(nextNote.toString()).then(() => setOutput(undefined));
+            audioPlayerRef.current?.play(nextNote.toString()).then(() => {
+
+                setTargetNotesChannels([{ message: "?", style: '' }]);
+                setIsTalking(false);
+                setOutput(undefined)
+            }
+            );
         });
     }
 
@@ -113,7 +127,10 @@ export default function useEarTrainingGame(detectedNote: PitchClass | undefined,
 
         return new Promise((resolve) => {
             if (targetNote) {
+
+                setTargetNotesChannels([{ message: targetNote.pitchClass, style: "reward" }]);
                 setOutput(targetNote.pitchClass)
+                setIsTalking(true);
 
                 const rewardNotes: string[] = [];
                 const fifthInterval = getPitchClass(targetNote.pitchClass, "5");
@@ -124,6 +141,8 @@ export default function useEarTrainingGame(detectedNote: PitchClass | undefined,
 
                 audioPlayerRef.current?.play(rewardNotes, .65, .5).then(() => {
                     setOutput(undefined);
+                    setTargetNotesChannels([{ message: targetNote.pitchClass, style: ''}]);
+                    setIsTalking(false);
                     resolve(true)
                 });
             } else resolve(false);
@@ -137,6 +156,9 @@ export default function useEarTrainingGame(detectedNote: PitchClass | undefined,
         start,
         active,
         output,
+        isTalking,
+        rootChannelOutput,
+        targetNotesChannelOutput,
         root
     }
 

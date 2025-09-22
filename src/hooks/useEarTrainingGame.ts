@@ -20,7 +20,6 @@ export default function useEarTrainingGame(detectedNote: PitchClass | undefined,
     const rootOctave = 4;
     const [output, setOutput] = useState<string | undefined>(undefined);
 
-    const [messageChannels, setMessageChannels] = useState<string[]>([]);
     const [rootChannelOutput, setRootChannel] = useState<StyledMessage>({message: '', style: ''});
     const [targetNotesChannelOutput, setTargetNotesChannels] = useState<StyledMessage[]>([{message: '', style: ''}]);
     const [root, setRoot] = useState<PitchClass>(parsePitchClass(rootPitchSetting) ?? PITCH_CLASSES[Math.floor(Math.random() * PITCH_CLASSES.length)]);

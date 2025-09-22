@@ -3,7 +3,7 @@ import { PitchClass, PITCH_CLASSES } from '../models/Note';
 export default class MicrophoneNoteDetector {
 
 
-    onNote: (note: PitchClass | undefined) => void;
+    onNote: (note: PitchClass) => void;
     sensitivity: number;
     detectedNote: PitchClass | undefined;
     audioReady: boolean = false;
@@ -17,7 +17,7 @@ export default class MicrophoneNoteDetector {
     previousAssumedNote: PitchClass | undefined;
     timeOfFirstAssumption: number = 0;
 
-    constructor(onNote: (note: PitchClass | undefined) => void) {
+    constructor(onNote: (note: PitchClass) => void) {
         this.onNote = onNote;
         this.sensitivity = this.computeDefaultSensitivity();
         // kein bind nötig mehr
@@ -106,6 +106,7 @@ export default class MicrophoneNoteDetector {
             }
         }
 
+        if(note)
         this.onNote(note);
 
 

@@ -18,12 +18,12 @@ export default function useEarTrainingGame(detectedNote: Note | PitchClass | und
     const [active, setActive] = useState(false);
     const [ready, setReady] = useState(false);
     const rootOctave = 4;
-    const [output, setOutput] = useState<string | undefined>(undefined);
 
     const [rootChannelOutput, setRootChannel] = useState<StyledMessage>({ message: '', style: '' });
     const [targetNotesChannelOutput, setTargetNotesChannels] = useState<StyledMessage[]>([{ message: '', style: '' }]);
     const [root, setRoot] = useState<Note>(pickRoot());
     const [isTalking, setIsTalking] = useState(false);
+    const isTalkingBuffer = 200;
 
     const start = () => {
         setActive(true);
@@ -41,8 +41,12 @@ export default function useEarTrainingGame(detectedNote: Note | PitchClass | und
         };
     }, []);
 
-
     useEffect(() => {
+        console.log("isTalking: ", isTalking);
+        //if (isTalking) setTimeout(() => setIsTalking(false), isTalkingBuffer);
+    }, [isTalking]);
+    useEffect(() => {
+
         if (detectedNote === undefined || targetNote === undefined
             || isTalking) return;
 
@@ -109,29 +113,26 @@ export default function useEarTrainingGame(detectedNote: Note | PitchClass | und
         setTargetNote(newTargetNote);
         setRoot(newRoot);
 
-        playNotes(newRoot, newTargetNote);
+        playQuestion(newRoot, newTargetNote);
 
     }
 
-    const replayNotes = () => {
+    const replayQuestion = () => {
         if (targetNote === undefined) { setNewNotes(); return; }
-        playNotes(root, targetNote);
+            playQuestion(root, targetNote);
     }
 
-    const playNotes = async (rootNote : Note, nextNote: Note) => {
+    const playQuestion = async (rootNote : Note, nextNote: Note) => {
         setRootChannel({ message: rootNote.pitchClass, style: "pulse" });
         setIsTalking(true);
-        setOutput(rootNote.pitchClass);
         audioPlayerRef.current?.play(rootNote.toString()).then(() => {
 
             setRootChannel({ message: rootNote.pitchClass, style: '' });
             setTargetNotesChannels([{ message: "?", style: "pulse" }]);
-            setOutput("?");
             audioPlayerRef.current?.play(nextNote.toString()).then(() => {
 
                 setTargetNotesChannels([{ message: "?", style: '' }]);
                 setIsTalking(false);
-                setOutput(undefined)
             }
             );
         });
@@ -144,7 +145,6 @@ export default function useEarTrainingGame(detectedNote: Note | PitchClass | und
             if (targetNote) {
 
                 setTargetNotesChannels([{ message: targetNote.pitchClass, style: "reward" }]);
-                setOutput(targetNote.pitchClass)
                 setIsTalking(true);
 
                 const rewardNotes: string[] = [];
@@ -155,7 +155,6 @@ export default function useEarTrainingGame(detectedNote: Note | PitchClass | und
                     rewardNotes.push(fifthInterval + 5);
 
                 audioPlayerRef.current?.play(rewardNotes, .65, .5).then(() => {
-                    setOutput(undefined);
                     setTargetNotesChannels([{ message: targetNote.pitchClass, style: '' }]);
                     setIsTalking(false);
                     resolve(true)
@@ -167,10 +166,10 @@ export default function useEarTrainingGame(detectedNote: Note | PitchClass | und
     return {
         targetNote,
         score,
-        replayNotes,
+        replayQuestion,
         start,
         active,
-        output,
+        ready,
         isTalking,
         rootChannelOutput,
         targetNotesChannelOutput,

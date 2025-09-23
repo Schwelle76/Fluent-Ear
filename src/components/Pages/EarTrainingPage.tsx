@@ -11,6 +11,7 @@ import NoteInputButtonGrid from '../NoteInputButtonGrid';
 import InputSelection from '../InputSelection';
 import { useEarTrainingSettingsContext } from '../../contexts/EarTrainingSettingsContext';
 import volumeIcon from '../../assets/volume-mid.svg';
+import LoadingIcon from '../LoadingIcon';
 
 
 
@@ -36,12 +37,12 @@ const EarTrainingPage: React.FC = () => {
         previousScore.current = earTrainingGame.score;
     }, [score]);
 
-    
+
     const [isSidebarOpen, setIsSidebarOpen] = useState(false)
 
     useGlobalPointer((ev) => {
         if (earTrainingGame.active && !earTrainingGame.isTalking && !isSidebarOpen)
-            earTrainingGame.replayNotes();
+            earTrainingGame.replayQuestion();
     });
 
     useEffect(() => {
@@ -88,6 +89,7 @@ const EarTrainingPage: React.FC = () => {
 
             <div className={styles.centerElement}>
 
+
                 {!noteInput.inputDevice &&
                     <InputSelection noteInput={noteInput} />
                 }
@@ -98,7 +100,11 @@ const EarTrainingPage: React.FC = () => {
                     </div>
                 }
 
-                {noteInput.inputDevice && earTrainingGame.active && noteInput.ready &&
+                {noteInput.inputDevice && earTrainingGame.active && !earTrainingGame.ready && noteInput.ready &&
+                    <LoadingIcon />
+                }
+
+                {noteInput.inputDevice && earTrainingGame.active && earTrainingGame.ready && noteInput.ready &&
                     <NoteDisplay
                         notes={[earTrainingGame.rootChannelOutput, ...styledTargetNoteMessages]}
                         root={earTrainingGame.root.pitchClass}
@@ -116,7 +122,7 @@ const EarTrainingPage: React.FC = () => {
                 />}
 
 
-                {noteInput.ready && noteInput.inputDevice === 'ui' &&
+                {earTrainingGame.ready && noteInput.ready && noteInput.inputDevice === 'ui' &&
                     <NoteInputButtonGrid resetTrigger={roundCount} noteInput={noteInput} root={earTrainingGame.root.pitchClass} active = {!earTrainingGame.isTalking} />}
 
             </div>

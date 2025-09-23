@@ -32,6 +32,10 @@ export function getPitchClass(tonic: PitchClass, interval: Interval) {
   return PITCH_CLASSES[targetNoteIndex];
 }
 
+export function randomPitchClass(): PitchClass {
+  return PITCH_CLASSES[Math.floor(Math.random() * PITCH_CLASSES.length)];
+}
+
 
 export class Note {
 

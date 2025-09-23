@@ -71,6 +71,12 @@ button {
   transition: border-color 0.25s;
 }
 
+.hidden {
+  transition: all .2 ease-in-out;
+
+  opacity: 0;
+}
+
 
 button:focus,
 button:focus-visible {

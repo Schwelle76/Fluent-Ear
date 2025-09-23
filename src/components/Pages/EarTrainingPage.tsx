@@ -1,5 +1,5 @@
 import styles from './EarTrainingPage.module.css'
-import React, { use, useEffect, useState } from 'react';
+import React, { use, useEffect, useRef, useState } from 'react';
 import Sidebar from '../Sidebar';
 import SensitivitySlider from '../SensitivitySlider';
 import NoteDisplay from '../NoteDisplay';
@@ -11,7 +11,6 @@ import NoteInputButtonGrid from '../NoteInputButtonGrid';
 import InputSelection from '../InputSelection';
 import { useEarTrainingSettingsContext } from '../../contexts/EarTrainingSettingsContext';
 import volumeIcon from '../../assets/volume-mid.svg';
-import ImageCycle from '../ImageCycle';
 
 
 
@@ -20,8 +19,24 @@ const EarTrainingPage: React.FC = () => {
     const earTrainingSettings = useEarTrainingSettingsContext()
     const noteInput = useNoteInput()
     const earTrainingGame = useEarTrainingGame(noteInput.note, earTrainingSettings.scale, earTrainingSettings.root, earTrainingSettings.direction)
+   
+    const [roundCount, setRoundCount] = useState(0);
+    const previousScore = useRef(0); 
+
+    const score = earTrainingGame.score;
+
+    useEffect(() => {
 
 
+
+        if(earTrainingGame.score === 0) setRoundCount(0);
+        else if(earTrainingGame.score > previousScore.current){
+            setRoundCount(roundCount + 1);
+        }
+        previousScore.current = earTrainingGame.score;
+    }, [score]);
+
+    
     const [isSidebarOpen, setIsSidebarOpen] = useState(false)
 
     useGlobalPointer((ev) => {
@@ -101,7 +116,8 @@ const EarTrainingPage: React.FC = () => {
                 />}
 
 
-                {noteInput.ready && noteInput.inputDevice === 'ui' && !earTrainingGame.isTalking && <NoteInputButtonGrid resetTrigger={earTrainingGame.score} noteInput={noteInput} root={earTrainingGame.root.pitchClass} />}
+                {noteInput.ready && noteInput.inputDevice === 'ui' &&
+                    <NoteInputButtonGrid resetTrigger={roundCount} noteInput={noteInput} root={earTrainingGame.root.pitchClass} active = {!earTrainingGame.isTalking} />}
 
             </div>
 

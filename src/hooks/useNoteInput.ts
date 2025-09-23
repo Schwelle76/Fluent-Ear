@@ -19,10 +19,6 @@ export default function useNoteInput() {
 
 
     useEffect(() => {
-        console.log("Note:", note);
-    }, [note]);
-
-    useEffect(() => {
     
         if(inputDevice === undefined) return;
 

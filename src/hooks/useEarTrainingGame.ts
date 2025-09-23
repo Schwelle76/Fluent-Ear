@@ -5,7 +5,7 @@ import EarTrainingSettings from '../models/EarTrainingSettings';
 import { SCALES } from '../constants/SCALES';
 import { Scale } from '../models/Scale';
 import SoundfontService from '../services/SoundFontService';
-import { getInterval, getPitchClass, isPitchClass, Note, parsePitchClass, PITCH_CLASSES, PitchClass } from '../models/Note';
+import { getInterval, getPitchClass, isPitchClass, Note, parsePitchClass, PITCH_CLASSES, PitchClass, randomPitchClass } from '../models/Note';
 import { Direction } from '../models/Direction';
 import { StyledMessage } from '../models/StyledMessage';
 
@@ -20,9 +20,9 @@ export default function useEarTrainingGame(detectedNote: Note | PitchClass | und
     const rootOctave = 4;
     const [output, setOutput] = useState<string | undefined>(undefined);
 
-    const [rootChannelOutput, setRootChannel] = useState<StyledMessage>({message: '', style: ''});
-    const [targetNotesChannelOutput, setTargetNotesChannels] = useState<StyledMessage[]>([{message: '', style: ''}]);
-    const [root, setRoot] = useState<Note>(isPitchClass(rootPitchSetting) ? new Note(rootPitchSetting, rootOctave) : new Note(PITCH_CLASSES[Math.floor(Math.random() * PITCH_CLASSES.length)], rootOctave));
+    const [rootChannelOutput, setRootChannel] = useState<StyledMessage>({ message: '', style: '' });
+    const [targetNotesChannelOutput, setTargetNotesChannels] = useState<StyledMessage[]>([{ message: '', style: '' }]);
+    const [root, setRoot] = useState<Note>(pickRoot());
     const [isTalking, setIsTalking] = useState(false);
 
     const start = () => {
@@ -43,82 +43,88 @@ export default function useEarTrainingGame(detectedNote: Note | PitchClass | und
 
 
     useEffect(() => {
-        if (detectedNote === undefined || targetNote === undefined 
+        if (detectedNote === undefined || targetNote === undefined
             || isTalking) return;
 
 
         let detectedPitchClass;
-        if (detectedNote instanceof Note){
+        if (detectedNote instanceof Note) {
             if (detectedNote.equals(root)) return;
-             detectedPitchClass = detectedNote.pitchClass;
+            detectedPitchClass = detectedNote.pitchClass;
         }
-        else  detectedPitchClass = detectedNote;
+        else detectedPitchClass = detectedNote;
 
         if (detectedPitchClass == targetNote.pitchClass) {
             setScore(score + 1);
             playReward().then(() => {
-                selectNewTargetNote();
+                setNewNotes();
             });
         }
 
     }, [detectedNote]);
 
     useEffect(() => {
-        setRoot(isPitchClass(rootPitchSetting) ? new Note(rootPitchSetting, rootOctave) : new Note(PITCH_CLASSES[Math.floor(Math.random() * PITCH_CLASSES.length)], rootOctave));
         setScore(0);
 
         if (active === true && ready === true)
-            selectNewTargetNote();
+            setNewNotes();
 
     }, [rootPitchSetting, scale, direction, active, ready])
 
 
-    function selectNewTargetNote() {
+    function pickRoot() {
+        return isPitchClass(rootPitchSetting) ? new Note(rootPitchSetting, rootOctave) : new Note(randomPitchClass(), rootOctave);
+    }
 
-        const absoluteScale = scale.getPitchClasses(rootPitchSetting);
+    function setNewNotes() {
+
+        const newRoot = pickRoot();
+
+        const absoluteScale = scale.getPitchClasses(newRoot.pitchClass);
         let nextPitchClass = absoluteScale[0];
-        let octave = root.octave;
+        let octave = newRoot.octave;
 
         if (absoluteScale.length > 1) {
             const availablePitchClasses = absoluteScale.filter(pitchClass => pitchClass !== targetNote?.pitchClass);
             nextPitchClass = availablePitchClasses[Math.floor(Math.random() * (availablePitchClasses.length))];
         }
 
-        const rootPitchIndex = PITCH_CLASSES.indexOf(root.pitchClass);
+        const rootPitchIndex = PITCH_CLASSES.indexOf(newRoot.pitchClass);
         const notePitchIndex = PITCH_CLASSES.indexOf(nextPitchClass);
 
         if (rootPitchIndex !== -1 && notePitchIndex !== -1) {
             if (direction === 'ascending') {
-                octave = notePitchIndex > rootPitchIndex ? root.octave :  root.octave + 1;
+                octave = notePitchIndex > rootPitchIndex ? newRoot.octave : newRoot.octave + 1;
             } else if (direction === 'descending') {
-                octave = notePitchIndex < rootPitchIndex ? root.octave :  root.octave - 1;
+                octave = notePitchIndex < rootPitchIndex ? newRoot.octave : newRoot.octave - 1;
             } else {
                 const useAscending = Math.random() > 0.5;
                 octave = useAscending
-                    ? (notePitchIndex > rootPitchIndex ?  root.octave :  root.octave + 1)
-                    : (notePitchIndex < rootPitchIndex ?  root.octave :  root.octave - 1);
+                    ? (notePitchIndex > rootPitchIndex ? newRoot.octave : newRoot.octave + 1)
+                    : (notePitchIndex < rootPitchIndex ? newRoot.octave : newRoot.octave - 1);
             }
         }
 
         const newTargetNote = new Note(nextPitchClass, octave); ``
         setTargetNote(newTargetNote);
+        setRoot(newRoot);
 
-        playNotes(newTargetNote);
+        playNotes(newRoot, newTargetNote);
 
     }
 
     const replayNotes = () => {
-        if (targetNote === undefined) { selectNewTargetNote(); return; }
-        playNotes(targetNote);
+        if (targetNote === undefined) { setNewNotes(); return; }
+        playNotes(root, targetNote);
     }
 
-    const playNotes = async (nextNote: Note) => {
-        setRootChannel({ message: root.pitchClass, style: "pulse" });
+    const playNotes = async (rootNote : Note, nextNote: Note) => {
+        setRootChannel({ message: rootNote.pitchClass, style: "pulse" });
         setIsTalking(true);
-        setOutput(rootPitchSetting);
-        audioPlayerRef.current?.play(root.toString()).then(() => {
+        setOutput(rootNote.pitchClass);
+        audioPlayerRef.current?.play(rootNote.toString()).then(() => {
 
-            setRootChannel({ message: root.pitchClass, style: '' });
+            setRootChannel({ message: rootNote.pitchClass, style: '' });
             setTargetNotesChannels([{ message: "?", style: "pulse" }]);
             setOutput("?");
             audioPlayerRef.current?.play(nextNote.toString()).then(() => {
@@ -150,7 +156,7 @@ export default function useEarTrainingGame(detectedNote: Note | PitchClass | und
 
                 audioPlayerRef.current?.play(rewardNotes, .65, .5).then(() => {
                     setOutput(undefined);
-                    setTargetNotesChannels([{ message: targetNote.pitchClass, style: ''}]);
+                    setTargetNotesChannels([{ message: targetNote.pitchClass, style: '' }]);
                     setIsTalking(false);
                     resolve(true)
                 });

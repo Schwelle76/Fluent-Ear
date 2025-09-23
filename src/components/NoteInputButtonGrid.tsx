@@ -8,15 +8,18 @@ import styles from './NoteInputButtonGrid.module.css';
 
 interface NoteInputButtonGridProps {
 
+    active?: boolean;
     root: PitchClass;
     noteInput: ReturnType<typeof useNoteInput>;
-    resetTrigger: any;
+    resetTrigger: number;
 
 }
 
 
 
-const NoteInputButtonGrid: React.FC<NoteInputButtonGridProps> = ({ root, noteInput, resetTrigger }) => {   
+const NoteInputButtonGrid: React.FC<NoteInputButtonGridProps> = ({ root, noteInput, resetTrigger, active }) => {  
+    
+    if(active === undefined) active = true;
 
     const [clickedButtons, setClickedButtons] = useState<Set<string>>(new Set());
     const settings = useEarTrainingSettingsContext();
@@ -38,11 +41,11 @@ const NoteInputButtonGrid: React.FC<NoteInputButtonGridProps> = ({ root, noteInp
     return (
 
 
-        <div className={styles.noteInputButtonGrid}>
+        <div className= {styles.noteInputButtonGrid}>
             {intervals.map(interval => (
                 <button
                     key = {interval}
-                    className={`${styles['note-input-button']} ${clickedButtons.has(interval) /* || earTrainingGame.output */ ? styles.inactive : ''}`}
+                    className={`${styles['note-input-button']} ${!active  || clickedButtons.has(interval) ? styles.inactive : ''}`}
                     onClick={() => handleButtonClick(interval)}
                 >
                     {interval}

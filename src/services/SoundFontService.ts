@@ -14,10 +14,10 @@ export default class SoundfontService {
     return this.player != null;
   }
 
-  async play(notes: string | string[], duration: number = 0.5, release: number = 0.1) {
+  async play (notes: string | string[], duration: number = 0.5, release: number = 0.1): Promise<boolean> {
     await this.resumeIfNeeded();
     
-    if (!this.player) return;
+    if (!this.player) return false;
 
     if (typeof notes === "string")
       notes = [notes];
@@ -26,7 +26,7 @@ export default class SoundfontService {
       this.player.play(note, 0, { duration, release });
     }
 
-    return new Promise((resolve) => {
+    return new Promise<boolean>((resolve) => {
       setTimeout(() => {
         resolve(true);
       }, (duration + release) * 1000);

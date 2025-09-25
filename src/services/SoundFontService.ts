@@ -23,7 +23,7 @@ export default class SoundfontService {
       notes = [notes];
 
     for(const note of notes) {
-      this.player.play(note, 0, { duration, release });
+      this.player.play(note, 0, { duration, release, gain: 40});
     }
 
     return new Promise<boolean>((resolve) => {

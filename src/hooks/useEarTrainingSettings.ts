@@ -5,7 +5,7 @@ import { Direction } from '../models/Direction';
 import { Interval } from '../models/Note';
 
 export default function useEarTrainingSettings() {
-  const [root, setRoot] = useState('C');
+  const [root, setRoot] = useState('random');
   const [direction, setDirection] = useState<Direction>('ascending');
   const [scale, setScale] = useState(SCALES[0]);
   const [scalePreset, setScalePreset] = useState(SCALES[0].name);

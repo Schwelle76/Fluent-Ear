@@ -25,6 +25,7 @@ export default function useEarTrainingGame(detectedNote: Note | PitchClass | und
 
     const [rootChannelOutput, setRootChannel] = useState<StyledMessage>({ message: '', style: '' });
     const [targetNotesChannelOutput, setTargetNotesChannels] = useState<StyledMessage[]>([{ message: '', style: '' }]);
+    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [root, setRoot] = useState<Note>(pickRoot());
 
     const start = () => {
@@ -57,16 +58,34 @@ export default function useEarTrainingGame(detectedNote: Note | PitchClass | und
 
     useEffect(() => {
 
-        if (detectedNote === undefined || targetNote === undefined
+        if (targetNote === undefined
             || audioPlayer.isPlaying) return;
 
 
-        let detectedPitchClass;
+        let detectedPitchClass = undefined;
         if (detectedNote instanceof Note) {
-            if (detectedNote.equals(root)) return;
             detectedPitchClass = detectedNote.pitchClass;
         }
         else detectedPitchClass = detectedNote;
+
+
+        if (currentQuestionIndex !== -1) {
+            setTargetNotesChannels((prev) => {
+                return [
+                    ...prev.slice(0, currentQuestionIndex),
+                    {
+                        message: detectedPitchClass ? detectedPitchClass : '?',
+                        style: ''
+                    },
+                    ...prev.slice(currentQuestionIndex + 1)
+                ];
+            })
+        }
+
+        
+        if (detectedNote === undefined || detectedNote instanceof Note && detectedNote.equals(root))
+            return;
+
 
         if (detectedPitchClass == targetNote.pitchClass) {
             setScore(score + 1);
@@ -120,6 +139,7 @@ export default function useEarTrainingGame(detectedNote: Note | PitchClass | und
         const newTargetNote = new Note(nextPitchClass, octave); ``
         setTargetNote(newTargetNote);
         setRoot(newRoot);
+        setCurrentQuestionIndex(0);
 
         playQuestion(newRoot, newTargetNote);
 
@@ -165,24 +185,24 @@ export default function useEarTrainingGame(detectedNote: Note | PitchClass | und
                         setTargetNotesChannels([{ message: targetNote.pitchClass, style: '' }]);
                         resolve(true)
                     });
-                
-            }, 130);
-    } else resolve(false);
-})
+
+                }, 130);
+            } else resolve(false);
+        })
     }
 
-return {
-    targetNote,
-    score,
-    replayQuestion,
-    start,
-    active,
-    ready,
-    isTalking: audioPlayer.isPlaying,
-    rootChannelOutput,
-    targetNotesChannelOutput,
-    root
-}
+    return {
+        targetNote,
+        score,
+        replayQuestion,
+        start,
+        active,
+        ready,
+        isTalking: audioPlayer.isPlaying,
+        rootChannelOutput,
+        targetNotesChannelOutput,
+        root
+    }
 
 
 

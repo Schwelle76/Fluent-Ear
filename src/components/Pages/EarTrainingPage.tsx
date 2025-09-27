@@ -55,18 +55,7 @@ const EarTrainingPage: React.FC = () => {
     let styledTargetNoteMessages = earTrainingGame.targetNotesChannelOutput;
 
     if (noteInput.ready && !earTrainingGame.isTalking) {
-        const firstQuestionIndex = styledTargetNoteMessages.findIndex(note => note.message === '?');
-
-        if (firstQuestionIndex !== -1 && noteInput.note) {
-            styledTargetNoteMessages = [
-                ...styledTargetNoteMessages.slice(0, firstQuestionIndex),
-                {
-                    message: noteInput.note instanceof Note ? noteInput.note.pitchClass : noteInput.note,
-                    style: ''
-                },
-                ...styledTargetNoteMessages.slice(firstQuestionIndex + 1)
-            ];
-        }
+      
     }
 
 

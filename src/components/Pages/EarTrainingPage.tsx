@@ -52,13 +52,6 @@ const EarTrainingPage: React.FC = () => {
 
 
 
-    let styledTargetNoteMessages = earTrainingGame.targetNotesChannelOutput;
-
-    if (noteInput.ready && !earTrainingGame.isTalking) {
-      
-    }
-
-
     return (
 
         <div className={styles.appContainer}>
@@ -95,7 +88,7 @@ const EarTrainingPage: React.FC = () => {
 
                 {noteInput.inputDevice && earTrainingGame.active && earTrainingGame.ready && noteInput.ready &&
                     <NoteDisplay
-                        notes={[earTrainingGame.rootChannelOutput, ...styledTargetNoteMessages]}
+                        notes={[earTrainingGame.rootChannelOutput, ...earTrainingGame.targetNotesChannelOutput]}
                         root={earTrainingGame.root.pitchClass}
                     />}
             </div>

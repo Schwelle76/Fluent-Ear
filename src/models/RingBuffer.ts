@@ -18,9 +18,6 @@ export default class RingBuffer<T> {
             newBufferArray.shift();
         }
 
-        console.log("new buffer has: " + 
-            newBufferArray.filter(value => value === true).length +
-        " correct and " + newBufferArray.filter(value => value === false).length + " wrong");
 
         return new RingBuffer<T>(this.maxSize, newBufferArray);
     }

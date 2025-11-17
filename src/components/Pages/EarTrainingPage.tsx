@@ -32,10 +32,7 @@ const EarTrainingPage: React.FC = () => {
 
 
     const score = earTrainingGame.score;
-    const percentageScoreThreshold = 10;
-    const totalsAnswerCount = earTrainingGame.totalAnswersCount;
-    const correctAnswersCount = earTrainingGame.correctAnswersCount;
-    const correctAnswerPercentage = Math.round((score / Math.min(totalsAnswerCount, earTrainingGame.maxScore)) * 100);
+    const correctAnswerPercentage = Math.round((score / earTrainingGame.maxScore) * 100);
 
     const everyThingReady : boolean = noteInput.inputDevice != undefined && earTrainingGame.active && earTrainingGame.ready && noteInput.ready && microphoneCalibrated;
 
@@ -85,7 +82,7 @@ const EarTrainingPage: React.FC = () => {
 
                 <span
                     className={`${styles.score} ${styles[earTrainingGame.targetNotesChannelOutput[earTrainingGame.currentQuestionIndex].style]}`}
-                >{correctAnswersCount < percentageScoreThreshold ? `${correctAnswersCount}/${percentageScoreThreshold}` : `${correctAnswerPercentage}%`}</span>
+                >{`${correctAnswerPercentage}%`}</span>
 
             </div>
 

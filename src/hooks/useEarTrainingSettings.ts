@@ -46,7 +46,6 @@ export default function useEarTrainingSettings() {
 
 
     if (scalePreset === customScale.current.name) {
-      console.log("set scale to ", customScale.current, " with ", customScale.current.getIntervals());
       setScale(customScale.current);
     } else {
       const foundScale = SCALES.find(scale => scale.name === scalePreset);
@@ -55,7 +54,6 @@ export default function useEarTrainingSettings() {
       }
     }
 
-    console.log("safe: " + scalePreset);
     if(scalePreset !== undefined) 
       localStorage.setItem('scalePreset', scalePreset);
 

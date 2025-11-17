@@ -10,7 +10,7 @@ export default function useEarTrainingGame(detectedNote: Note | PitchClass | und
 
 
     const [notes, setNotes] = useState<Note[]>([]);
-    const [score, setScore] = useState(0);
+    const [score, setScore] = useState(parseInt(localStorage.getItem('score') || '0') || 0);
     const [correctNotesCount, setCorrectNotesCount] = useState(0);
     const [active, setActive] = useState(false);
 
@@ -26,7 +26,7 @@ export default function useEarTrainingGame(detectedNote: Note | PitchClass | und
     const [root, setRoot] = useState<Note>(pickRoot());
     const userRootOctaveRef = useRef<number>(defaultOctave);
 
-    const maxScore = 25;
+    const maxScore = 15;
     const [totalAnswersCount, setTotalAnswersCount] = useState(0);
     const [correctAnswersCount, setCorrectAnswersCount] = useState(0);
 
@@ -40,19 +40,27 @@ export default function useEarTrainingGame(detectedNote: Note | PitchClass | und
         setScore((prev) => Math.max(Math.min(prev + add, maxScore), 0));
         setTotalAnswersCount((prev) => prev + 1);
 
-        if(add > 0) setCorrectAnswersCount((prev) => prev + add);
+        if (add > 0) setCorrectAnswersCount((prev) => prev + add);
     }
+
+    useEffect(() => {
+        localStorage.setItem('score', score.toString());
+    }, [score]);
 
     const start = () => {
         setActive(true);
-
-        setScore(0);
-        setTotalAnswersCount(0);
         setCurrentQuestionIndex(1);
 
         if (ready === true)
             setNewNotes();
     }
+
+    const restart = () => {
+        setScore(0);
+        setTotalAnswersCount(0);
+        start();
+    }
+
 
     useEffect(() => {
         return () => {
@@ -151,7 +159,15 @@ export default function useEarTrainingGame(detectedNote: Note | PitchClass | und
     useEffect(() => {
         if (active)
             start();
-    }, [rootPitchSetting, scale, direction, melodyLength, ready])
+    }, [ready])
+
+
+
+    useEffect(() => {
+        if (active) {
+            restart();
+        }
+    }, [rootPitchSetting, scale, direction, melodyLength])
 
 
     function pickRoot() {

@@ -12,6 +12,9 @@ import volumeIcon from '../../assets/volume-mid.svg';
 import LoadingIcon from '../LoadingIcon';
 import NoteInputPanel from '../NoteInputPanel';
 import animation from '../../animations.module.css';
+import LevelDropdown from '../LevelDropdown';
+import { Level, LEVELS } from '../../constants/LEVELS';
+import { Scale } from '../../models/Scale';
 
 
 
@@ -23,7 +26,7 @@ const EarTrainingPage: React.FC = () => {
     const [scale, setScale] = useState(earTrainingSettings.scale);
     const [root, setRoot] = useState(earTrainingSettings.root);
     const [direction, setDirection] = useState(earTrainingSettings.direction);
-
+    const [level, setLevel] = useState<Level | undefined>(LEVELS[0]);
 
     const earTrainingGame = useEarTrainingGame(noteInput.note, scale, root, direction, melodyLength);
     const [isSidebarOpen, setIsSidebarOpen] = useState(false)
@@ -32,13 +35,14 @@ const EarTrainingPage: React.FC = () => {
 
 
     const score = earTrainingGame.score;
-    const correctAnswerPercentage = Math.round((score / earTrainingGame.maxScore) * 100);
+    const percentageScore = Math.round((score / earTrainingGame.maxScore) * 100);
 
-    const everyThingReady : boolean = noteInput.inputDevice != undefined && earTrainingGame.active && earTrainingGame.ready && noteInput.ready && microphoneCalibrated;
+    const everyThingReady: boolean = noteInput.inputDevice != undefined && earTrainingGame.active && earTrainingGame.ready && noteInput.ready && microphoneCalibrated;
+
 
 
     useEffect(() => {
-        if (!isSidebarOpen) {
+        if (!isSidebarOpen && level === undefined) {
             setMelodyLength(earTrainingSettings.melodyLength);
             setScale(earTrainingSettings.scale);
             setRoot(earTrainingSettings.root);
@@ -46,6 +50,35 @@ const EarTrainingPage: React.FC = () => {
         }
 
     }, [isSidebarOpen, earTrainingSettings]);
+
+    useEffect(() => {
+        setLevel(undefined)
+    }, [earTrainingSettings]);
+
+    useEffect(() => {
+        if (level) {
+            setScale(new Scale("Level Scale", level.intervals));
+            setDirection(level.direction);
+            setRoot("random");
+            setMelodyLength(1);
+        } else if (!isSidebarOpen) {
+            setMelodyLength(earTrainingSettings.melodyLength);
+            setScale(earTrainingSettings.scale);
+            setRoot(earTrainingSettings.root);
+            setDirection(earTrainingSettings.direction);
+        }
+    }
+        , [level]);
+
+    useEffect(() => {
+    
+        if(level){
+            if( percentageScore >= 100){
+                setLevel(LEVELS[LEVELS.indexOf(level) + 1]);
+            }
+        }
+
+    } ,[score])
 
     useEffect(() => {
         if (noteInput.inputDevice === 'ui')
@@ -80,9 +113,13 @@ const EarTrainingPage: React.FC = () => {
                     </button>
                 )}
 
+                <div>
+                    <LevelDropdown selectedLevel={level} onChange={setLevel} />
+                </div>
+
                 <span
                     className={`${styles.score} ${styles[earTrainingGame.targetNotesChannelOutput[earTrainingGame.currentQuestionIndex].style]}`}
-                >{`${correctAnswerPercentage}%`}</span>
+                >{`${percentageScore}%`}</span>
 
             </div>
 
@@ -126,7 +163,7 @@ const EarTrainingPage: React.FC = () => {
                             <br />
                         </div>
 
-                        <div style={!microphoneCalibrated ? {fontSize : "1.5rem"} : {}}>
+                        <div style={!microphoneCalibrated ? { fontSize: "1.5rem" } : {}}>
                             <NoteInputPanel noteInput={noteInput} />
                         </div>
 
@@ -140,7 +177,7 @@ const EarTrainingPage: React.FC = () => {
                 }
 
                 {earTrainingGame.ready && noteInput.ready && noteInput.inputDevice === 'ui' &&
-                    <NoteInputButtonGrid resetTrigger={earTrainingGame.selectedNoteIndex} noteInput={noteInput} root={earTrainingGame.root.pitchClass} active={!earTrainingGame.isTalking} direction={direction} />}
+                    <NoteInputButtonGrid intervals={scale.intervals} resetTrigger={earTrainingGame.selectedNoteIndex} noteInput={noteInput} root={earTrainingGame.root.pitchClass} active={!earTrainingGame.isTalking} direction={direction} />}
 
             </div>
 

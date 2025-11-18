@@ -1,0 +1,5 @@
+
+.locked {
+    color: var(--color-error);
+    cursor: not-allowed;
+}

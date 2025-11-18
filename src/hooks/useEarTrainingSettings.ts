@@ -5,6 +5,7 @@ import { Direction } from '../models/Direction';
 import { Interval } from '../models/Note';
 
 export default function useEarTrainingSettings() {
+  
   const [root, setRoot] = useState(localStorage.getItem('root') || 'random');
   const [direction, setDirection] = useState<Direction>(localStorage.getItem('direction') || 'ascending');
   const [scale, setScale] = useState(SCALES[0]);

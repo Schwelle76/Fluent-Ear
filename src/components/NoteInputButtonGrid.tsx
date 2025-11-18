@@ -11,6 +11,7 @@ interface NoteInputButtonGridProps {
 
     active?: boolean;
     root: PitchClass;
+    intervals: Interval[];
     noteInput: ReturnType<typeof useNoteInput>;
     resetTrigger: number;
     direction: Direction;
@@ -19,13 +20,13 @@ interface NoteInputButtonGridProps {
 
 
 
-const NoteInputButtonGrid: React.FC<NoteInputButtonGridProps> = ({ root, noteInput, resetTrigger, active, direction = 'any' }) => {
+const NoteInputButtonGrid: React.FC<NoteInputButtonGridProps> = ({ root, intervals, noteInput, resetTrigger, active, direction = 'any' }) => {
 
     if (active === undefined) active = true;
 
     const [clickedButtons, setClickedButtons] = useState<Set<string>>(new Set());
     const settings = useEarTrainingSettingsContext();
-    const intervals = [...settings.scale.getIntervals()].sort(
+    intervals = intervals.sort(
         (a, b) => INTERVALS.indexOf(a) - INTERVALS.indexOf(b)
     );
 

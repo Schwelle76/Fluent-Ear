@@ -1,167 +1,203 @@
 import { CHROMATIC_SCALE, SCALES } from "./SCALES"
 import { Direction } from "../models/Direction";
+import { defaultSettings, EarTrainingSettings } from "../models/EarTrainingSettings";
+import { Scale } from "../models/Scale";
 
 
-export type Level = {
-    intervals: string[],
-    direction: Direction;
-}
-
-export const LEVELS : Level[] = [
+export const LEVELS : EarTrainingSettings[] = [
     {
-        intervals: SCALES[0].intervals,
+        ...defaultSettings,
+        scale: SCALES[0],
         direction: 'ascending',
     },
     {
-        intervals: SCALES[0].intervals,
+        ...defaultSettings,
+        scale: SCALES[0],
         direction: 'descending',
     },
     {
-        intervals: SCALES[0].intervals,
+        ...defaultSettings,
+        scale: SCALES[0],
         direction: 'any',
     },
     {
-        intervals: SCALES[2].intervals,
+        ...defaultSettings,
+        scale: SCALES[2],
         direction: 'ascending',
     },
     {
-        intervals: SCALES[2].intervals,
+        ...defaultSettings,
+        scale: SCALES[2],
         direction: 'descending',
     },
     {
-        intervals: SCALES[2].intervals,
+        ...defaultSettings,
+        scale: SCALES[2],
         direction: 'any',
     },
     {
-        intervals: SCALES[4].intervals,
+        ...defaultSettings,
+        scale: SCALES[4],
         direction: 'ascending',
     },
     {
-        intervals: SCALES[4].intervals,
+        ...defaultSettings,
+        scale: SCALES[4],
         direction: 'descending',
     },
     {
-        intervals: SCALES[4].intervals,
+        ...defaultSettings,
+        scale: SCALES[4],
         direction: 'any',
     },
     {
-        intervals: SCALES[1].intervals,
+        ...defaultSettings,
+        scale: SCALES[1],
         direction: 'ascending',
     },
     {
-        intervals: SCALES[1].intervals,
+        ...defaultSettings,
+        scale: SCALES[1],
         direction: 'descending',
     },
     {
-        intervals: SCALES[1].intervals,
+        ...defaultSettings,
+        scale: SCALES[1],
         direction: 'any',
     },
     {
-        intervals: SCALES[3].intervals,
+        ...defaultSettings,
+        scale: SCALES[3],
         direction: 'ascending',
     },
     {
-        intervals: SCALES[3].intervals,
+        ...defaultSettings,
+        scale: SCALES[3],
         direction: 'descending',
     },
     {
-        intervals: SCALES[3].intervals,
+        ...defaultSettings,
+        scale: SCALES[3],
         direction: 'any',
     },
     {
-        intervals: SCALES[5].intervals,
+        ...defaultSettings,
+        scale: SCALES[5],
         direction: 'ascending',
     },
     {
-        intervals: SCALES[5].intervals,
+        ...defaultSettings,
+        scale: SCALES[5],
         direction: 'descending',
     },
     {
-        intervals: SCALES[5].intervals,
+        ...defaultSettings,
+        scale: SCALES[5],
         direction: 'any',
     },
     {
-        intervals: ['1', 'm2', 'M2', '4', 'b5', '5', 'M7'],
+        ...defaultSettings,
+        scale: new Scale("", ['1', 'm2', 'M2', '4', 'b5', '5', 'M7']),
         direction: 'ascending',
     },
     {
-        intervals: ['1', 'm2', 'M2', '4', 'b5', '5', 'M7'],
+        ...defaultSettings,
+        scale: new Scale("",['1', 'm2', 'M2', '4', 'b5', '5', 'M7']),
         direction: 'descending',
     },
     {
-        intervals: ['1', 'm2', 'M2', '4', 'b5', '5', 'M7'],
+        ...defaultSettings,
+        scale: new Scale("",['1', 'm2', 'M2', '4', 'b5', '5', 'M7']),
         direction: 'any',
     },
     {
-        intervals: ['m3', 'M3'],
+        ...defaultSettings,
+        scale: new Scale("",['m3', 'M3']),
         direction: 'ascending'
     },
     {
-        intervals: ['M3', 'm3'],
+        ...defaultSettings,
+        scale: new Scale("",['M3', 'm3']),
         direction: 'descending'
     },
     {
-        intervals: ['m3', 'M3'],
+        ...defaultSettings,
+        scale: new Scale("",['m3', 'M3']),
         direction: 'any'
     },
     {
-        intervals: ['m7', 'M7'],
+        ...defaultSettings,
+        scale: new Scale("",['m7', 'M7']),
         direction: 'ascending'
     },
     {
-        intervals: ['M7', 'm7'],
+        ...defaultSettings,
+        scale: new Scale("",['M7', 'm7']),
         direction: 'descending'
     },
     {
-        intervals: ['m7', 'M7'],
+        ...defaultSettings,
+        scale: new Scale("",['m7', 'M7']),
         direction: 'any'
     },
     {
-        intervals: ['m6', 'M6'],
+        ...defaultSettings,
+        scale: new Scale("",['m6', 'M6']),
         direction: 'ascending',
     },
     {
-        intervals: ['M6', 'm6'],
+        ...defaultSettings,
+        scale: new Scale("",['M6', 'm6']),
         direction: 'descending',
     },
     {
-        intervals: ['m6', 'M6'],
+        ...defaultSettings,
+        scale: new Scale("",['m6', 'M6']),
         direction: 'any',
     },
     {
-        intervals: ['m2', 'M2', 'm3', 'M3'],
+        ...defaultSettings,
+        scale: new Scale("",['m2', 'M2', 'm3', 'M3']),
         direction: 'ascending',
     },
     {
-        intervals: ['m2', 'M2', 'm3', 'M3'],
+        ...defaultSettings,
+        scale: new Scale("",['m2', 'M2', 'm3', 'M3']),
         direction: 'descending',
     },
     {
-        intervals: ['m2', 'M2', 'm3', 'M3'],
+        ...defaultSettings,
+        scale: new Scale("",['m2', 'M2', 'm3', 'M3']),
         direction: 'any',
     },
     {
-        intervals: ['m2', 'M2', 'm3', 'M3', 'm6', 'M6', 'm7', 'M7'],
+        ...defaultSettings,
+        scale: new Scale("",['m2', 'M2', 'm3', 'M3', 'm6', 'M6', 'm7', 'M7']),
         direction: 'ascending',
     },
     {
-        intervals: ['m2', 'M2', 'm3', 'M3', 'm6', 'M6', 'm7', 'M7'],
+        ...defaultSettings,
+        scale: new Scale("",['m2', 'M2', 'm3', 'M3', 'm6', 'M6', 'm7', 'M7']),
         direction: 'descending',
     },
     {
-        intervals: ['m2', 'M2', 'm3', 'M3', 'm6', 'M6', 'm7', 'M7'],
+        ...defaultSettings,
+        scale: new Scale("",['m2', 'M2', 'm3', 'M3', 'm6', 'M6', 'm7', 'M7']),
         direction: 'any',
     },
     {
-        intervals: SCALES[6].intervals,
+        ...defaultSettings,
+        scale: SCALES[6],
         direction: 'ascending',
     },
     {
-        intervals: SCALES[6].intervals,
+        ...defaultSettings,
+        scale: SCALES[6],
         direction: 'descending',
     },
     {
-        intervals: SCALES[6].intervals,
+        ...defaultSettings,
+        scale: SCALES[6],
         direction: 'any',
     }
 

@@ -2,7 +2,6 @@ import React from 'react';
 import './SettingsPanel.css';
 import { SCALES } from '../constants/SCALES';
 import { useEarTrainingSettingsContext } from '../contexts/EarTrainingSettingsContext';
-import EarTrainingSettings from '../models/EarTrainingSettings';
 import { Direction, DIRECTIONS } from '../models/Direction';
 import { BASE_INTERVALS } from '../models/Note';
 
@@ -20,7 +19,7 @@ const SettingsPanel = ({ }) => {
         <h3>Root</h3>
         <select
           value={settings.root}
-          onChange={(e) => settings.setCurrentRoot(e.target.value)}
+          onChange={(e) => settings.setCustomRoot(e.target.value)}
           className="dropdown"
         >
           {['Random', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'].map(note => (
@@ -33,7 +32,7 @@ const SettingsPanel = ({ }) => {
         <h3>Interval</h3>
         <select
           value={settings.scalePreset}
-          onChange={(e) => settings.setScalePreset(e.target.value)}
+          onChange={(e) => settings.setCustomScalePreset(e.target.value)}
           className="dropdown"
         >
           {ScalePresets.map((preset, index) => (
@@ -68,7 +67,7 @@ const SettingsPanel = ({ }) => {
         <h3>Direction</h3>
         <select
           value={settings.direction}
-          onChange={(e) => settings.setCurrentDirection(e.target.value)}
+          onChange={(e) => settings.setCustomDirection(e.target.value)}
           className="dropdown"
         >
           {DIRECTIONS.map(direction => (
@@ -86,7 +85,7 @@ const SettingsPanel = ({ }) => {
             min="1"
             max="5"
             value={settings.melodyLength}
-            onChange={(e) => settings.setMelodyLength(parseInt(e.target.value))}
+            onChange={(e) => settings.setCustomMelodyLength(parseInt(e.target.value))}
           >
           </input>
         </div>

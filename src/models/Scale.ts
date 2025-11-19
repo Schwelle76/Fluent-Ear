@@ -8,9 +8,9 @@ export class Scale {
 
   constructor(name: string, steps: number[]);
   constructor(name: string, intervals: string[]);
-  constructor(name: string, intervals: Interval[]);
+  constructor(name: string , intervals: Interval[]);
 
-  constructor(name: string, input: string[] | number[] | Interval[]) {
+  constructor(name: string = "Unnamed Scale", input: string[] | number[] | Interval[]) {
     this.name = name;
 
     if (typeof input[0] === 'string') {

@@ -1,20 +1,18 @@
-import { PitchClass } from "./Note";
-import { Scale } from "./Scale";
+import { SCALES } from "../constants/SCALES";
 import { Direction } from "./Direction";
+import { Interval } from "./Note";
+import { Scale } from "./Scale";
 
-
-export default class EarTrainingSettings {
-
-    root: PitchClass;
-    direction: Direction;
+export type EarTrainingSettings = {
+    melodyLength: number;
     scale: Scale;
+    root: string;
+    direction: Direction;
+}
 
-    constructor(root: PitchClass,
-        direction: Direction,
-        scale: Scale) {
-        this.root = root;
-        this.direction = direction;
-        this.scale = scale;
-    }
-
+export const defaultSettings : EarTrainingSettings = {
+    melodyLength: 1,
+    scale: SCALES[0],
+    root: 'random',
+    direction: 'ascending'
 }

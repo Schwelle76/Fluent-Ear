@@ -9,6 +9,8 @@ import RingBuffer from '../models/RingBuffer';
 export default function useEarTrainingGame(detectedNote: Note | PitchClass | undefined, scale: Scale, rootPitchSetting: string, direction: Direction, melodyLength: number) {
 
 
+
+    
     const [notes, setNotes] = useState<Note[]>([]);
     const [score, setScore] = useState(parseInt(localStorage.getItem('score') || '0') || 0);
     const [correctNotesCount, setCorrectNotesCount] = useState(0);

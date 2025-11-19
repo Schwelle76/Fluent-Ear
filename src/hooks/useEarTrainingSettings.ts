@@ -3,6 +3,7 @@ import { SCALES } from '../constants/SCALES';
 import { Scale } from '../models/Scale';
 import { Direction } from '../models/Direction';
 import { Interval } from '../models/Note';
+import { LEVELS } from '../constants/LEVELS';
 
 export default function useEarTrainingSettings() {
   
@@ -11,8 +12,20 @@ export default function useEarTrainingSettings() {
   const [scale, setScale] = useState(SCALES[0]);
   const [scalePreset, setScalePreset] = useState<string | undefined>(undefined);
   const [melodyLength, setMelodyLength] = useState(parseInt(localStorage.getItem('melodyLength') || '1') || 1);
+  const [level, setLevel] = useState(parseInt(localStorage.getItem('level') || '0') || 0);
   const customScale = useRef(new Scale("Custom Scale", [0]));
 
+  useEffect(() => {
+    localStorage.setItem('root', root);
+  }, [root]);
+
+  useEffect(() => {
+    localStorage.setItem('direction', direction);
+  }, [direction]);
+
+  useEffect(() => {
+    localStorage.setItem('melodyLength', melodyLength.toString());
+  }, [melodyLength]);
 
 
   useEffect(() => {
@@ -32,16 +45,17 @@ export default function useEarTrainingSettings() {
   }, []);
 
   useEffect(() => {
-    localStorage.setItem('root', root);
-  }, [root]);
+    if(level >= 0){
+      setScalePreset("Level Scale");
+      setMelodyLength(LEVELS[level].melodyLength);
+      setDirection(LEVELS[level].direction);
+      setScale(LEVELS[level].scale);
+      setRoot(LEVELS[level].root);
+    }
 
-  useEffect(() => {
-    localStorage.setItem('direction', direction);
-  }, [direction]);
+  },[level]);
 
-  useEffect(() => {
-    localStorage.setItem('melodyLength', melodyLength.toString());
-  }, [melodyLength]);
+
 
   useEffect(() => {
 
@@ -75,7 +89,27 @@ export default function useEarTrainingSettings() {
     localStorage.setItem('scale', customScale.current.halftoneSteps.join(','));
     setScale(customScale.current);
     setScalePreset(customScale.current.name);
+    setLevel(-1);
+  };
 
+  const setCustomRoot = (root: string) => {
+    setLevel(-1);
+    setRoot(root);
+  };
+
+  const setCustomDirection = (direction: Direction) => {
+    setLevel(-1);
+    setDirection(direction);
+  };
+
+  const setCustomMelodyLength = (melodyLength: number) => {
+    setLevel(-1);
+    setMelodyLength(melodyLength);
+  };
+
+  const setCustomScalePreset = (scalePreset: string) => {
+    setLevel(-1);
+    setScalePreset(scalePreset);
   };
 
   return {
@@ -84,11 +118,13 @@ export default function useEarTrainingSettings() {
     scalePreset,
     direction,
     toggleInterval,
-    setCurrentRoot: setRoot,
-    setScalePreset,
-    setCurrentDirection: setDirection,
+    setCustomRoot,
+    setCustomScalePreset,
+    setCustomDirection,
     customScale,
     melodyLength,
-    setMelodyLength
+    setCustomMelodyLength,
+    level,
+    setLevel
   };
 }

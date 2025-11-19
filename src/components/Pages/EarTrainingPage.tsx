@@ -13,22 +13,25 @@ import LoadingIcon from '../LoadingIcon';
 import NoteInputPanel from '../NoteInputPanel';
 import animation from '../../animations.module.css';
 import LevelDropdown from '../LevelDropdown';
-import { Level, LEVELS } from '../../constants/LEVELS';
+import { LEVELS } from '../../constants/LEVELS';
 import { Scale } from '../../models/Scale';
+import { EarTrainingSettings } from '../../models/EarTrainingSettings';
 
 
 
 const EarTrainingPage: React.FC = () => {
 
-    const earTrainingSettings = useEarTrainingSettingsContext()
+    const customEarTrainingSettings = useEarTrainingSettingsContext()
     const noteInput = useNoteInput()
-    const [melodyLength, setMelodyLength] = useState(earTrainingSettings.melodyLength);
-    const [scale, setScale] = useState(earTrainingSettings.scale);
-    const [root, setRoot] = useState(earTrainingSettings.root);
-    const [direction, setDirection] = useState(earTrainingSettings.direction);
-    const [level, setLevel] = useState<Level | undefined>(LEVELS[0]);
+    const [customMelodyLength, setCustomMelodyLength] = useState(customEarTrainingSettings.melodyLength);
+    const [customScale, setCustomScale] = useState(customEarTrainingSettings.scale);
+    const [customRoot, setCustomRoot] = useState(customEarTrainingSettings.root);
+    const [customDirection, setCustomDirection] = useState(customEarTrainingSettings.direction);
+    const [levelIndex, setLevelIndex] = useState<number>(parseInt(localStorage.getItem("level") || '0') || 0);
+    console.log('levelIndex', levelIndex)
 
-    const earTrainingGame = useEarTrainingGame(noteInput.note, scale, root, direction, melodyLength);
+
+    const earTrainingGame = useEarTrainingGame(noteInput.note, customScale, customRoot, customDirection, customMelodyLength);
     const [isSidebarOpen, setIsSidebarOpen] = useState(false)
 
     const [microphoneCalibrated, setMicrophoneCalibrated] = useState(false);
@@ -42,43 +45,31 @@ const EarTrainingPage: React.FC = () => {
 
 
     useEffect(() => {
-        if (!isSidebarOpen && level === undefined) {
-            setMelodyLength(earTrainingSettings.melodyLength);
-            setScale(earTrainingSettings.scale);
-            setRoot(earTrainingSettings.root);
-            setDirection(earTrainingSettings.direction);
+        if (!isSidebarOpen) {
+            setCustomMelodyLength(customEarTrainingSettings.melodyLength);
+            setCustomScale(customEarTrainingSettings.scale);
+            setCustomRoot(customEarTrainingSettings.root);
+            setCustomDirection(customEarTrainingSettings.direction);
         }
 
-    }, [isSidebarOpen, earTrainingSettings]);
+    }, [isSidebarOpen, customEarTrainingSettings]);
 
     useEffect(() => {
-        setLevel(undefined)
-    }, [earTrainingSettings]);
+
+        if (isSidebarOpen)
+            setLevelIndex(-1)
+        
+    }, [customEarTrainingSettings]);
+
 
     useEffect(() => {
-        if (level) {
-            setScale(new Scale("Level Scale", level.intervals));
-            setDirection(level.direction);
-            setRoot("random");
-            setMelodyLength(1);
-        } else if (!isSidebarOpen) {
-            setMelodyLength(earTrainingSettings.melodyLength);
-            setScale(earTrainingSettings.scale);
-            setRoot(earTrainingSettings.root);
-            setDirection(earTrainingSettings.direction);
-        }
-    }
-        , [level]);
 
-    useEffect(() => {
-    
-        if(level){
-            if( percentageScore >= 100){
-                setLevel(LEVELS[LEVELS.indexOf(level) + 1]);
+        if (customEarTrainingSettings.level >= 0) {
+            if (percentageScore >= 100) {
+                customEarTrainingSettings.setLevel((prev) => prev + 1);
             }
         }
-
-    } ,[score])
+    }, [score])
 
     useEffect(() => {
         if (noteInput.inputDevice === 'ui')
@@ -114,7 +105,7 @@ const EarTrainingPage: React.FC = () => {
                 )}
 
                 <div>
-                    <LevelDropdown selectedLevel={level} onChange={setLevel} />
+                    <LevelDropdown selectedLevel={customEarTrainingSettings.level} onChange={customEarTrainingSettings.setLevel} />
                 </div>
 
                 <span
@@ -177,7 +168,7 @@ const EarTrainingPage: React.FC = () => {
                 }
 
                 {earTrainingGame.ready && noteInput.ready && noteInput.inputDevice === 'ui' &&
-                    <NoteInputButtonGrid intervals={scale.intervals} resetTrigger={earTrainingGame.selectedNoteIndex} noteInput={noteInput} root={earTrainingGame.root.pitchClass} active={!earTrainingGame.isTalking} direction={direction} />}
+                    <NoteInputButtonGrid intervals={customScale.intervals} resetTrigger={earTrainingGame.selectedNoteIndex} noteInput={noteInput} root={earTrainingGame.root.pitchClass} active={!earTrainingGame.isTalking} direction={customDirection} />}
 
             </div>
 

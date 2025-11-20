@@ -13,17 +13,18 @@ import LoadingIcon from '../LoadingIcon';
 import NoteInputPanel from '../NoteInputPanel';
 import animation from '../../animations.module.css';
 import LevelDropdown from '../LevelDropdown';
-
+import ChallengePresentation from '../ChallengePresentation';
+import Calibration from '../Calibration';
 
 
 const EarTrainingPage: React.FC = () => {
 
     const earTrainingSettings = useEarTrainingSettingsContext()
     const noteInput = useNoteInput()
-    const [customMelodyLength, setCustomMelodyLength] = useState(earTrainingSettings.melodyLength);
-    const [customScale, setCustomScale] = useState(earTrainingSettings.scale);
-    const [customRoot, setCustomRoot] = useState(earTrainingSettings.root);
-    const [customDirection, setCustomDirection] = useState(earTrainingSettings.direction);
+    const [customMelodyLength, setCachedMelodyLength] = useState(earTrainingSettings.melodyLength);
+    const [customScale, setCachedScale] = useState(earTrainingSettings.scale);
+    const [customRoot, setCachedRoot] = useState(earTrainingSettings.root);
+    const [customDirection, setCachedDirection] = useState(earTrainingSettings.direction);
 
 
     const earTrainingGame = useEarTrainingGame(noteInput.note, customScale, customRoot, customDirection, customMelodyLength);
@@ -31,21 +32,22 @@ const EarTrainingPage: React.FC = () => {
     const [isLevelDropdownOpen, setIsLevelDropdownOpen] = useState(false)
 
     const [microphoneCalibrated, setMicrophoneCalibrated] = useState(false);
+    const [challengePresented, setChallengePresented] = useState(false);
 
 
     const score = earTrainingGame.score;
     const percentageScore = Math.round((score / earTrainingGame.maxScore) * 100);
 
-    const everyThingReady: boolean = noteInput.inputDevice != undefined && earTrainingGame.active && earTrainingGame.ready && noteInput.ready && microphoneCalibrated;
+    const everyThingReady: boolean = noteInput.inputDevice != undefined && earTrainingGame.ready && noteInput.ready && microphoneCalibrated;
 
 
 
     useEffect(() => {
         if (!isSidebarOpen) {
-            setCustomMelodyLength(earTrainingSettings.melodyLength);
-            setCustomScale(earTrainingSettings.scale);
-            setCustomRoot(earTrainingSettings.root);
-            setCustomDirection(earTrainingSettings.direction);
+            setCachedMelodyLength(earTrainingSettings.melodyLength);
+            setCachedScale(earTrainingSettings.scale);
+            setCachedRoot(earTrainingSettings.root);
+            setCachedDirection(earTrainingSettings.direction);
         }
 
     }, [isSidebarOpen, earTrainingSettings]);
@@ -76,10 +78,13 @@ const EarTrainingPage: React.FC = () => {
             earTrainingGame.replayQuestion();
     });
 
+
     useEffect(() => {
-        if (noteInput.ready && microphoneCalibrated)
+
+        if (challengePresented) {
             earTrainingGame.start();
-    }, [noteInput.ready, microphoneCalibrated])
+        }
+    }, [challengePresented])
 
 
     return (
@@ -93,12 +98,13 @@ const EarTrainingPage: React.FC = () => {
                     </button>
                 )}
 
-                <div className= {styles.levelDropdown}>
-                    <LevelDropdown selectedLevel={earTrainingSettings.level} onChange={earTrainingSettings.setLevel} unlockedLevels={earTrainingSettings.unlockedLevels} onToggle={setIsLevelDropdownOpen} />    
-                </div>
+                {everyThingReady &&
+                    <div className={styles.levelDropdown}>
+                        <LevelDropdown selectedLevel={earTrainingSettings.level} onChange={earTrainingSettings.setLevel} unlockedLevels={earTrainingSettings.unlockedLevels} onToggle={setIsLevelDropdownOpen} />
+                    </div>}
 
                 <span
-                    className={`${styles.score} ${styles[earTrainingGame.targetNotesChannelOutput[earTrainingGame.currentQuestionIndex].style]}`}
+                    className={`${!earTrainingGame.active ? animation.hide : animation.show} ${styles.score} ${styles[earTrainingGame.targetNotesChannelOutput[earTrainingGame.currentQuestionIndex].style]}`}
                 >{`${percentageScore}%`}</span>
 
             </div>
@@ -107,8 +113,11 @@ const EarTrainingPage: React.FC = () => {
 
             <div className={everyThingReady ? styles.centerElement : styles.bottom}>
 
+                {everyThingReady && !challengePresented &&
+                    <ChallengePresentation intervals={customScale.intervals} direction={customDirection} onComplete={setChallengePresented} />
+                }
 
-                {noteInput.inputDevice && earTrainingGame.active && earTrainingGame.ready && noteInput.ready && microphoneCalibrated &&
+                {everyThingReady && challengePresented &&
                     <NoteDisplay
                         styledNotes={[...earTrainingGame.targetNotesChannelOutput]}
                         root={earTrainingGame.root}
@@ -135,28 +144,15 @@ const EarTrainingPage: React.FC = () => {
                     <LoadingIcon />
                 }
 
-                {noteInput.inputDevice != 'ui' && noteInput.ready &&
-                    <div className={!microphoneCalibrated ? styles.absoluteCenter : styles.returnToOrigin}>
-                        <div className={!microphoneCalibrated ? animation.growUp : animation.shrinkAway}>
-                            <h2 >Adjust sensitivity so that ONLY the notes you play are shown!</h2>
-                            <hr />
-                            <br />
-                        </div>
-
-                        <div style={!microphoneCalibrated ? { fontSize: "1.5rem" } : {}}>
-                            <NoteInputPanel noteInput={noteInput} />
-                        </div>
-
-                        <div className={!microphoneCalibrated ? animation.growUp : animation.shrinkAway}>
-                            <br />
-                            <hr />
-                            <p className={!microphoneCalibrated ? animation.growUp : animation.shrinkAway}>If unplayed notes flash on the screen, lower the sensitivity.</p>
-                            <button className={!microphoneCalibrated ? animation.growUp : animation.shrinkAway} onClick={() => setMicrophoneCalibrated((prev) => !prev)}>Done</button>
-                        </div>
-                    </div>
+                {noteInput.inputDevice != 'ui' && noteInput.ready && !microphoneCalibrated &&
+                    <Calibration noteInput={noteInput} onDone={setMicrophoneCalibrated} />
                 }
 
-                {earTrainingGame.ready && noteInput.ready && noteInput.inputDevice === 'ui' &&
+                {noteInput.inputDevice != 'ui' && everyThingReady && challengePresented &&
+                    <NoteInputPanel noteInput={noteInput} />
+                }
+
+                {earTrainingGame.ready && noteInput.ready && challengePresented && noteInput.inputDevice === 'ui' &&
                     <NoteInputButtonGrid intervals={customScale.intervals} resetTrigger={earTrainingGame.selectedNoteIndex} noteInput={noteInput} root={earTrainingGame.root.pitchClass} active={!earTrainingGame.isTalking} direction={customDirection} />}
 
             </div>
@@ -171,7 +167,7 @@ const EarTrainingPage: React.FC = () => {
                 isOpen={isSidebarOpen}
                 onClose={() => setIsSidebarOpen(false)}
             />
-        </div>
+        </div >
     )
 
 }

@@ -1,5 +1,4 @@
 import React from 'react';
-import styles from './LevelDropdown.module.css';
 import { LEVELS } from '../constants/LEVELS';
 import Select from 'react-select';
 import lockIcon from '../assets/lock.svg';
@@ -10,7 +9,6 @@ interface LevelDropdownProps {
     selectedLevel: number;
     onChange: (level: number) => void;
     onToggle: (isOpen: boolean) => void;
-
     unlockedLevels: number;
 }
 

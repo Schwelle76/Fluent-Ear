@@ -1,0 +1,29 @@
+.interval-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 30px;
+    font-weight: 600;
+}
+
+.interval-container span {
+    text-align: center;
+    width: min(14vh, 14vw);
+    height: min(14vh, 14vw);
+    line-height: min(14vh, 14vw);
+    font-size: min(7vh, 7vw);
+    border: solid 1px var(--color-accent);
+    border-radius: 50%;
+    
+}
+
+.instruction-text {
+    font-size: 1.5rem;
+    font-weight: 500;
+}
+
+.button {
+    margin-top: 15px;
+}

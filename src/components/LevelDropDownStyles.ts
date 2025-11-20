@@ -10,6 +10,7 @@ export const LevelDropdownStyles: StylesConfig<Option, false> = {
             color: 'white',
             boxShadow: '#000000', // Focus-Glow
             fontSize: '1.5rem',
+            fontWeight: '600',
 
             ':hover': {
             ...provided[':hover'], // Behalte andere Hover-Styles

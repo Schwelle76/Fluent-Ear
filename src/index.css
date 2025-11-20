@@ -78,6 +78,10 @@ button {
   opacity: 0;
 }
 
+strong {
+    color: var(--color-accent);
+}
+
 
 button:focus,
 button:focus-visible {

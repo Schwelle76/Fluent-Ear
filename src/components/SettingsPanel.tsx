@@ -39,17 +39,19 @@ const SettingsPanel = ({ }) => {
             <option key={index} value={preset.name}>{preset.name}</option>
           ))}
           <option value={settings.customScale.current.name}>Custom Scale</option>
+          <option value={"Level Scale"} hidden>Level Scale</option>
+
         </select>
 
 
 
         <div className="interval-buttons">
           <button
-            key = {'1'}
+            key={'1'}
             className={`interval-button ${settings.scale.getIntervals().includes('1') ? 'active' : ''}`}
             onClick={() => settings.toggleInterval('1')}>
-              1 / 8
-            </button>
+            1 / 8
+          </button>
 
           {BASE_INTERVALS.slice(1).map(interval => (
             <button

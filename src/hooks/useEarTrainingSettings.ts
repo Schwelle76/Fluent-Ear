@@ -6,26 +6,22 @@ import { Interval } from '../models/Note';
 import { LEVELS } from '../constants/LEVELS';
 
 export default function useEarTrainingSettings() {
-  
+
   const [root, setRoot] = useState(localStorage.getItem('root') || 'random');
   const [direction, setDirection] = useState<Direction>(localStorage.getItem('direction') || 'ascending');
   const [scale, setScale] = useState(SCALES[0]);
   const [scalePreset, setScalePreset] = useState<string | undefined>(undefined);
   const [melodyLength, setMelodyLength] = useState(parseInt(localStorage.getItem('melodyLength') || '1') || 1);
   const [level, setLevel] = useState(parseInt(localStorage.getItem('level') || '0') || 0);
+  const [unlockedLevels, setUnlockedLevels] = useState(parseInt(localStorage.getItem('unlockedLevels') || '0') || 0);
   const customScale = useRef(new Scale("Custom Scale", [0]));
 
-  useEffect(() => {
-    localStorage.setItem('root', root);
-  }, [root]);
 
-  useEffect(() => {
-    localStorage.setItem('direction', direction);
-  }, [direction]);
-
-  useEffect(() => {
-    localStorage.setItem('melodyLength', melodyLength.toString());
-  }, [melodyLength]);
+  localStorage.setItem('level', level.toString());
+  localStorage.setItem('root', root);
+  localStorage.setItem('direction', direction);
+  localStorage.setItem('melodyLength', melodyLength.toString());
+  localStorage.setItem('unlockedLevels', '0');
 
 
   useEffect(() => {
@@ -38,22 +34,27 @@ export default function useEarTrainingSettings() {
       customScale.current = new Scale("Custom Scale", lastUsedHalfsteps);
 
 
-    if(lastUsedPreset) setScalePreset(lastUsedPreset);
+    if (lastUsedPreset) setScalePreset(lastUsedPreset);
     else setScalePreset(SCALES[0].name);
 
 
   }, []);
 
   useEffect(() => {
-    if(level >= 0){
+    if (level >= 0) {
       setScalePreset("Level Scale");
       setMelodyLength(LEVELS[level].melodyLength);
       setDirection(LEVELS[level].direction);
       setScale(LEVELS[level].scale);
       setRoot(LEVELS[level].root);
+
+      if (level > unlockedLevels) {
+        setUnlockedLevels(level);
+        localStorage.setItem('unlockedLevels', level.toString());
+      }
     }
 
-  },[level]);
+  }, [level]);
 
 
 
@@ -69,7 +70,7 @@ export default function useEarTrainingSettings() {
       }
     }
 
-    if(scalePreset !== undefined) 
+    if (scalePreset !== undefined)
       localStorage.setItem('scalePreset', scalePreset);
 
   }, [scalePreset]);
@@ -125,6 +126,7 @@ export default function useEarTrainingSettings() {
     melodyLength,
     setCustomMelodyLength,
     level,
-    setLevel
+    setLevel,
+    unlockedLevels
   };
 }

@@ -24,6 +24,7 @@
   grid-row: 1;
 }
 
+
 .bottom-bar {
   width: 100%;
   display: flex;
@@ -48,6 +49,10 @@
   
   cursor: pointer;
   z-index: 1000;
+}
+
+.level-dropdown {
+  margin-top: 12px;
 }
 
 .score {

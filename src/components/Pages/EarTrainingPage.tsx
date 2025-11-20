@@ -37,6 +37,8 @@ const EarTrainingPage: React.FC = () => {
 
     const score = earTrainingGame.score;
     const percentageScore = Math.round((score / earTrainingGame.maxScore) * 100);
+    if (earTrainingSettings.level >= 0) earTrainingGame.stopOnMaxScore.current = true;
+    else earTrainingGame.stopOnMaxScore.current = false;
 
     const everyThingReady: boolean = noteInput.inputDevice != undefined && earTrainingGame.ready && noteInput.ready && microphoneCalibrated;
 
@@ -52,15 +54,20 @@ const EarTrainingPage: React.FC = () => {
 
     }, [isSidebarOpen, earTrainingSettings]);
 
+    useEffect(() => {
+        setChallengePresented(false);
+    }, [earTrainingSettings])
+
 
     useEffect(() => {
 
         if (earTrainingSettings.level >= 0) {
-            if (percentageScore >= 100) {
+            if (percentageScore >= 100 && earTrainingGame.selectedNoteIndex === 0) {
                 earTrainingSettings.setLevel((prev) => prev + 1);
+                setChallengePresented(false);
             }
         }
-    }, [score])
+    }, [score, earTrainingGame.selectedNoteIndex])
 
     useEffect(() => {
         if (noteInput.inputDevice === 'ui')

@@ -21,7 +21,6 @@ export default function useEarTrainingSettings() {
   localStorage.setItem('root', root);
   localStorage.setItem('direction', direction);
   localStorage.setItem('melodyLength', melodyLength.toString());
-  localStorage.setItem('unlockedLevels', '0');
 
 
   useEffect(() => {

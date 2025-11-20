@@ -4,17 +4,14 @@ import { getPitchClass, isPitchClass, Note, PITCH_CLASSES, PitchClass, randomPit
 import { Direction } from '../models/Direction';
 import { StyledNote } from '../models/StyledMessage';
 import useAudioPlayer from './useAudioPlayer';
-import RingBuffer from '../models/RingBuffer';
 
 export default function useEarTrainingGame(detectedNote: Note | PitchClass | undefined, scale: Scale, rootPitchSetting: string, direction: Direction, melodyLength: number) {
 
 
-
-    
     const [notes, setNotes] = useState<Note[]>([]);
     const [score, setScore] = useState(parseInt(localStorage.getItem('score') || '0') || 0);
     const [correctNotesCount, setCorrectNotesCount] = useState(0);
-    const [active, setActive] = useState(false);
+    const [awaitingStart, setAwaitingStart] = useState(false);
 
     const [ready, setReady] = useState(false);
     const defaultOctave = 4;
@@ -27,8 +24,11 @@ export default function useEarTrainingGame(detectedNote: Note | PitchClass | und
     const [startQuestionIndex, setStartQuestionIndex] = useState(0);
     const [root, setRoot] = useState<Note>(pickRoot());
     const userRootOctaveRef = useRef<number>(defaultOctave);
+    const startCount = useRef(0);
+    const [active, setActive] = useState(false);
 
     const maxScore = 15;
+    const stopOnMaxScore = useRef(false);
     const [totalAnswersCount, setTotalAnswersCount] = useState(0);
     const [correctAnswersCount, setCorrectAnswersCount] = useState(0);
 
@@ -50,23 +50,29 @@ export default function useEarTrainingGame(detectedNote: Note | PitchClass | und
     }, [score]);
 
     const start = () => {
-        setActive(true);
+
+
+        setAwaitingStart(true);
         setCurrentQuestionIndex(1);
 
-        if (ready === true)
-            setNewNotes();
-    }
+        if (ready === true) {
 
-    const restart = () => {
-        setScore(0);
-        setTotalAnswersCount(0);
-        start();
+            if (startCount.current > 0) {
+                setScore(0);
+                setTotalAnswersCount(0);
+            }
+
+            startCount.current++;
+            setActive(true);
+            setAwaitingStart(false);
+            setNewNotes();
+        }
     }
 
 
     useEffect(() => {
         return () => {
-            setActive(false);
+            setAwaitingStart(false);
         };
     }, []);
 
@@ -83,7 +89,6 @@ export default function useEarTrainingGame(detectedNote: Note | PitchClass | und
 
 
     useEffect(() => {
-
 
         if (notes.length === 0
             || audioPlayer.isPlaying) return;
@@ -123,9 +128,15 @@ export default function useEarTrainingGame(detectedNote: Note | PitchClass | und
 
             setCorrectNotesCount(prev => prev + 1);
 
+
+            let maxScoreReached = false;
             if (selectedNoteIndex >= currentQuestionIndex) {
                 setCurrentQuestionIndex(prev => prev + 1);
                 updateScore(1);
+
+                if (score + 1 >= maxScore) {
+                    maxScoreReached = true;
+                }
             }
 
             if (selectedNoteIndex < notes.length - 1) {
@@ -144,7 +155,10 @@ export default function useEarTrainingGame(detectedNote: Note | PitchClass | und
                 audioPlayer.play(notes[selectedNoteIndex].toString()).then(() => {
                     playReward().then(() => {
                         setSelectedNoteIndex(0);
-                        setNewNotes();
+
+                        if(maxScoreReached && stopOnMaxScore.current) 
+                            setActive(false);
+                        else setNewNotes();
                     });
                 });
             }
@@ -159,17 +173,9 @@ export default function useEarTrainingGame(detectedNote: Note | PitchClass | und
 
 
     useEffect(() => {
-        if (active)
+        if (awaitingStart)
             start();
     }, [ready])
-
-
-
-    useEffect(() => {
-        if (active) {
-            restart();
-        }
-    }, [rootPitchSetting, scale, direction, melodyLength])
 
 
     function pickRoot() {
@@ -348,7 +354,9 @@ export default function useEarTrainingGame(detectedNote: Note | PitchClass | und
         skipRoot,
         maxScore,
         totalAnswersCount,
-        correctAnswersCount
+        correctAnswersCount,
+        stopOnMaxScore
+
     }
 
 

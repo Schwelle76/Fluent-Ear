@@ -1,0 +1,19 @@
+.characterContainer {
+    display: flex;
+    margin: auto;
+    justify-content: center;
+    align-items: center;
+    width: 1.4em;
+    height: 1.4em;
+    border: solid 1px white;
+    border-radius: 50%;
+
+
+    
+}
+
+.character {
+    margin: 0;
+    padding: 0;
+    font-size: 1em;
+}

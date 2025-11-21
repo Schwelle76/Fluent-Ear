@@ -15,19 +15,23 @@ import animation from '../../animations.module.css';
 import LevelDropdown from '../LevelDropdown';
 import ChallengePresentation from '../ChallengePresentation';
 import Calibration from '../Calibration';
+import AvailableNotesPanel from '../AvailableNotesPanel';
+import { getIntervalsFromPitch, Note } from '../../models/Note';
+import SensitivitySlider from '../SensitivitySlider';
+import CircledCharacter from '../CircledCharacter';
 
 
 const EarTrainingPage: React.FC = () => {
 
     const earTrainingSettings = useEarTrainingSettingsContext()
     const noteInput = useNoteInput()
-    const [customMelodyLength, setCachedMelodyLength] = useState(earTrainingSettings.melodyLength);
-    const [customScale, setCachedScale] = useState(earTrainingSettings.scale);
-    const [customRoot, setCachedRoot] = useState(earTrainingSettings.root);
-    const [customDirection, setCachedDirection] = useState(earTrainingSettings.direction);
+    const [cachedMelodyLength, setCachedMelodyLength] = useState(earTrainingSettings.melodyLength);
+    const [cachedScale, setCachedScale] = useState(earTrainingSettings.scale);
+    const [cachedRoot, setCachedRoot] = useState(earTrainingSettings.root);
+    const [cachedDirection, setCachedDirection] = useState(earTrainingSettings.direction);
 
 
-    const earTrainingGame = useEarTrainingGame(noteInput.note, customScale, customRoot, customDirection, customMelodyLength);
+    const earTrainingGame = useEarTrainingGame(noteInput.note, cachedScale, cachedRoot, cachedDirection, cachedMelodyLength);
     const [isSidebarOpen, setIsSidebarOpen] = useState(false)
     const [isLevelDropdownOpen, setIsLevelDropdownOpen] = useState(false)
 
@@ -41,7 +45,7 @@ const EarTrainingPage: React.FC = () => {
     else earTrainingGame.stopOnMaxScore.current = false;
 
     const everyThingReady: boolean = noteInput.inputDevice != undefined && earTrainingGame.ready && noteInput.ready && microphoneCalibrated;
-
+    const detectedPitchClass = noteInput.note instanceof Note ? noteInput.note.pitchClass : noteInput.note;
 
 
     useEffect(() => {
@@ -88,10 +92,13 @@ const EarTrainingPage: React.FC = () => {
 
     useEffect(() => {
 
-        if (challengePresented) {
+        if(microphoneCalibrated === false) earTrainingGame.stop();
+        if (challengePresented && microphoneCalibrated) {
             earTrainingGame.start();
         }
-    }, [challengePresented])
+    }, [challengePresented, microphoneCalibrated])
+
+
 
 
     return (
@@ -111,7 +118,7 @@ const EarTrainingPage: React.FC = () => {
                     </div>}
 
                 <span
-                    className={`${!earTrainingGame.active ? animation.hide : animation.show} ${styles.score} ${styles[earTrainingGame.targetNotesChannelOutput[earTrainingGame.currentQuestionIndex].style]}`}
+                    className={`${!earTrainingGame.active ? animation.hide : animation.show} ${styles.score} ${styles[earTrainingGame.targetNotesChannelOutput[earTrainingGame.selectedNoteIndex].style]}`}
                 >{`${percentageScore}%`}</span>
 
             </div>
@@ -121,7 +128,7 @@ const EarTrainingPage: React.FC = () => {
             <div className={everyThingReady ? styles.centerElement : styles.bottom}>
 
                 {everyThingReady && !challengePresented &&
-                    <ChallengePresentation intervals={customScale.intervals} direction={customDirection} onComplete={setChallengePresented} />
+                    <ChallengePresentation intervals={cachedScale.intervals} direction={cachedDirection} onComplete={setChallengePresented} />
                 }
 
                 {everyThingReady && challengePresented &&
@@ -156,12 +163,22 @@ const EarTrainingPage: React.FC = () => {
                 }
 
                 {noteInput.inputDevice != 'ui' && everyThingReady && challengePresented &&
-                    <NoteInputPanel noteInput={noteInput} />
+                    <div>
+                        <AvailableNotesPanel availableNotes={cachedScale.getDirectionSensitiveIntervals(cachedDirection)} blockedNotes={getIntervalsFromPitch(earTrainingGame.root.pitchClass, earTrainingGame.wrongAnswerList, cachedDirection)} />
+
+                        <div className={styles.inputNotRecognized}>   
+                            <span>Input not recognized correctly?</span>
+                            <button style={{fontSize: '1em'}} onClick={() => 
+                                setMicrophoneCalibrated(false)
+                                }>Click here!</button>
+                        </div>
+
+                    </div>
                 }
 
                 {earTrainingGame.ready && noteInput.ready && challengePresented && noteInput.inputDevice === 'ui' &&
-                    <NoteInputButtonGrid intervals={customScale.intervals} resetTrigger={earTrainingGame.selectedNoteIndex} noteInput={noteInput} root={earTrainingGame.root.pitchClass} active={!earTrainingGame.isTalking} direction={customDirection} />}
-
+                    <NoteInputButtonGrid intervals={cachedScale.intervals} resetTrigger={earTrainingGame.selectedNoteIndex} noteInput={noteInput} root={earTrainingGame.root.pitchClass} active={!earTrainingGame.isTalking} direction={cachedDirection} />
+                }
             </div>
 
 
@@ -169,6 +186,11 @@ const EarTrainingPage: React.FC = () => {
             <div className={styles.lowerLeft}>
                 <img className={`${styles.soundIcon} ${earTrainingGame.isTalking ? animation.show : animation.hide}`} src={volumeIcon} alt={"Turn on volume"} />
             </div>
+
+            {noteInput.inputDevice != 'ui' && everyThingReady && challengePresented &&
+                <div className={`${styles.lowerRight} ${styles.detectedPitch}`}>
+                    <CircledCharacter character={detectedPitchClass ? detectedPitchClass : " "} />
+                </div>}
 
             <Sidebar
                 isOpen={isSidebarOpen}

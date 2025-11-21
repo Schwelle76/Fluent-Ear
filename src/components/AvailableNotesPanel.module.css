@@ -1,0 +1,25 @@
+.note-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    font-weight: 550;
+    gap: .5em;
+}
+
+.note-container span {
+    display: inline-block;
+    text-align: center;
+    width: 3em;
+    height: 1.7em;
+    line-height: 1.5em;
+    font-size: 1em;
+    background-color: rgb(17, 17, 17); 
+    border-radius: 30%;
+}
+
+.blocked{
+    color: var(--color-error);
+    opacity: .7;
+}

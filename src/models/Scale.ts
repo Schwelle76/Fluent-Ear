@@ -1,4 +1,5 @@
-import { PITCH_CLASSES, BASE_INTERVALS, Interval } from "./Note";
+import { Direction } from "./Direction";
+import { PITCH_CLASSES, BASE_INTERVALS, Interval, INTERVALS } from "./Note";
 
 export class Scale {
 
@@ -44,5 +45,24 @@ export class Scale {
   getIntervals() {
     return this.intervals;
   }
+
+  getDirectionSensitiveIntervals (direction: Direction) {
+
+    let intervals: Interval[] = [];
+
+    if(!this.intervals.includes('1') || direction === 'descending')
+      intervals = this.intervals;
+
+    if(direction === 'ascending')
+      intervals = [...this.intervals.filter(interval => interval !== '1'), '8'];
+    if(direction === 'any')
+      intervals = [...this.intervals, '8'];
+
+    return intervals.sort(
+            (a, b) => INTERVALS.indexOf(a) - INTERVALS.indexOf(b)
+        );;
+
+  }
+
 }
 

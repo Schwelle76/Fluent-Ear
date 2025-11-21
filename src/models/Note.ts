@@ -1,3 +1,5 @@
+import { Direction } from "./Direction";
+
 export const PITCH_CLASSES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'] as const;
 export type PitchClass = typeof PITCH_CLASSES[number];
 
@@ -24,14 +26,13 @@ export function getInterval(note: Note, tonic: Note) {
   let semitoneDistance = ((noteIndex + note.octave * 12) - (tonicIndex + tonic.octave * 12));
 
   let mod = 0
-  if (semitoneDistance < 0) mod = 12 * Math.ceil(Math.abs( semitoneDistance / -12));
+  if (semitoneDistance < 0) mod = 12 * Math.ceil(Math.abs(semitoneDistance / -12));
   const intervalIndex = (semitoneDistance + mod) % 12;
 
-  
+
   if (semitoneDistance < 12)
     return BASE_INTERVALS[intervalIndex];
   else return EXTENDED_INTERVALS[intervalIndex];
-
 
 }
 
@@ -42,6 +43,35 @@ export function getPitchClass(tonic: PitchClass, interval: Interval) {
   const targetNoteIndex = (tonicIndex + semitoneDistance) % 12;
 
   return PITCH_CLASSES[targetNoteIndex];
+}
+
+export function getIntervalFromPitch(tonic: PitchClass, note: PitchClass) {
+  const noteIndex = PITCH_CLASSES.indexOf(note);
+  const tonicIndex = PITCH_CLASSES.indexOf(tonic);
+
+  let semitoneDistance = (12 + noteIndex - tonicIndex) % 12;
+
+  return BASE_INTERVALS[semitoneDistance];
+}
+
+export function getIntervalsFromPitch(tonic: PitchClass, PitchClasses: PitchClass[], direction: Direction = 'descending') {
+  const intervals: Interval[] = [];
+  for (let i = 0; i < PitchClasses.length; i++) {
+
+    const interval = getIntervalFromPitch(tonic, PitchClasses[i]);
+
+    if(interval === '1'){
+      if(direction === 'descending')
+        intervals.push('1');
+      else if (direction === 'ascending')
+        intervals.push('8');
+      else if(direction === 'any'){
+        intervals.push('1');
+        intervals.push('8');
+      }
+    } else intervals.push(interval);
+  }
+  return intervals;
 }
 
 export function randomPitchClass(): PitchClass {

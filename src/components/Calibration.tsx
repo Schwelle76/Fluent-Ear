@@ -12,9 +12,9 @@ const Calibration : React.FC<CalibrationProps> = ({ noteInput, onDone }) => {
     return (
         <div style={{ fontSize: '2.5vh' }}>
             <div>
-                <h2 >Adjust sensitivity so that ONLY the notes you play are shown!</h2>
+                <span>Sit in a <strong>quiet</strong> place and</span>
                 <hr />
-                <br />
+                <h3 style = {{marginTop: '0'}} >Adjust sensitivity so that ONLY the notes you play are shown!</h3>
             </div>
 
             <div style={{fontSize: '3.5vh'}}>
@@ -22,9 +22,9 @@ const Calibration : React.FC<CalibrationProps> = ({ noteInput, onDone }) => {
             </div>
 
             <div>
-                <br />
                 <hr />
-                <p>If unplayed notes flash on the screen, lower the sensitivity.</p>
+                <p><strong>lower the sensitivity</strong> if unplayed notes flash on the screen.<br />
+                If played notes dont show on the screen <strong>increase the sensitivity</strong>.</p>
                 <button onClick={() => onDone(true)}>Done</button>
             </div>
         </div>

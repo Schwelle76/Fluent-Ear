@@ -31,6 +31,7 @@ export default function useEarTrainingGame(detectedNote: Note | PitchClass | und
     const stopOnMaxScore = useRef(false);
     const [totalAnswersCount, setTotalAnswersCount] = useState(0);
     const [correctAnswersCount, setCorrectAnswersCount] = useState(0);
+    const [wrongAnswerList, setWrongAnswerList] = useState<PitchClass[]>([]);
 
     function skipRoot(boolean: boolean) {
 
@@ -51,7 +52,6 @@ export default function useEarTrainingGame(detectedNote: Note | PitchClass | und
 
     const start = () => {
 
-
         setAwaitingStart(true);
         setCurrentQuestionIndex(1);
 
@@ -67,6 +67,11 @@ export default function useEarTrainingGame(detectedNote: Note | PitchClass | und
             setAwaitingStart(false);
             setNewNotes();
         }
+    }
+
+    const stop = () => {
+        setActive(false);
+        setAwaitingStart(false);
     }
 
 
@@ -87,11 +92,14 @@ export default function useEarTrainingGame(detectedNote: Note | PitchClass | und
         };
     }, [audioPlayer.ready]);
 
+    useEffect(() => {
+        setWrongAnswerList([]);
+    }, [selectedNoteIndex])
 
     useEffect(() => {
 
         if (notes.length === 0
-            || audioPlayer.isPlaying) return;
+            || audioPlayer.isPlaying || active === false) return;
 
 
         let detectedNoteIsRoot = false;
@@ -112,7 +120,7 @@ export default function useEarTrainingGame(detectedNote: Note | PitchClass | und
 
 
 
-        if (detectedNote === undefined)
+        if (detectedNote === undefined || detectedPitchClass === undefined)
             return;
 
 
@@ -156,16 +164,27 @@ export default function useEarTrainingGame(detectedNote: Note | PitchClass | und
                     playReward().then(() => {
                         setSelectedNoteIndex(0);
 
-                        if(maxScoreReached && stopOnMaxScore.current) 
+                        if (maxScoreReached && stopOnMaxScore.current)
                             setActive(false);
                         else setNewNotes();
                     });
                 });
             }
         } else {
-            if (selectedNoteIndex === currentQuestionIndex && selectedNoteIndex > 0 && !detectedNoteIsRoot) {
-                updateScore(-1);
-                playPunishment();
+            if (selectedNoteIndex > 0
+                && !detectedNoteIsRoot && !wrongAnswerList.includes(detectedPitchClass)
+                && scale.getPitchClasses(root.pitchClass).includes(detectedPitchClass)) {
+                setWrongAnswerList((prev) => [...prev, detectedPitchClass]);
+
+                if (currentQuestionIndex === selectedNoteIndex) {
+                    playPunishment(false, selectedNoteIndex);
+                    updateScore(-1);
+                    setCurrentQuestionIndex(prev => prev + 1);
+                }
+                else {
+                    playPunishment(true, selectedNoteIndex);
+                }
+
             }
         }
 
@@ -229,6 +248,7 @@ export default function useEarTrainingGame(detectedNote: Note | PitchClass | und
         const newNotes = [newRoot, ...newTargetNotes];
         setNotes(newNotes);
         setRoot(newRoot);
+        setWrongAnswerList([]);
 
 
         await replayQuestion(newNotes);
@@ -272,21 +292,40 @@ export default function useEarTrainingGame(detectedNote: Note | PitchClass | und
 
     }
 
-    const playPunishment = async () => {
+    const playPunishment = async (silent = false, noteIndex: number) => {
 
         return new Promise((resolve) => {
 
-            if (notes.length > 0 && currentQuestionIndex < notes.length) {
+            if (notes.length > 0 && noteIndex < notes.length) {
 
                 setTargetNotesChannels((prev) => [
-                    ...prev.slice(0, currentQuestionIndex),
-                    { note: prev[currentQuestionIndex].note, style: "punishment" },
-                    ...prev.slice(currentQuestionIndex + 1, prev.length)
+                    ...prev.slice(0, noteIndex),
+                    { note: prev[noteIndex].note, style: "punishment" },
+                    ...prev.slice(noteIndex + 1, prev.length)
                 ]
                 );
 
+
+                if (silent) {
+                    setTimeout(() => {
+
+                        setTargetNotesChannels((prev) => {
+                            if (prev[noteIndex]?.style === 'punishment')
+                                return [
+                                    ...prev.slice(0, noteIndex),
+                                    { note: prev[noteIndex].note, style: "" },
+                                    ...prev.slice(noteIndex + 1, prev.length)
+                                ]
+                            else return prev;
+
+                        });
+                    }, 300)
+                    resolve(true);
+                    return;
+                }
+
                 const punishmentNotes: string[] = [];
-                const punishmentInterval = getPitchClass(notes[currentQuestionIndex].pitchClass, "b5");
+                const punishmentInterval = getPitchClass(notes[noteIndex].pitchClass, "b5");
 
                 punishmentNotes.push(root.pitchClass + 4);
                 if (punishmentInterval)
@@ -297,9 +336,9 @@ export default function useEarTrainingGame(detectedNote: Note | PitchClass | und
                     audioPlayer.play(punishmentNotes[1].toString(), .4, .4).then(() => {
                         setTargetNotesChannels((prev) =>
                             [
-                                ...prev.slice(0, currentQuestionIndex),
-                                { note: prev[currentQuestionIndex].note, style: "" },
-                                ...prev.slice(currentQuestionIndex + 1, prev.length)
+                                ...prev.slice(0, noteIndex),
+                                { note: prev[noteIndex].note, style: "" },
+                                ...prev.slice(noteIndex + 1, prev.length)
                             ]
                         );
                         resolve(true)
@@ -343,6 +382,7 @@ export default function useEarTrainingGame(detectedNote: Note | PitchClass | und
         score,
         replayQuestion,
         start,
+        stop,
         active,
         ready,
         isTalking: audioPlayer.isPlaying,
@@ -355,7 +395,8 @@ export default function useEarTrainingGame(detectedNote: Note | PitchClass | und
         maxScore,
         totalAnswersCount,
         correctAnswersCount,
-        stopOnMaxScore
+        stopOnMaxScore,
+        wrongAnswerList
 
     }
 

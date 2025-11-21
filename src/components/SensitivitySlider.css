@@ -10,7 +10,7 @@
 .sensitivity-slider {
 
   width: 80%;
-  height: 0.5rem;
+  height: 0.5em;
   -webkit-appearance: none;
   background: #ddd;
   border-radius: 5px;
@@ -19,16 +19,16 @@
 
 .sensitivity-slider::-webkit-slider-thumb {
   -webkit-appearance: none;
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 1.5em;
+  height: 1.5em;
   background: #00a8ff;
   border-radius: 50%;
   cursor: pointer;
 }
 
 .sensitivity-slider::-moz-range-thumb {
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 1.5em;
+  height: 1.5em;
   background: #00a8ff;
   border-radius: 50%;
   cursor: pointer;
@@ -37,7 +37,7 @@
 .sensitivity-label {
   margin: 0;
   padding: 0;
-  margin-top: 0.5rem;
+  margin-top: 0.5em;
   color: white;
-  font-size: 0.9rem;
+  font-size: 0.9em;
 }

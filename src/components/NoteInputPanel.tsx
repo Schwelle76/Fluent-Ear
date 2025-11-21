@@ -3,6 +3,7 @@ import { Note } from '../models/Note';
 import useNoteInput from '../hooks/useNoteInput';
 import SensitivitySlider from './SensitivitySlider';
 import styles from './NoteInputPanel.module.css';
+import CircledCharacter from './CircledCharacter';
 
 
 interface NoteInputPanelProps {
@@ -15,16 +16,12 @@ const NoteInputPanel: React.FC<NoteInputPanelProps> = ({ noteInput }) => {
 
     return (
         <div className={styles.noteInputPanel}>
-
-            <div className={styles.inputPitchContainer}>
-                <span className={styles.inputPitch}>{pitchClass ? pitchClass : " "}</span>
+            <div style={{fontSize: '5em', marginBottom: '.2em'}}>
+            <CircledCharacter character={pitchClass ? pitchClass : " "} />
             </div>
-            <SensitivitySlider
-                value={noteInput.sensitivity}
-                min={noteInput.MIN_SENSITIVITY}
-                max={noteInput.MAX_SENSITIVITY}
-                onChange={(e) => noteInput.setSensitivity(parseInt(e.target.value))} />
-
+            <div style={{fontSize: '.8em'}}>
+            <SensitivitySlider noteInput={noteInput}/>
+            </div>
         </div>
     )
 }

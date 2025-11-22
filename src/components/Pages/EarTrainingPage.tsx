@@ -41,8 +41,7 @@ const EarTrainingPage: React.FC = () => {
 
     const score = earTrainingGame.score;
     const percentageScore = Math.round((score / earTrainingGame.maxScore) * 100);
-    if (earTrainingSettings.level >= 0) earTrainingGame.stopOnMaxScore.current = true;
-    else earTrainingGame.stopOnMaxScore.current = false;
+
 
     const everyThingReady: boolean = noteInput.inputDevice != undefined && earTrainingGame.ready && noteInput.ready && microphoneCalibrated;
     const detectedPitchClass = noteInput.note instanceof Note ? noteInput.note.pitchClass : noteInput.note;
@@ -74,9 +73,18 @@ const EarTrainingPage: React.FC = () => {
     }, [score, earTrainingGame.selectedNoteIndex])
 
     useEffect(() => {
-        if (noteInput.inputDevice === 'ui')
+        earTrainingGame.stopOnMaxScore.current = earTrainingSettings.level >= 0;
+    }, [earTrainingSettings.level])
+
+    useEffect(() => {
+        if (noteInput.inputDevice === 'ui') {
             earTrainingGame.skipRoot(true);
-        else earTrainingGame.skipRoot(false);
+            earTrainingGame.silentFurtherPunishments.current = false;
+        }
+        else {
+            earTrainingGame.skipRoot(false);
+            earTrainingGame.silentFurtherPunishments.current = true;
+        }
 
         if (noteInput.inputDevice === 'ui' || noteInput.inputDevice === 'keyboard') {
             setMicrophoneCalibrated(true);
@@ -92,7 +100,7 @@ const EarTrainingPage: React.FC = () => {
 
     useEffect(() => {
 
-        if(microphoneCalibrated === false) earTrainingGame.stop();
+        if (microphoneCalibrated === false) earTrainingGame.stop();
         if (challengePresented && microphoneCalibrated) {
             earTrainingGame.start();
         }
@@ -166,11 +174,11 @@ const EarTrainingPage: React.FC = () => {
                     <div>
                         <AvailableNotesPanel availableNotes={cachedScale.getDirectionSensitiveIntervals(cachedDirection)} blockedNotes={getIntervalsFromPitch(earTrainingGame.root.pitchClass, earTrainingGame.wrongAnswerList, cachedDirection)} />
 
-                        <div className={styles.inputNotRecognized}>   
+                        <div className={styles.inputNotRecognized}>
                             <span>Input not recognized correctly?</span>
-                            <button style={{fontSize: '1em'}} onClick={() => 
+                            <button style={{ fontSize: '1em' }} onClick={() =>
                                 setMicrophoneCalibrated(false)
-                                }>Click here!</button>
+                            }>Click here!</button>
                         </div>
 
                     </div>

@@ -29,6 +29,7 @@ export default function useEarTrainingGame(detectedNote: Note | PitchClass | und
 
     const maxScore = 15;
     const stopOnMaxScore = useRef(false);
+    const silentFurtherPunishments = useRef(false);
     const [totalAnswersCount, setTotalAnswersCount] = useState(0);
     const [correctAnswersCount, setCorrectAnswersCount] = useState(0);
     const [wrongAnswerList, setWrongAnswerList] = useState<PitchClass[]>([]);
@@ -176,13 +177,14 @@ export default function useEarTrainingGame(detectedNote: Note | PitchClass | und
                 && scale.getPitchClasses(root.pitchClass).includes(detectedPitchClass)) {
                 setWrongAnswerList((prev) => [...prev, detectedPitchClass]);
 
-                if (currentQuestionIndex === selectedNoteIndex) {
+                if (currentQuestionIndex === selectedNoteIndex && wrongAnswerList.length <= 0) {
                     playPunishment(false, selectedNoteIndex);
-                    updateScore(-1);
-                    setCurrentQuestionIndex(prev => prev + 1);
+                    updateScore(-2);
                 }
                 else {
-                    playPunishment(true, selectedNoteIndex);
+                    if(silentFurtherPunishments.current)
+                        playPunishment(true, selectedNoteIndex);
+                    else playPunishment(false, selectedNoteIndex);
                 }
 
             }
@@ -396,7 +398,8 @@ export default function useEarTrainingGame(detectedNote: Note | PitchClass | und
         totalAnswersCount,
         correctAnswersCount,
         stopOnMaxScore,
-        wrongAnswerList
+        wrongAnswerList,
+        silentFurtherPunishments
 
     }
 

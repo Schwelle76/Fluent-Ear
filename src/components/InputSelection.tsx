@@ -40,7 +40,7 @@ const InputSelection: React.FC<InputSelectionProps> = ({ noteInput }) => {
                         }
                     </button>
                     {usesMouse ?
-                        <p>Mouse</p> : <p>Touch</p>}
+                        <p>Mouse</p> : <p>Touch Screen</p>}
                 </div>
 
                 <div className={styles.inputOptionContainer}>

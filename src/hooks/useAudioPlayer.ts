@@ -4,7 +4,7 @@ import SoundfontService from "../services/SoundFontService";
 
 export default function useAudioPlayer() {
 
-    const audioPlayerRef = useRef<SoundfontService | null>(null);
+    let soundfontServiceRef = useRef<SoundfontService | null>(null);
     const [ready, setReady] = useState(false);
     const [isPlaying, setIsPlaying] = useState(false);
     const notPlayingBufferTime = 300;
@@ -13,18 +13,19 @@ export default function useAudioPlayer() {
     useEffect(() => {
         let isMounted = true;
 
-        audioPlayerRef.current = new SoundfontService();
-        audioPlayerRef.current.load().then(() => {
-            if (isMounted) {
-                setReady(true);
-            }
-        });
+        if (soundfontServiceRef.current)
+            setReady(true);
+        else SoundfontService.getInstance().then((soundfontService) => {
+                if (isMounted) {
+                    soundfontServiceRef.current = soundfontService;
+                    setReady(true);
+                }
+            });
+
 
         return () => {
             isMounted = false;
             setReady(false);
-            audioPlayerRef.current?.destroy();
-            audioPlayerRef.current = null;
         };
     }, []);
 
@@ -47,8 +48,6 @@ export default function useAudioPlayer() {
 
     const play = async (notes: string | string[], duration: number = 0.5, release: number = 0.1): Promise<boolean> => {
 
-        if (audioPlayerRef.current === null) return false;
-
         setVoiceCount((voiceCount) => {
             return voiceCount + 1
         }
@@ -57,9 +56,7 @@ export default function useAudioPlayer() {
 
         return new Promise<boolean>((resolve) => {
 
-            if (audioPlayerRef.current === null) return resolve(false);
-
-            audioPlayerRef.current.play(notes, duration, release).then((success) => {
+            soundfontServiceRef.current?.play(notes, duration, release).then((success) => {
 
                 setVoiceCount((voiceCount) => {
                     const newVoiceCount = Math.max(voiceCount - 1, 0);

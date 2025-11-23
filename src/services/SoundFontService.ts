@@ -5,6 +5,9 @@ export default class SoundfontService {
   private ctx: AudioContext;
   private player: Player | null = null;
   private masterGain: GainNode;
+  private static instance: SoundfontService | null = null;
+
+  private loadingPromise: Promise<boolean> | null = null;
 
   constructor(ctx?: AudioContext) {
     this.ctx = ctx ?? new (window.AudioContext || (window as any).webkitAudioContext)();
@@ -13,6 +16,19 @@ export default class SoundfontService {
     this.masterGain.gain.value = 25;
     this.masterGain.connect(this.ctx.destination);
 
+  }
+
+  static async getInstance(): Promise<SoundfontService> {
+
+    if (!SoundfontService.instance) {
+      SoundfontService.instance = new SoundfontService();
+      await SoundfontService.instance.load();
+    }
+    return SoundfontService.instance;
+  }
+
+  public get isLoaded(): boolean {
+    return this.player !== null;
   }
 
   async load(instrument: InstrumentName = "acoustic_grand_piano") {

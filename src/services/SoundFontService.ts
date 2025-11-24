@@ -5,6 +5,7 @@ export default class SoundfontService {
   private ctx: AudioContext;
   private player: Player | null = null;
   private masterGain: GainNode;
+  private compressor: DynamicsCompressorNode;
   private static instance: SoundfontService | null = null;
 
   private loadingPromise: Promise<boolean> | null = null;
@@ -13,8 +14,17 @@ export default class SoundfontService {
     this.ctx = ctx ?? new (window.AudioContext || (window as any).webkitAudioContext)();
 
     this.masterGain = this.ctx.createGain();
-    this.masterGain.gain.value = 25;
-    this.masterGain.connect(this.ctx.destination);
+    this.masterGain.gain.value = 4;
+
+    this.compressor = this.ctx.createDynamicsCompressor();
+    this.compressor.threshold.value = -50;
+    this.compressor.knee.value = 40;
+    this.compressor.ratio.value = 12;
+    this.compressor.attack.value = 0;
+    this.compressor.release.value = 0.25;
+
+    this.masterGain.connect(this.compressor);
+    this.compressor.connect(this.ctx.destination);
 
   }
 

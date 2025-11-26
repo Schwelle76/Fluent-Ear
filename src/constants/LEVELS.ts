@@ -36,6 +36,21 @@ export const LEVELS : EarTrainingSettings[] = [
         direction: 'any',
     },
     {
+      ...defaultSettings,
+      scale: new Scale("", ["M3", "4", "5"]),
+      direction: 'ascending',  
+    },
+    {
+      ...defaultSettings,
+      scale: new Scale("", ["M3", "4", "5"]),
+      direction: 'descending',  
+    },
+    {
+      ...defaultSettings,
+      scale: new Scale("", ["M3", "4", "5"]),
+      direction: 'any',  
+    },
+    {
         ...defaultSettings,
         scale: SCALES[4],
         direction: 'ascending',

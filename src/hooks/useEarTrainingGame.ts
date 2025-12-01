@@ -165,8 +165,10 @@ export default function useEarTrainingGame(detectedNote: Note | PitchClass | und
                     playReward().then(() => {
                         setSelectedNoteIndex(0);
 
-                        if (maxScoreReached && stopOnMaxScore.current)
+                        if (maxScoreReached && stopOnMaxScore.current){
+                            localStorage.setItem('score', '0');
                             setActive(false);
+                        }
                         else setNewNotes();
                     });
                 });
